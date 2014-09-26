@@ -79,6 +79,7 @@
 		0EABB5CE19D03946001E8D1E /* circleOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CC19D03946001E8D1E /* circleOrange.png */; };
 		0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CF19D042F8001E8D1E /* circleGreen.png */; };
 		0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */; };
+		159BE7DC19D4FCDA00DE90EA /* moon.png in Resources */ = {isa = PBXBuildFile; fileRef = 159BE7DB19D4FCDA00DE90EA /* moon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +181,7 @@
 		0EABB5CF19D042F8001E8D1E /* circleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circleGreen.png; sourceTree = "<group>"; };
 		0EABB5D219D0518D001E8D1E /* ClientDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientDetailViewController.h; sourceTree = "<group>"; };
 		0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientDetailViewController.m; sourceTree = "<group>"; };
+		159BE7DB19D4FCDA00DE90EA /* moon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moon.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -357,6 +359,7 @@
 		0EABB58619D00AD5001E8D1E /* images */ = {
 			isa = PBXGroup;
 			children = (
+				159BE7DB19D4FCDA00DE90EA /* moon.png */,
 				0EAADD1E19D439AB00A9673A /* BlueTransparent.png */,
 				0EAA5C3019D19DCC002D3E75 /* transparentImage.png */,
 				0EAA5C1819D1969C002D3E75 /* add_title.png */,
@@ -538,6 +541,7 @@
 				0EABB5B719D00AEC001E8D1E /* newTicket.png in Resources */,
 				0EABB5B819D00AEC001E8D1E /* OpenSt.png in Resources */,
 				0EABB5A519D00AEC001E8D1E /* images_16.png in Resources */,
+				159BE7DC19D4FCDA00DE90EA /* moon.png in Resources */,
 				0EAA5C3119D19DCC002D3E75 /* transparentImage.png in Resources */,
 				0EABB5AC19D00AEC001E8D1E /* image4.png in Resources */,
 				0EABB5A719D00AEC001E8D1E /* grrenBut.png in Resources */,
