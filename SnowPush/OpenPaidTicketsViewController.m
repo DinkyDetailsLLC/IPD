@@ -30,6 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    OPTSearchTF.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:18];
     // Do any additional setup after loading the view.
 }
 
@@ -75,7 +76,8 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CustomTableCell *cell=[tableView dequeueReusableCellWithIdentifier:@"OPTCell"];
-    
+    cell.InvoiceLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    cell.PriseLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:18];
     if (OPTViewTag==2) {
         cell.OPTCircleImageView.image=[UIImage imageNamed:@"green-dot.png"];
     }

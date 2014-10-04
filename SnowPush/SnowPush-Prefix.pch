@@ -15,4 +15,6 @@
     #import <Foundation/Foundation.h>
 #import "CustomTableCell.h"
 #import "AppDelegate.h"
+#import "DataBase.h"
+#import "ClientInfo.h"
 #endif

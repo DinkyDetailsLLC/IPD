@@ -10,4 +10,6 @@
 
 @interface ClientInfo : NSObject
 @property NSString *Comp_name,*Address,*City,*State,*Zip,*phoneNo,*Email,*Image,*TripCost,*ContractCost,*SeasonalCost;
+
+@property int salt,shovel,plow,removal;
 @end

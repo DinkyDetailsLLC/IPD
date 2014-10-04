@@ -22,8 +22,6 @@
 
 -(NSMutableArray*)receiveAllData;
 
--(BOOL)CheckCouponId:(NSString*)CoupId;
-
-//-(BOOL)deleteDataFromFavoritesList:(CouponInfo*)coupon;
+-(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName;
 
 @end

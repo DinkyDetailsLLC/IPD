@@ -10,4 +10,5 @@
 
 @implementation ClientInfo
 @synthesize Comp_name,ContractCost,Email,SeasonalCost,State,City,phoneNo,Image,Address,TripCost,Zip;
+@synthesize salt,shovel,plow,removal;
 @end

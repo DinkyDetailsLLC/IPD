@@ -57,9 +57,9 @@ static sqlite3_stmt *statement = nil;
     // NSLog(@"DBPATH:%s",dbpath);
     if (sqlite3_open(dbpath, &database) == SQLITE_OK)
     {
-        /* CREATE TABLE "ClientDetail" ("Comp_Name" TEXT, "Address" TEXT, "city" TEXT, "state" TEXT, "zip" TEXT, "PhoneNo" TEXT, "email" TEXT, "Image" TEXT, "tripCost" TEXT, "contactCost" TEXT, "seasonalCost" TEXT) */
        
-        NSString *insertSQL = [NSString stringWithFormat:@"insert into ClientDetail (Comp_Name,Address,city,state,zip,PhoneNo,email,Image,tripCost,contactCost,seasonalCost) values(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",client.Comp_name,client.Address,client.City,client.State,client.Zip,client.phoneNo,client.Email,client.Image,client.TripCost,client.ContractCost,client.SeasonalCost];
+       
+        NSString *insertSQL = [NSString stringWithFormat:@"insert into ClientDetail (Comp_Name,Address,city,state,zip,PhoneNo,email,Image,tripCost,contactCost,seasonalCost,Salt,shovel,plow,removal) values(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",%d,%d,%d,%d)",client.Comp_name,client.Address,client.City,client.State,client.Zip,client.phoneNo,client.Email,client.Image,client.TripCost,client.ContractCost,client.SeasonalCost,client.salt,client.shovel,client.plow,client.removal];
         
         //  NSLog(@"%@",insertSQL);
         const char *insert_stmt = [insertSQL UTF8String];
@@ -68,7 +68,7 @@ static sqlite3_stmt *statement = nil;
         sqlite3_prepare_v2(database, insert_stmt,-1, &statement, NULL);
         
         //  NSLog(@"%i",sqlite3_step(statement));
-        //  NSLog(@"error %s.",sqlite3_errmsg(database));
+         NSLog(@"error %s.",sqlite3_errmsg(database));
         
         if (sqlite3_step(statement) == SQLITE_DONE)
         { sqlite3_finalize(statement);
@@ -120,6 +120,10 @@ static sqlite3_stmt *statement = nil;
                 CInfo.TripCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
                 CInfo.ContractCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)];
                 CInfo.SeasonalCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)];
+                CInfo.salt=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.shovel=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.plow=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.removal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
                 [record addObject:CInfo];
             }
         }
@@ -132,76 +136,82 @@ static sqlite3_stmt *statement = nil;
     
 }
 
--(BOOL)CheckCouponId:(NSString*)CoupId
+
+-(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName
 {
-    // NSMutableArray *record = [[NSMutableArray alloc]init];
-    // NSLog(@"%@",databasepath);
-    // NSLog(@"%s",[databasepath UTF8String]);
-    const char *dbpath=[databasepath UTF8String];
-    //NSLog(@"DBPATH:%s",dbpath);
-    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
-        NSString *selectSQL=[NSString stringWithFormat:@"select * from FavoriteList where cid=\"%@\"",CoupId];
-        const char *select_stmt=[selectSQL UTF8String];
-        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
-        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
-        if (res!=SQLITE_OK){
-            //  NSLog(@"Problem with prepare statement.");
-        }
-        else{
-            //NSInteger temp=0,num=0;
+    BOOL isSuccess;
+    
+    const char *dbpath = [databasepath UTF8String];
+    
+    // NSLog(@"DBPATH:%s",dbpath);
+    
+    // BOOL isSuccess=NO;
+    
+    // NSLog(@"updateing contact");
+    
+    //sqlite3_stmt *statement;
+    
+    //const char*dbpath=[databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+        
+    {
+        
+         /* CREATE TABLE "ClientDetail" ("Comp_Name" TEXT, "Address" TEXT, "city" TEXT, "state" TEXT, "zip" TEXT, "PhoneNo" TEXT, "email" TEXT, "Image" TEXT, "tripCost" TEXT, "contactCost" TEXT, "seasonalCost" TEXT, "Salt" INTEGER DEFAULT 0, "shovel" INTEGER DEFAULT 0, "plow" INTEGER DEFAULT 0, "removal" INTEGER DEFAULT 0) */
+        
+        
+        NSString *querySQL = [NSString stringWithFormat:@"update ClientDetail set Comp_Name=\"%@\",Address=\"%@\",city=\"%@\",state=\"%@\",zip=\"%@\",PhoneNo=\"%@\",email=\"%@\",Image=\"%@\",tripCost=\"%@\",contactCost=\"%@\",seasonalCost=\"%@\",Salt=%d,shovel=%d,plow=%d,removal=%d where Comp_Name=\"%@\" ",client.Comp_name,client.Address,client.City,client.State,client.Zip,client.phoneNo,client.Email,client.Image,client.TripCost,client.ContractCost,client.SeasonalCost,client.salt,client.shovel,client.plow,client.removal,CompName];
+        
+        //NSLog(@"%@",querySQL);
+        
+        const char *update_stmt = [querySQL UTF8String];
+        
+        // NSLog(@" error msg.%s",sqlite3_errmsg(database));
+        
+        // NSLog(@"%i",sqlite3_prepare_v2(database, update_stmt, -1, &statement, NULL));
+        
+        if(sqlite3_prepare_v2(database, update_stmt, -1, &statement, NULL)==SQLITE_OK)
             
-            if (sqlite3_step(statement)==SQLITE_ROW){
-                sqlite3_finalize(statement);
-                sqlite3_close(database);
-                return YES;
+        {
+            
+            //                        NSLog(@"---> %d",sqlite3_step(statement));
+            
+            //            //sqlite3_bind_text(statement,1,update_stmt,-1,SQLITE_TRANSIENT);
+            
+            //            NSLog(@"%i",sqlite3_step(statement));
+            
+            if (sqlite3_step(statement) == SQLITE_DONE)
                 
-            }else{
-                sqlite3_finalize(statement);
-                sqlite3_close(database);
-                return NO;
+            {
+                
+                isSuccess=YES;
+                
+                //  NSLog(@"Updated");
+                
+                
+                
             }
+            
+            else
+                
+            {
+                
+                isSuccess=NO;
+                
+                //  NSLog(@"File to update");
+                
+            }
+            
+            sqlite3_finalize(statement);
+            
         }
-        sqlite3_reset(statement);
+        
+        sqlite3_close(database);
         
     }
-    // sqlite3_finalize(statement);
-    sqlite3_close(database);
-    return NO;
+    
+    return isSuccess;
 }
 
-//-(BOOL)deleteDataFromFavoritesList:(ClientInfo*)coupon
-//{
-//    //[self findDBPath];
-//    BOOL isSuccess=NO;
-//    //   [self findDBPath];
-//    //NSLog(@"%@",databasepath);
-//    
-//    const char *dbpath=[databasepath UTF8String];
-//    
-//    // NSLog(@"DBPATH:%s",dbpath);
-//    
-//    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
-//    {
-//        NSString *deleteSQL = [NSString stringWithFormat:@"delete from FavoriteList where cid=\"%@\"",coupon.C_ID];
-//        
-//        // NSLog(@"%@",deleteSQL);
-//        const char *delete_stmt = [deleteSQL UTF8String];
-//        sqlite3_prepare_v2(database, delete_stmt,-1, &statement, NULL);
-//        //NSLog(@"%d",sqlite3_step(statement));
-//        if (sqlite3_step(statement) == SQLITE_DONE)
-//        {
-//            sqlite3_close(database);
-//            isSuccess=YES;
-//        }
-//        else {
-//            sqlite3_close(database);
-//            
-//            isSuccess=NO;
-//        }
-//        sqlite3_reset(statement);
-//    }
-//    sqlite3_finalize(statement);
-//    sqlite3_close(database);
-//    return isSuccess;
-//}
+
 @end

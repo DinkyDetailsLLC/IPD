@@ -32,6 +32,8 @@
 {
     [super viewDidLoad];
     
+    TicketSearchTextField.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:18];
+    
     if (ViewTag==0) {
         SectionViewColor=[UIColor whiteColor];
     }else if (ViewTag==1){
@@ -71,7 +73,10 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CustomTableCell *cell=[tableView dequeueReusableCellWithIdentifier:@"TicketCell"];
-    
+    cell.InvoiceLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    cell.InvoiceLab2.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    cell.PriseLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
+    cell.DateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
     if (ViewTag==0) {
         cell.InvoiceLab2.hidden=YES;
     }else{
@@ -96,8 +101,10 @@
    HeaderLab=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 30)];
     HeaderLab.textAlignment=NSTextAlignmentRight;
     HeaderLab.backgroundColor=SectionViewColor;
+    HeaderLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:25];
     if (section==0) {
         HeaderLab.text=@"Time Warner Cable";
+        
     }else{
     HeaderLab.text=@"Some other Company";
     }

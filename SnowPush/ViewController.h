@@ -47,13 +47,24 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *WetherTableView;
 
+@property (weak, nonatomic) IBOutlet UIButton *ViewAllTicketBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *ViewOpenTicketBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *ViewPaidTicketBtn;
+
+@property (weak, nonatomic) IBOutlet UILabel *ReportLab;
 
 -(IBAction)ClientBtnClicked:(id)sender;
+
 -(IBAction)ReportBtnClicked:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIView *ReportView;
 
 -(IBAction)ViewAllTickets:(id)sender;
+
 -(IBAction)ViewOpenTickets:(id)sender;
+
 -(IBAction)ViewPaidTickets:(id)sender;
 
 -(IBAction)ChangeZip:(id)sender;

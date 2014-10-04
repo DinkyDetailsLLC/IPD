@@ -24,6 +24,7 @@
 @synthesize FirstImageView,SecondImageView,ThirdImageView,FourthImageView,FifthImageView,SixthImageView,SeventhImageVIew;
 @synthesize FirstTempLab,SecondTempLab,ThirdTempLab,FourthTempLab,FifthTempLab,SixthTempLab,SeventhTempLab;
 @synthesize WetherTableView;
+@synthesize ReportLab,ViewAllTicketBtn,ViewOpenTicketBtn,ViewPaidTicketBtn;
 - (void)viewDidLoad
 {
     //http://api.wunderground.com/api/a988d453ebe759ad/hourly/planner/conditions/forecast10day/q/-33.957550,151.230850.json
@@ -39,6 +40,11 @@
     self.manager.distanceFilter=kCLDistanceFilterNone;
     self.manager.desiredAccuracy=kCLLocationAccuracyBest;
     [self.manager startUpdatingLocation];
+    
+    ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:20];
+    ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

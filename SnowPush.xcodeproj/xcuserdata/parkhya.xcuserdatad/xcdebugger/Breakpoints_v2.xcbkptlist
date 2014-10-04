@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SnowPush/ViewController.m"
-            timestampString = "433172023.660555"
+            timestampString = "433427304.492606"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
             landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SnowPush/DataBase.m"
-            timestampString = "433344721.415623"
+            timestampString = "433410586.591949"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "-SaveClientDetail:"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "-updateClientDetail:whereCompName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

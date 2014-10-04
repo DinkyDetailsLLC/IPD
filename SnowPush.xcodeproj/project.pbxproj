@@ -10,7 +10,6 @@
 		0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFA19D4433A00E57E67 /* DataBase.m */; };
 		0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */; };
 		0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */; };
-		0EA7CD0219D446F500E57E67 /* SnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EA7CD0119D446F500E57E67 /* SnowPush.sqlite */; };
 		0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1019D17285002D3E75 /* MBProgressHUD.m */; };
 		0EAA5C1319D17A73002D3E75 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EAA5C1219D17A73002D3E75 /* CoreLocation.framework */; };
 		0EAA5C1719D19643002D3E75 /* Iphone4.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1619D19643002D3E75 /* Iphone4.storyboard */; };
@@ -30,7 +29,6 @@
 		0EAADD1719D4191800A9673A /* OpenPaidTicketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAADD1619D4191800A9673A /* OpenPaidTicketsViewController.m */; };
 		0EAADD1B19D42FF000A9673A /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAADD1A19D42FF000A9673A /* MapViewController.m */; };
 		0EAADD1D19D430FD00A9673A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EAADD1C19D430FD00A9673A /* MapKit.framework */; };
-		0EAADD1F19D439AB00A9673A /* BlueTransparent.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAADD1E19D439AB00A9673A /* BlueTransparent.png */; };
 		0EABB55219CFFBA7001E8D1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EABB55119CFFBA7001E8D1E /* Foundation.framework */; };
 		0EABB55419CFFBA7001E8D1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EABB55319CFFBA7001E8D1E /* CoreGraphics.framework */; };
 		0EABB55619CFFBA7001E8D1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EABB55519CFFBA7001E8D1E /* UIKit.framework */; };
@@ -79,7 +77,11 @@
 		0EABB5CE19D03946001E8D1E /* circleOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CC19D03946001E8D1E /* circleOrange.png */; };
 		0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CF19D042F8001E8D1E /* circleGreen.png */; };
 		0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */; };
-		159BE7DC19D4FCDA00DE90EA /* moon.png in Resources */ = {isa = PBXBuildFile; fileRef = 159BE7DB19D4FCDA00DE90EA /* moon.png */; };
+		0EB8CF5D19D539E100200433 /* SnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5C19D539E100200433 /* SnowPush.sqlite */; };
+		0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */; };
+		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
+		0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */; };
+		0EB8CF6B19D5923E00200433 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6A19D5923E00200433 /* line.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,7 +100,6 @@
 		0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientInfo.h; sourceTree = "<group>"; };
 		0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientInfo.m; sourceTree = "<group>"; };
 		0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		0EA7CD0119D446F500E57E67 /* SnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SnowPush.sqlite; sourceTree = "<group>"; };
 		0EAA5C0F19D17285002D3E75 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		0EAA5C1019D17285002D3E75 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		0EAA5C1219D17A73002D3E75 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -123,7 +124,6 @@
 		0EAADD1919D42FF000A9673A /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		0EAADD1A19D42FF000A9673A /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		0EAADD1C19D430FD00A9673A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		0EAADD1E19D439AB00A9673A /* BlueTransparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueTransparent.png; sourceTree = "<group>"; };
 		0EABB54E19CFFBA7001E8D1E /* SnowPush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnowPush.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EABB55119CFFBA7001E8D1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0EABB55319CFFBA7001E8D1E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -181,7 +181,11 @@
 		0EABB5CF19D042F8001E8D1E /* circleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circleGreen.png; sourceTree = "<group>"; };
 		0EABB5D219D0518D001E8D1E /* ClientDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientDetailViewController.h; sourceTree = "<group>"; };
 		0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientDetailViewController.m; sourceTree = "<group>"; };
-		159BE7DB19D4FCDA00DE90EA /* moon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moon.png; sourceTree = "<group>"; };
+		0EB8CF5C19D539E100200433 /* SnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SnowPush.sqlite; sourceTree = "<group>"; };
+		0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = LETTERGOTHICSTD.OTF; sourceTree = "<group>"; };
+		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
+		0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuickNotifyBg.png; sourceTree = "<group>"; };
+		0EB8CF6A19D5923E00200433 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,7 +218,7 @@
 		0EA7CCF819D4432100E57E67 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
-				0EA7CD0119D446F500E57E67 /* SnowPush.sqlite */,
+				0EB8CF5C19D539E100200433 /* SnowPush.sqlite */,
 				0EA7CCF919D4433A00E57E67 /* DataBase.h */,
 				0EA7CCFA19D4433A00E57E67 /* DataBase.m */,
 				0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */,
@@ -304,6 +308,7 @@
 		0EABB55719CFFBA7001E8D1E /* SnowPush */ = {
 			isa = PBXGroup;
 			children = (
+				0EB8CF5E19D5645600200433 /* fonts */,
 				0EA7CCF819D4432100E57E67 /* DataBase */,
 				0EAADD1819D42FD800A9673A /* MapView */,
 				0EAADD1119D3FA9B00A9673A /* openPaidTickets */,
@@ -359,8 +364,8 @@
 		0EABB58619D00AD5001E8D1E /* images */ = {
 			isa = PBXGroup;
 			children = (
-				159BE7DB19D4FCDA00DE90EA /* moon.png */,
-				0EAADD1E19D439AB00A9673A /* BlueTransparent.png */,
+				0EB8CF6A19D5923E00200433 /* line.png */,
+				0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */,
 				0EAA5C3019D19DCC002D3E75 /* transparentImage.png */,
 				0EAA5C1819D1969C002D3E75 /* add_title.png */,
 				0EAA5C1919D1969C002D3E75 /* email.png */,
@@ -442,6 +447,15 @@
 			name = ClientDetailPage;
 			sourceTree = "<group>";
 		};
+		0EB8CF5E19D5645600200433 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */,
+				0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -490,7 +504,7 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					0EABB54D19CFFBA7001E8D1E = {
-						DevelopmentTeam = J65LBYSK7T;
+						DevelopmentTeam = RXRA63Q8FB;
 					};
 					0EABB56E19CFFBA7001E8D1E = {
 						TestTargetID = 0EABB54D19CFFBA7001E8D1E;
@@ -529,6 +543,7 @@
 				0EABB5AA19D00AEC001E8D1E /* image2.png in Resources */,
 				0EABB5AE19D00AEC001E8D1E /* dolarGrren.png in Resources */,
 				0EABB55C19CFFBA7001E8D1E /* InfoPlist.strings in Resources */,
+				0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */,
 				0EABB5B119D00AEC001E8D1E /* backImage.png in Resources */,
 				0EABB56519CFFBA7001E8D1E /* Main.storyboard in Resources */,
 				0EABB5B519D00AEC001E8D1E /* belowText.png in Resources */,
@@ -541,7 +556,6 @@
 				0EABB5B719D00AEC001E8D1E /* newTicket.png in Resources */,
 				0EABB5B819D00AEC001E8D1E /* OpenSt.png in Resources */,
 				0EABB5A519D00AEC001E8D1E /* images_16.png in Resources */,
-				159BE7DC19D4FCDA00DE90EA /* moon.png in Resources */,
 				0EAA5C3119D19DCC002D3E75 /* transparentImage.png in Resources */,
 				0EABB5AC19D00AEC001E8D1E /* image4.png in Resources */,
 				0EABB5A719D00AEC001E8D1E /* grrenBut.png in Resources */,
@@ -550,24 +564,26 @@
 				0EABB5A419D00AEC001E8D1E /* edit.png in Resources */,
 				0EABB5B619D00AEC001E8D1E /* PopUpGreen.png in Resources */,
 				0EABB5BE19D02884001E8D1E /* ChangeZip.png in Resources */,
-				0EA7CD0219D446F500E57E67 /* SnowPush.sqlite in Resources */,
-				0EAADD1F19D439AB00A9673A /* BlueTransparent.png in Resources */,
+				0EB8CF5D19D539E100200433 /* SnowPush.sqlite in Resources */,
 				0EAA5C2919D1969C002D3E75 /* save.png in Resources */,
 				0EAA5C2A19D1969C002D3E75 /* service_Check.png in Resources */,
 				0EAA5C2719D1969C002D3E75 /* notify_add.png in Resources */,
 				0EABB5AB19D00AEC001E8D1E /* images3.png in Resources */,
 				0EAA5C2419D1969C002D3E75 /* green-dot.png in Resources */,
+				0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */,
 				0EABB5B419D00AEC001E8D1E /* images_69.png in Resources */,
 				0EAA5C2819D1969C002D3E75 /* orange-dot.png in Resources */,
 				0EABB5A319D00AEC001E8D1E /* more.png in Resources */,
 				0EABB5BC19D0239E001E8D1E /* SearchBar.png in Resources */,
 				0EAA5C2519D1969C002D3E75 /* grey-dot.png in Resources */,
+				0EB8CF6B19D5923E00200433 /* line.png in Resources */,
 				0EAA5C1719D19643002D3E75 /* Iphone4.storyboard in Resources */,
 				0EABB5B019D00AEC001E8D1E /* clients.png in Resources */,
 				0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */,
 				0EAA5C2319D1969C002D3E75 /* email.png in Resources */,
 				0EABB5A619D00AEC001E8D1E /* map.png in Resources */,
 				0EABB5AF19D00AEC001E8D1E /* report.png in Resources */,
+				0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */,
 				0EABB5A219D00AEC001E8D1E /* Back.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
