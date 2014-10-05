@@ -11,6 +11,10 @@
 @interface OpenPaidTicketsViewController ()
 {
     UILabel *HeaderLab;
+    NSMutableArray *AllTickets;
+    NSMutableArray *numberOfSection;
+    NSMutableArray *searchArr;
+    BOOL isSearching;
 }
 @end
 
@@ -18,6 +22,7 @@
 @synthesize OPTSearchTF;
 @synthesize OPTTableView;
 @synthesize OPTViewTag;
+@synthesize OPTClientDtail;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -30,7 +35,68 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    isSearching=NO;
+    
     OPTSearchTF.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:18];
+    
+    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+        OPTTableView.frame=CGRectMake(0, 105, 320, 375);
+    }
+    AllTickets=[[NSMutableArray alloc]init];
+    
+    int val=0;
+    
+    if (OPTViewTag==2) {
+        val=1;
+    }
+    ClientInfo *client=[[ClientInfo alloc]init];
+    client.Comp_name=OPTClientDtail.Comp_name;
+    client.paidInFull=val;
+    AllTickets=[[DataBase getSharedInstance]RecieveSpecificClientsOpenAndPaidTickets:client];
+    numberOfSection=[[NSMutableArray alloc]init];
+    NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+    NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+     NSString *CDate=@"";
+    for (int i=0; i<AllTickets.count; i++) {
+       
+        ClientInfo *client=[AllTickets objectAtIndex:i];
+       
+        NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+        [dic setObject:client.date forKey:@"date"];
+        [dic setObject:client.Comp_name forKey:@"companyName"];
+        [dic setObject:client.startTime forKey:@"startTime"];
+        [dic setObject:client.finishTime forKey:@"finishTime"];
+        [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+        [dic setObject:client.Email forKey:@"email"];
+        [dic setObject:client.imageBefore forKey:@"imageBefore"];
+        [dic setObject:client.imageAfter forKey:@"imageAfter"];
+        [dic setObject:client.snowFall forKey:@"snowFall"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+        
+        if (![CDate isEqualToString:client.date]) {
+           detailDic=[[NSMutableDictionary alloc]init];
+            DetailArr=[[NSMutableArray alloc]init];
+            [detailDic setObject:client.date forKey:@"date"];
+            [DetailArr addObject:dic];
+              [detailDic setObject:DetailArr forKey:@"dateDetail"];
+            [numberOfSection addObject:detailDic];
+        }else{
+          [DetailArr addObject:dic];
+            [detailDic setObject:DetailArr forKey:@"dateDetail"];
+            [numberOfSection removeLastObject];
+            [numberOfSection addObject:detailDic];
+        }
+          CDate=client.date;
+    }
+    searchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -65,12 +131,25 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if (isSearching) {
+        return searchArr.count;
+    }
+    return numberOfSection.count;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    NSArray *arr=[[NSArray alloc]init];
+    
+    if (isSearching) {
+        arr=[[NSArray alloc]initWithArray:[[numberOfSection objectAtIndex:section]objectForKey:@"dateDetail"]];
+        return arr.count;
+    }
+    
+    if (numberOfSection.count>0) {
+        arr=[[NSArray alloc]initWithArray:[[numberOfSection objectAtIndex:section]objectForKey:@"dateDetail"]];
+    }
+    return arr.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -81,6 +160,18 @@
     if (OPTViewTag==2) {
         cell.OPTCircleImageView.image=[UIImage imageNamed:@"green-dot.png"];
     }
+    
+    NSDictionary *dic;
+    
+    if (isSearching) {
+        dic=[[[searchArr objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];
+    }else{
+    dic=[[[numberOfSection objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];
+    }
+    
+    cell.InvoiceLab.text=[dic objectForKey:@"companyName"];
+    float rs=[[dic objectForKey:@"calculated"] floatValue];
+    cell.PriseLab.text=[NSString stringWithFormat:@"$%.2f",rs];
     
     return cell;
 }
@@ -95,9 +186,102 @@
     
     NSDateFormatter *format=[[NSDateFormatter alloc]init];
     [format setDateFormat:@"dd/MM/yyyy"];
-    
-    HeaderLab.text=[format stringFromDate:[NSDate date]];
+    if (isSearching) {
+         HeaderLab.text=[[searchArr objectAtIndex:section]objectForKey:@"date"];
+    }else{
+        HeaderLab.text=[[numberOfSection objectAtIndex:section]objectForKey:@"date"];}
     
     return HeaderLab;
 }
+
+#pragma mark - UITextField delegate methods
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField==OPTSearchTF) {
+        isSearching=YES;
+        NSLog(@"%@",textField.text);
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField==OPTSearchTF) {
+        isSearching=NO;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField==OPTSearchTF) {
+        if (isSearching==YES) {
+            NSMutableString *newString=[[NSMutableString alloc]initWithString:textField.text];
+            if ([string isEqualToString: @""])
+            {
+                
+                NSRange ran=NSMakeRange(0, newString.length-1);
+                //
+                
+                NSString *str=[newString stringByReplacingCharactersInRange:ran withString:@""];
+                
+                NSRange NewRan=[newString rangeOfString:str];
+                
+                //  NSString* s= [newString lastPathComponent];
+                
+                newString=[newString stringByReplacingCharactersInRange:NewRan withString:@""];
+                
+            }else{
+                [newString appendString:string];
+            }
+            
+            if ([newString isEqualToString:@""]) {
+                searchArr=[NSMutableArray arrayWithArray:numberOfSection];
+            }else{
+                
+                NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"date contains[c] %@", newString];
+                NSArray*  searchResults = [numberOfSection filteredArrayUsingPredicate:resultPredicate];
+                searchArr=[NSMutableArray arrayWithArray:searchResults];}
+            
+            [OPTTableView reloadData];
+            
+            
+            return isSearching;
+        }
+    }
+    
+    /*NSString *city=[[SearchTable cellForRowAtIndexPath:indexPath]textLabel].text;
+     
+     [SearchBut setTitle:city forState:UIControlStateNormal];
+     NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"city contains[c] %@", city];
+     NSArray*  searchResults = [SynogueList filteredArrayUsingPredicate:resultPredicate];
+     SearchArr=[NSMutableArray arrayWithArray:searchResults];
+     [tbl reloadData];
+     textField.text = @"\u200B";
+     */
+    
+    return NO;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField==OPTSearchTF) {
+        [OPTSearchTF resignFirstResponder];
+    }
+    return NO;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField;
+{
+    
+    searchArr=[NSMutableArray arrayWithArray:numberOfSection];
+    
+    
+    [OPTTableView reloadData];
+    
+    
+    //return isSearching;
+    
+    return YES;
+}
+
 @end

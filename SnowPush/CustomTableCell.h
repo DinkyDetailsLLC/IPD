@@ -21,4 +21,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *InvoiceLab2;
 @property (weak, nonatomic) IBOutlet UIImageView *OPTCircleImageView;
 
+@property (weak, nonatomic) IBOutlet UILabel *Weekday;
+
+@property (weak, nonatomic) IBOutlet UIImageView *wetherImage;
+
+@property (weak, nonatomic) IBOutlet UILabel *Celcias;
+@property (weak, nonatomic) IBOutlet UILabel *farenhite;
+
 @end

@@ -57,6 +57,25 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *TicketsLab;
 
+@property (weak, nonatomic) IBOutlet UIImageView *ClientDetailImageView;
+
+@property (weak, nonatomic) IBOutlet UIButton *QuickNotifyAddBtn;
+
+@property (weak, nonatomic) IBOutlet UIImageView *TIcketImageVIew;
+
+@property (weak, nonatomic) IBOutlet UIButton *MapBtn;
+
+@property (weak, nonatomic) IBOutlet UIImageView *QuickNotifyImageView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *lineImageView;
+
+@property (weak, nonatomic) IBOutlet UIImageView *priseImageView;
+
+@property (weak, nonatomic) IBOutlet UIButton *ClientEmailBtn;
+
+@property (weak, nonatomic) IBOutlet UIButton *ClientReportBtn;
+
+
 @property(nonatomic,retain) ClientInfo *SingleClientDetail;
 
 @end

@@ -9,6 +9,7 @@
 #import "ClientInfo.h"
 
 @implementation ClientInfo
-@synthesize Comp_name,ContractCost,Email,SeasonalCost,State,City,phoneNo,Image,Address,TripCost,Zip;
-@synthesize salt,shovel,plow,removal;
+@synthesize Comp_name,ContractCost,Email,SeasonalCost,State,City,phoneNo,Image,Address,TripCost,Zip,date,startTime,finishTime;
+@synthesize salt,shovel,plow,removal,hours,calculated,contract,seasonal,trip,sendInVoice,paidInFull;
+@synthesize imageAfter,imageBefore,snowFall;
 @end

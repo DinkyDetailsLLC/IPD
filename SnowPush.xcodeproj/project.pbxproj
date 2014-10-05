@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E263DA219D9908700C7A99A /* service_Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E263DA119D9908700C7A99A /* service_Checked.png */; };
 		0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFA19D4433A00E57E67 /* DataBase.m */; };
 		0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */; };
 		0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */; };
+		0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BACE19DAD282000FFE85 /* MessageUI.framework */; };
+		0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BAD019DAD2B2000FFE85 /* Social.framework */; };
 		0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1019D17285002D3E75 /* MBProgressHUD.m */; };
 		0EAA5C1319D17A73002D3E75 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EAA5C1219D17A73002D3E75 /* CoreLocation.framework */; };
-		0EAA5C1719D19643002D3E75 /* Iphone4.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1619D19643002D3E75 /* Iphone4.storyboard */; };
 		0EAA5C2219D1969C002D3E75 /* add_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1819D1969C002D3E75 /* add_title.png */; };
 		0EAA5C2319D1969C002D3E75 /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1919D1969C002D3E75 /* email.png */; };
 		0EAA5C2419D1969C002D3E75 /* green-dot.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1A19D1969C002D3E75 /* green-dot.png */; };
@@ -77,7 +79,7 @@
 		0EABB5CE19D03946001E8D1E /* circleOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CC19D03946001E8D1E /* circleOrange.png */; };
 		0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CF19D042F8001E8D1E /* circleGreen.png */; };
 		0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */; };
-		0EB8CF5D19D539E100200433 /* SnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5C19D539E100200433 /* SnowPush.sqlite */; };
+		0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */; };
 		0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */; };
 		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
 		0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */; };
@@ -95,15 +97,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E263DA119D9908700C7A99A /* service_Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = service_Checked.png; sourceTree = "<group>"; };
 		0EA7CCF919D4433A00E57E67 /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
 		0EA7CCFA19D4433A00E57E67 /* DataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
 		0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientInfo.h; sourceTree = "<group>"; };
 		0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientInfo.m; sourceTree = "<group>"; };
 		0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0EA9BACE19DAD282000FFE85 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0EA9BAD019DAD2B2000FFE85 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		0EAA5C0F19D17285002D3E75 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		0EAA5C1019D17285002D3E75 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		0EAA5C1219D17A73002D3E75 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		0EAA5C1619D19643002D3E75 /* Iphone4.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Iphone4.storyboard; sourceTree = "<group>"; };
 		0EAA5C1819D1969C002D3E75 /* add_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_title.png; sourceTree = "<group>"; };
 		0EAA5C1919D1969C002D3E75 /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
 		0EAA5C1A19D1969C002D3E75 /* green-dot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "green-dot.png"; sourceTree = "<group>"; };
@@ -181,7 +185,7 @@
 		0EABB5CF19D042F8001E8D1E /* circleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circleGreen.png; sourceTree = "<group>"; };
 		0EABB5D219D0518D001E8D1E /* ClientDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientDetailViewController.h; sourceTree = "<group>"; };
 		0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientDetailViewController.m; sourceTree = "<group>"; };
-		0EB8CF5C19D539E100200433 /* SnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = SnowPush.sqlite; sourceTree = "<group>"; };
+		0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
 		0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = LETTERGOTHICSTD.OTF; sourceTree = "<group>"; };
 		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
 		0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuickNotifyBg.png; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */,
+				0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */,
 				0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */,
 				0EAADD1D19D430FD00A9673A /* MapKit.framework in Frameworks */,
 				0EAA5C1319D17A73002D3E75 /* CoreLocation.framework in Frameworks */,
@@ -218,7 +224,7 @@
 		0EA7CCF819D4432100E57E67 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
-				0EB8CF5C19D539E100200433 /* SnowPush.sqlite */,
+				0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */,
 				0EA7CCF919D4433A00E57E67 /* DataBase.h */,
 				0EA7CCFA19D4433A00E57E67 /* DataBase.m */,
 				0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */,
@@ -294,6 +300,8 @@
 		0EABB55019CFFBA7001E8D1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EA9BAD019DAD2B2000FFE85 /* Social.framework */,
+				0EA9BACE19DAD282000FFE85 /* MessageUI.framework */,
 				0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */,
 				0EAADD1C19D430FD00A9673A /* MapKit.framework */,
 				0EAA5C1219D17A73002D3E75 /* CoreLocation.framework */,
@@ -326,7 +334,6 @@
 				0EABB56719CFFBA7001E8D1E /* ViewController.m */,
 				0EABB56919CFFBA7001E8D1E /* Images.xcassets */,
 				0EABB55819CFFBA7001E8D1E /* Supporting Files */,
-				0EAA5C1619D19643002D3E75 /* Iphone4.storyboard */,
 			);
 			path = SnowPush;
 			sourceTree = "<group>";
@@ -364,6 +371,7 @@
 		0EABB58619D00AD5001E8D1E /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E263DA119D9908700C7A99A /* service_Checked.png */,
 				0EB8CF6A19D5923E00200433 /* line.png */,
 				0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */,
 				0EAA5C3019D19DCC002D3E75 /* transparentImage.png */,
@@ -504,9 +512,10 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					0EABB54D19CFFBA7001E8D1E = {
-						DevelopmentTeam = RXRA63Q8FB;
+						DevelopmentTeam = J65LBYSK7T;
 					};
 					0EABB56E19CFFBA7001E8D1E = {
+						DevelopmentTeam = J65LBYSK7T;
 						TestTargetID = 0EABB54D19CFFBA7001E8D1E;
 					};
 				};
@@ -558,13 +567,13 @@
 				0EABB5A519D00AEC001E8D1E /* images_16.png in Resources */,
 				0EAA5C3119D19DCC002D3E75 /* transparentImage.png in Resources */,
 				0EABB5AC19D00AEC001E8D1E /* image4.png in Resources */,
+				0E263DA219D9908700C7A99A /* service_Checked.png in Resources */,
 				0EABB5A719D00AEC001E8D1E /* grrenBut.png in Resources */,
 				0EAA5C2219D1969C002D3E75 /* add_title.png in Resources */,
 				0EABB5A819D00AEC001E8D1E /* cellAcc.png in Resources */,
 				0EABB5A419D00AEC001E8D1E /* edit.png in Resources */,
 				0EABB5B619D00AEC001E8D1E /* PopUpGreen.png in Resources */,
 				0EABB5BE19D02884001E8D1E /* ChangeZip.png in Resources */,
-				0EB8CF5D19D539E100200433 /* SnowPush.sqlite in Resources */,
 				0EAA5C2919D1969C002D3E75 /* save.png in Resources */,
 				0EAA5C2A19D1969C002D3E75 /* service_Check.png in Resources */,
 				0EAA5C2719D1969C002D3E75 /* notify_add.png in Resources */,
@@ -577,7 +586,6 @@
 				0EABB5BC19D0239E001E8D1E /* SearchBar.png in Resources */,
 				0EAA5C2519D1969C002D3E75 /* grey-dot.png in Resources */,
 				0EB8CF6B19D5923E00200433 /* line.png in Resources */,
-				0EAA5C1719D19643002D3E75 /* Iphone4.storyboard in Resources */,
 				0EABB5B019D00AEC001E8D1E /* clients.png in Resources */,
 				0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */,
 				0EAA5C2319D1969C002D3E75 /* email.png in Resources */,
@@ -585,6 +593,7 @@
 				0EABB5AF19D00AEC001E8D1E /* report.png in Resources */,
 				0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */,
 				0EABB5A219D00AEC001E8D1E /* Back.png in Resources */,
+				0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,6 +783,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -787,6 +798,7 @@
 				);
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -796,6 +808,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -805,6 +819,7 @@
 				GCC_PREFIX_HEADER = "SnowPush/SnowPush-Prefix.pch";
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

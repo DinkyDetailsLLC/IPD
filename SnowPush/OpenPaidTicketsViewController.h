@@ -16,4 +16,6 @@
 
 @property int OPTViewTag;
 
+@property (nonatomic,retain)ClientInfo *OPTClientDtail;
+
 @end

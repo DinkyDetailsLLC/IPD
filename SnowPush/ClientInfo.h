@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface ClientInfo : NSObject
-@property NSString *Comp_name,*Address,*City,*State,*Zip,*phoneNo,*Email,*Image,*TripCost,*ContractCost,*SeasonalCost;
+@property NSString *Comp_name,*Address,*City,*State,*Zip,*phoneNo,*Email,*Image,*TripCost,*ContractCost,*SeasonalCost,*date,*startTime,*finishTime;
 
-@property int salt,shovel,plow,removal;
+@property int salt,shovel,plow,removal,hours,calculated,contract,seasonal,sendInVoice,paidInFull,trip;
+
+@property NSString *imageBefore,*imageAfter,*snowFall;
 @end

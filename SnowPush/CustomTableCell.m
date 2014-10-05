@@ -12,6 +12,7 @@
 @synthesize NameLab,IceImage,minusImage,CatePortImage,BoxImage;
 @synthesize CircleButton,InvoiceLab,DateLab,PriseLab,InvoiceLab2;
 @synthesize OPTCircleImageView;
+@synthesize Celcias,farenhite,Weekday,wetherImage;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

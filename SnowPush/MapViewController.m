@@ -29,6 +29,11 @@
     // Do any additional setup after loading the view.
     MyMapVIew.delegate=self;
     MyMapVIew.showsUserLocation = YES;
+    
+    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+       MyMapVIew.frame=CGRectMake(0, 51, 320, 429);
+    }
+   
 }
 
 - (void)didReceiveMemoryWarning

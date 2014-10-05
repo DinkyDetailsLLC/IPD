@@ -45,6 +45,10 @@
     [ClientImageView addGestureRecognizer:tap];
     [tap setNumberOfTapsRequired:1];
     
+    UITapGestureRecognizer *editScrollViewTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(editScrollViewTapped)];
+    [EditClientScrollView addGestureRecognizer:editScrollViewTap];
+    
+    
     if (editTag==1) {
      
         CompNameTf.text=ClientInformation.Comp_name;
@@ -59,7 +63,7 @@
         SeasonalCost.text=ClientInformation.SeasonalCost;
         
         ClientImageView.image=[self loadImage:ClientInformation.Image];
-        
+        ClientImage=[self loadImage:ClientInformation.Image];
         isimageSelected=YES;
         
         if (ClientInformation.salt==1) {
@@ -101,6 +105,33 @@
     shovelLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:20];
     plowLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:20];
     removalLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:20];
+    
+    
+    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+        EditClientScrollView.frame=CGRectMake(0, 50, 320, 430);
+        CompNameTf.frame=CGRectMake(7, 5, 307, 33);
+        AddressTf.frame=CGRectMake(7, 41, 307, 33);
+        CityTf.frame=CGRectMake(7, 77, 148, 33);
+        StateTf.frame=CGRectMake(159, 77, 70, 33);
+        ZipTf.frame=CGRectMake(234, 77, 80, 33);
+        PhoneNoTf.frame=CGRectMake(7, 113, 307, 33);
+        EmailTf.frame=CGRectMake(7, 149, 307, 33);
+        ClientImageView.frame=CGRectMake(7, 185, 307, 130);
+        imageLab.frame=CGRectMake(12, 292, 42, 21);
+        TripCost.frame=CGRectMake(7, 319, 148, 33);
+        ContaractCost.frame=CGRectMake(7, 356, 148, 33);
+        SeasonalCost.frame=CGRectMake(8, 393, 148, 33);
+        
+        saltLab.frame=CGRectMake(238, 320, 42, 20);
+        saltBtn.frame=CGRectMake(285, 320, 20, 20);
+        shovelLab.frame=CGRectMake(222, 348, 58, 20);
+        shovelBtn.frame=CGRectMake(285, 348, 20, 20);
+        plowLab.frame=CGRectMake(222, 376, 58, 20);
+        plowBtn.frame=CGRectMake(285, 376, 20, 20);
+        removalLab.frame=CGRectMake(203, 400, 77, 20);
+        removalBtn.frame=CGRectMake(285, 400, 20, 20);
+    }
+    
     // Do any additional setup after loading the view.
 }
 
@@ -147,24 +178,46 @@
             Clientdetail.removal=0;
         }
         
-        NSString *imagen=Clientdetail.Comp_name;
-        imagen=[[[[imagen stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-        NSString *filename = [imagen stringByAppendingString:@".png"]; // or .jpg
+        if (isImageChanged==YES) {
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            
+            NSString *filePath = ClientInformation.Image;
+            NSError *error;
+            BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+            if (success) {
+                
+            }
+            NSString *imagen=Clientdetail.Comp_name;
+            imagen=[[[[imagen stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
+            NSString *filename = [imagen stringByAppendingString:@".png"]; // or .jpg
+            
+            //  Get the path of the app documents directory
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            
+            //  Append the filename and get the full image path
+            NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
+            
+            //  Now convert the image to PNG/JPEG and write it to the image path
+            
+         
+            
+            NSData *imageData = UIImagePNGRepresentation(image);
+            
+            NSData *imagepat=UIImagePNGRepresentation(ClientImage);
+            
+            [imageData writeToFile:savedImagePath atomically:NO];
+            
+            //  Here you save the savedImagePath to your DB
+            
+            Clientdetail.Image=savedImagePath;
+        }else{
+            Clientdetail.Image=ClientInformation.Image;
+        }
+
         
-        //  Get the path of the app documents directory
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
         
-        //  Append the filename and get the full image path
-        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
-        
-        //  Now convert the image to PNG/JPEG and write it to the image path
-        NSData *imageData = UIImagePNGRepresentation(image);
-        [imageData writeToFile:savedImagePath atomically:NO];
-        
-        //  Here you save the savedImagePath to your DB
-        
-        Clientdetail.Image=savedImagePath;
         BOOL yes=[[DataBase getSharedInstance]updateClientDetail:Clientdetail whereCompName:ClientInformation.Comp_name];
         if (yes==YES) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"client detail updated successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
@@ -217,8 +270,13 @@
         //  Append the filename and get the full image path
         NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
         
+        NSUserDefaults *defalt= [NSUserDefaults standardUserDefaults];
+        [defalt setInteger:[image imageOrientation] forKey:@"kImageOrientaion"];
+   //
+        
         //  Now convert the image to PNG/JPEG and write it to the image path
-        NSData *imageData = UIImagePNGRepresentation(image);
+        
+        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
         [imageData writeToFile:savedImagePath atomically:NO];
         
         //  Here you save the savedImagePath to your DB
@@ -235,6 +293,8 @@
 #pragma mark - retrive Image method
 
 - (UIImage *)loadImage:(NSString *)filePath  {
+//    UIImage *image=[[UIImage alloc]initWithContentsOfFile:filePath];
+//     UIImage *convertedImage=[UIImage imageWithCIImage:image.CIImage scale:1.0 orientation:[image imageOrientation]];
     return [UIImage imageWithContentsOfFile:filePath];
 }
 
@@ -297,6 +357,7 @@
         }
         
         else{
+            
             
             [self saveImage:ClientImage WithCupInfo:nil];
             
@@ -368,6 +429,18 @@
     else if(textField==SeasonalCost){
      EditClientScrollView.frame=CGRectMake(0, -170, EditClientScrollView.frame.size.width, EditClientScrollView.frame.size.height);
     }
+    
+    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+        if (textField==TripCost) {
+            EditClientScrollView.frame=CGRectMake(0,-100, EditClientScrollView.frame.size.width, EditClientScrollView.frame.size.height);
+        }else if (textField==ContaractCost)
+        {
+            EditClientScrollView.frame=CGRectMake(0, -150, EditClientScrollView.frame.size.width, EditClientScrollView.frame.size.height);
+        }
+        else if(textField==SeasonalCost){
+            EditClientScrollView.frame=CGRectMake(0, -170, EditClientScrollView.frame.size.width, EditClientScrollView.frame.size.height);
+        }
+    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
@@ -380,6 +453,10 @@
     }
     else if(textField==SeasonalCost){
         EditClientScrollView.frame=CGRectMake(0, 48, EditClientScrollView.frame.size.width, EditClientScrollView.frame.size.height);
+    }
+    
+    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+         EditClientScrollView.frame=CGRectMake(0,50,320, 430);
     }
 }
 
@@ -523,6 +600,21 @@
 
 -(void)ImageViewTapped
 {
+    if (EmailTf) {
+        [EmailTf resignFirstResponder];
+    }
+    
+    if (TripCost) {
+        [TripCost resignFirstResponder];
+    }
+    
+    if (SeasonalCost) {
+        [SeasonalCost resignFirstResponder];
+    }
+    
+    if (ContaractCost) {
+        [ContaractCost resignFirstResponder];
+    }
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select Option" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open Gallery", @"Open Camera", nil];
     
@@ -605,20 +697,13 @@
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if (editTag==1) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         
-        NSString *filePath = ClientInformation.Image;
-        NSError *error;
-        BOOL success = [fileManager removeItemAtPath:filePath error:&error];
-        if (success) {
-            isImageChanged=YES;
-        }
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
         ClientImageView.image=image;
-        ClientImage=image;
+        ClientImage=[info objectForKey:UIImagePickerControllerOriginalImage];
         imageLab.text=@"";
         isimageSelected=YES;
+        isImageChanged=YES;
         //    imageViewForProfile.layer.borderWidth = 1.0f;
         //    imageViewForProfile.layer.borderColor = [UIColor lightGrayColor].CGColor;
         //    imageViewForProfile.layer.masksToBounds = YES;
@@ -642,5 +727,19 @@
     }
  }
 
+-(void)editScrollViewTapped
+{
+    if (TripCost) {
+        [TripCost resignFirstResponder];
+    }
+    
+    if (SeasonalCost) {
+        [SeasonalCost resignFirstResponder];
+    }
+    
+    if (ContaractCost) {
+        [ContaractCost resignFirstResponder];
+    }
+}
 
 @end

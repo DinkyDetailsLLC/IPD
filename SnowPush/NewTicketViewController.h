@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewTicketViewController : UIViewController<UITextFieldDelegate>
-- (IBAction)NewTicketBackBtnClicked:(id)sender;
+@interface NewTicketViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
+
+{
+    UIDatePicker *timePicker;
+}
+
 @property (weak, nonatomic) IBOutlet UITextField *DateTf;
 
 @property (weak, nonatomic) IBOutlet UITextField *CompNameTf;
@@ -50,16 +54,35 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *StartTime;
 
-
-- (IBAction)TripBtnClicked:(id)sender;
-- (IBAction)ContractBtnClicked:(id)sender;
-- (IBAction)SeasonalBtnClicked:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UIButton *SendVoiceBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *paidInFullBtn;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *NewTicketScrollView;
+
+@property (weak, nonatomic) IBOutlet UILabel *imageBeforeLab;
+
+@property (weak, nonatomic) IBOutlet UILabel *imageAfterLab;
+
+@property(nonatomic,retain)ClientInfo *NewTicketInfo;
+
+@property (weak, nonatomic) IBOutlet UIView *SelectTimeView;
+
+@property (weak, nonatomic) IBOutlet UILabel *SelectTimeLab;
+
+@property (weak, nonatomic) IBOutlet UIButton *SelectTimeSetBtn;
+
+- (IBAction)SelectSetBtnClicked:(id)sender;
+
+- (IBAction)NewTicketSaveBtnClicked:(id)sender;
+
 - (IBAction)sendVoiceBtnClicked:(id)sender;
+
 - (IBAction)PaidInFullBtnClicked:(id)sender;
+
+- (IBAction)NewTicketBackBtnClicked:(id)sender;
+
+- (IBAction)TripContractSeasonalBtnClicked:(id)sender;
+
 
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DataBase.h"
 #import "ClientInfo.h"
-@interface EditClientViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate>
+@interface EditClientViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *CompNameTf;
 @property (weak, nonatomic) IBOutlet UITextField *AddressTf;
 @property (weak, nonatomic) IBOutlet UITextField *CityTf;
@@ -43,9 +43,13 @@
 
 
 - (IBAction)EditClientSaveBtnClicked:(id)sender;
+
 - (IBAction)EditClientBackbtnClicked:(id)sender;
+
 - (IBAction)SaltSelected:(id)sender;
+
 - (IBAction)shovelSelected:(id)sender;
+
 - (IBAction)plowSelected:(id)sender;
 
 - (IBAction)removalSelected:(id)sender;

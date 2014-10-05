@@ -16,12 +16,22 @@
 
 +(DataBase*)getSharedInstance;
 
-#pragma Favorit List Methods
+#pragma mark - New client
 
 - (BOOL) SaveClientDetail:(ClientInfo*)client;
 
 -(NSMutableArray*)receiveAllData;
 
 -(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName;
+
+#pragma mark - new ticket
+
+-(BOOL)SaveNewTicket:(ClientInfo*)ticket;
+
+-(NSMutableArray*)receiveAllDataFromNewTicket;
+
+-(NSMutableArray*)reciveAllOpenAndPaidTickets:(ClientInfo*)client;
+
+-(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTickets:(ClientInfo*)Client;
 
 @end
