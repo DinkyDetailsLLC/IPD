@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "ImageEditor.h"
 @interface NewTicketViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {
@@ -84,5 +84,5 @@
 
 - (IBAction)TripContractSeasonalBtnClicked:(id)sender;
 
-
+@property(nonatomic,strong) ImageEditor *imageEditor;
 @end

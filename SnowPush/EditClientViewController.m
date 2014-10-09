@@ -28,6 +28,7 @@
 @synthesize ClientInformation;
 @synthesize saltBtn,shovelBtn,plowBtn,removalBtn;
 @synthesize saltLab,shovelLab,plowLab,removalLab;
+@synthesize imageEditor;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -40,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.imageEditor = [[DemoImageEditor alloc]init];
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(ImageViewTapped)];
     [ClientImageView addGestureRecognizer:tap];
     [tap setNumberOfTapsRequired:1];
@@ -220,7 +221,8 @@
         
         BOOL yes=[[DataBase getSharedInstance]updateClientDetail:Clientdetail whereCompName:ClientInformation.Comp_name];
         if (yes==YES) {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"client detail updated successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"client detail updated successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            alert.tag=2;
             [alert show];
         }     
 
@@ -284,7 +286,8 @@
        Clientdetail.Image=savedImagePath;
         BOOL yes=[[DataBase getSharedInstance]SaveClientDetail:Clientdetail];
         if (yes==YES) {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Save client detail" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Save client detail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            alert.tag=1;
             [alert show];
         }     
     }
@@ -616,6 +619,31 @@
         [ContaractCost resignFirstResponder];
     }
     
+    if(CompNameTf){
+        [CompNameTf resignFirstResponder];
+        
+    }
+    
+    if(AddressTf){
+        [AddressTf resignFirstResponder];
+    }
+    
+    if(StateTf){
+        [StateTf resignFirstResponder];
+    }
+    
+    if(CityTf){
+        [CityTf resignFirstResponder];
+    }
+    
+    if(ZipTf){
+        [ZipTf resignFirstResponder];
+    }
+    
+    if(PhoneNoTf){
+        [PhoneNoTf resignFirstResponder];
+    }
+    
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select Option" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open Gallery", @"Open Camera", nil];
     
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault; [actionSheet showInView:self.view];
@@ -709,7 +737,20 @@
         //    imageViewForProfile.layer.masksToBounds = YES;
         [self dismissViewControllerAnimated:YES completion:^{
         }];
-        
+        self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
+            if(!canceled) {
+                self.ClientImageView.image=editedImage;
+                ClientImage=editedImage;
+                
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        };
+        self.imageEditor.sourceImage = image;
+        self.imageEditor.previewImage = image;
+        [self.imageEditor reset:NO];
+        [self.navigationController pushViewController:self.imageEditor animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
 
     }else{
     
@@ -723,7 +764,20 @@
 //    imageViewForProfile.layer.masksToBounds = YES;
     [self dismissViewControllerAnimated:YES completion:^{
     }];
-    
+        self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
+            if(!canceled) {
+                self.ClientImageView.image=editedImage;
+                ClientImage=editedImage;
+                
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+
+        };
+        self.imageEditor.sourceImage = image;
+        self.imageEditor.previewImage = image;
+        [self.imageEditor reset:NO];
+        [self.navigationController pushViewController:self.imageEditor animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
     }
  }
 
@@ -739,6 +793,15 @@
     
     if (ContaractCost) {
         [ContaractCost resignFirstResponder];
+    }
+}
+
+#pragma mark - alert view delegates
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[alertView buttonTitleAtIndex:buttonIndex]isEqualToString:@"OK"]) {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

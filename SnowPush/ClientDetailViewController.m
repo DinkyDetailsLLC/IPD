@@ -73,9 +73,17 @@ UINavigationControllerDelegate
         NewNotifyArr=[[NSUserDefaults standardUserDefaults]objectForKey:@"NotifyArr"];
     }
     
+    NSArray *totalArr=[[DataBase getSharedInstance]RecieveTotalCompanysAllTickets:SingleClientDetail];
+    int total=0;
+    if (totalArr.count>0) {
+        for (int i=0; i<totalArr.count; i++) {
+            ClientInfo *client=[totalArr objectAtIndex:i];
+            total=total+client.calculated;
+        }
+    }
     
-    
-    
+    PriseLab.text=[NSString stringWithFormat:@"$%.2f",(float)total];
+//PriseLab.font=[UIFont fontWithName:@"LETTERGOTHICSTD" size:35];
     ClientReportView.hidden=YES;
     NotifyView.hidden=YES;
     NotifyTableView.delegate=self;

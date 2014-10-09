@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h";
-@interface ViewController : UIViewController<NSURLConnectionDelegate,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface ViewController : UIViewController<NSURLConnectionDelegate,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
   MBProgressHUD *hud;
+    CLGeocoder *geocoder;
+    CLPlacemark *placemark;
 }
 @property(nonatomic,strong)CLLocationManager *manager;
 

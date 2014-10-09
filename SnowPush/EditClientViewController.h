@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "DataBase.h"
 #import "ClientInfo.h"
-@interface EditClientViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
+#import "DemoImageEditor.h"
+@interface EditClientViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *CompNameTf;
 @property (weak, nonatomic) IBOutlet UITextField *AddressTf;
 @property (weak, nonatomic) IBOutlet UITextField *CityTf;
@@ -57,4 +58,5 @@
 @property int editTag;
 
 @property(nonatomic,retain) ClientInfo *ClientInformation;
+@property(nonatomic,strong) DemoImageEditor *imageEditor;
 @end

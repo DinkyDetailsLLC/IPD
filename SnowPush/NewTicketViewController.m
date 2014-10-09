@@ -46,6 +46,8 @@ UINavigationControllerDelegate
 {
     [super viewDidLoad];
     
+     self.imageEditor = [[ImageEditor alloc]init];
+    
     isImageBeforeSelected=NO;
     isImageAfterSelected=NO;
     
@@ -501,11 +503,42 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         BeforeImg=image;
         imageBeforeLab.text=@"";
         isImageBeforeSelected=YES;
+        
+        self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
+            if(!canceled) {
+                self.ImageBefore.image=editedImage;
+                BeforeImg=editedImage;
+                
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        };
+        self.imageEditor.sourceImage = image;
+        self.imageEditor.previewImage = image;
+        [self.imageEditor reset:NO];
+        [self.navigationController pushViewController:self.imageEditor animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        
     }else{
         ImageAfter.image=image;
         AfterImg=image;
         imageAfterLab.text=@"";
         isImageAfterSelected=YES;
+        
+        self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
+            if(!canceled) {
+                self.ImageAfter.image=editedImage;
+                AfterImg=editedImage;
+                
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        };
+        self.imageEditor.sourceImage = image;
+        self.imageEditor.previewImage = image;
+        [self.imageEditor reset:NO];
+        [self.navigationController pushViewController:self.imageEditor animated:YES];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
     }
     
 //    ClientImageView.image=image;
@@ -686,6 +719,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 	}
     
 	[self dismissViewControllerAnimated:YES completion:NULL];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - alertView delegate method
@@ -697,6 +731,8 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         if ([title isEqualToString:@"OK"]) {
             if (SendVoiceBtn.selected) {
                 [self displayMailComposerSheet];
+            }else{
+            [self.navigationController popViewControllerAnimated:YES];
             }
         }
     }

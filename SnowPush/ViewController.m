@@ -54,11 +54,16 @@
     self.manager.desiredAccuracy=kCLLocationAccuracyBest;
     [self.manager startUpdatingLocation];
     
+    NSDateFormatter *formater=[[NSDateFormatter alloc]init];
+    [formater setDateFormat:@"MM/dd/yyyy"];
+    
+    TodaysDateLab.text=[NSString stringWithFormat:@"Today's Date - %@",[formater stringFromDate:[NSDate date]]];
+    TodaysDateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
     ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
-    
+    ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
     if ([AppDelegate sharedInstance].DeviceHieght==480) {
         
         ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
@@ -135,7 +140,11 @@
 
 -(IBAction)ChangeZip:(id)sender
 {
-
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Enter zip" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+    alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [alert textFieldAtIndex:0].delegate=self;
+    [alert textFieldAtIndex:0].keyboardType=UIKeyboardTypeNumberPad;
+    [alert show];
 }
 
 #pragma mark - connection delegate methods
@@ -143,7 +152,7 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *location = [locations lastObject];
-    
+    // CLLocation *currentLocation = newLocation;
     if (location != nil) {
         
         self.Latitude = [NSString stringWithFormat:@"%f", location.coordinate.latitude];
@@ -151,15 +160,31 @@
         
         }
     [manager stopUpdatingLocation];
-    [self CallWetherApi];
+    
+    NSLog(@"Resolving the Address");
+  
+   [self CallWetherApi];
     //  [manager performSelector:@selector(startUpdatingLocation) withObject:nil afterDelay:60*30];
     NSLog(@"lat & long %@ & %@",self.Latitude,self.Longitude);
 }
 
 
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error;
+{
+   
+    if(error ){
+   //  NSLog(@"%@",error);
+        [hud hide:YES];
+    }
+}
+
 -(void)CallWetherApi
 {
-    NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/a988d453ebe759ad/hourly/conditions/forecast10day/q/%@,%@.json",self.Latitude,self.Longitude];
+   NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/%@,%@.json",self.Latitude,self.Longitude];
+    
+    // NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/452001.json"];
+    
     NSURL *url          = [NSURL URLWithString:UrlString];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -217,7 +242,7 @@
             if ([[[[forecastArr objectAtIndex:i]objectForKey:@"date"]objectForKey:@"day"]integerValue]!=day) {
                 [dic setObject:[[forecastArr objectAtIndex:i] objectForKey:@"conditions"] forKey:@"conditions"];
                 [dic setObject:[[[forecastArr objectAtIndex:i]objectForKey:@"date" ] objectForKey:@"weekday"] forKey:@"day"];
-                [dic setObject:[[[forecastArr objectAtIndex:i]objectForKey:@"high" ] objectForKey:@"celsius"] forKey:@"celsius"];
+                [dic setObject:[[[forecastArr objectAtIndex:i]objectForKey:@"low" ] objectForKey:@"fahrenheit"] forKey:@"celsius"];
                 [dic setObject:[[[forecastArr objectAtIndex:i] objectForKey:@"high"] objectForKey:@"fahrenheit"] forKey:@"fahrenheit"];
                 [dic setObject:[[forecastArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                 [dic setObject:[[forecastArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
@@ -228,14 +253,26 @@
         
         for (int i=0; i<HArr.count; i++) {
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-            if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
+//            if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
+//                [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+//                [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+//                [HourlyOfToday addObject:dic];
+//            }
+            
+            if (i<25) {
                 [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                 [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
                 [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
                 [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                 [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                 [HourlyOfToday addObject:dic];
+            }else{
+                break;
             }
+            
         }
         [self HourlyTempretureToday];
         [WetherTableView reloadData];
@@ -299,6 +336,46 @@
     [hud hide:YES];
     self.HourlyScrollView.contentSize=CGSizeMake(HourlyOfToday.count*(15+30), HourlyScrollView.frame.size.height);
     
+}
+
+#pragma mark - alert view delegates method
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[alertView buttonTitleAtIndex:buttonIndex]isEqualToString:@"OK"]) {
+        NSLog(@"text %@",[alertView textFieldAtIndex:0].text);
+        [self CallWetherApiWithNewZip:[alertView textFieldAtIndex:0].text];
+    }
+}
+
+#pragma mark - text field delegates methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField;
+{
+    return NO;
+}
+
+#pragma mark - wether api zip 
+
+-(void)CallWetherApiWithNewZip:(NSString*)zipCode
+{
+    NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/%@.json",zipCode];
+    
+    // NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/452001.json"];
+    
+    NSURL *url          = [NSURL URLWithString:UrlString];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    Connection = [NSURLConnection connectionWithRequest:request delegate:self];
+    [hud show:YES];
+    
+    if(Connection)
+    {
+        WebData = [[NSMutableData alloc]init];
+    }
+
 }
 
 @end

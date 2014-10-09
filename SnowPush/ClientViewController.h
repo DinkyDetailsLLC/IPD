@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClientViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface ClientViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIAlertViewDelegate>
 
 {
     NSArray *AllClientArr;

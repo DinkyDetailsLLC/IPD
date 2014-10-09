@@ -213,6 +213,41 @@ static sqlite3_stmt *statement = nil;
     return isSuccess;
 }
 
+-(BOOL)deleteClientFromClientsList:(ClientInfo*)Client
+{
+    //[self findDBPath];
+    BOOL isSuccess=NO;
+    //   [self findDBPath];
+    // NSLog(@"%@",databasepath);
+    
+    const char *dbpath=[databasepath UTF8String];
+    
+    // NSLog(@"DBPATH:%s",dbpath);
+    
+    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+    {
+        NSString *deleteSQL = [NSString stringWithFormat:@"delete from ClientDetail where Comp_Name=\"%@\" and email=\"%@\"",Client.Comp_name,Client.Email];
+        
+        // NSLog(@"%@",deleteSQL);
+        const char *delete_stmt = [deleteSQL UTF8String];
+        sqlite3_prepare_v2(database, delete_stmt,-1, &statement, NULL);
+        //NSLog(@"%d",sqlite3_step(statement));
+        if (sqlite3_step(statement) == SQLITE_DONE)
+        {
+            sqlite3_close(database);
+            isSuccess=YES;
+        }
+        else {
+            sqlite3_close(database);
+            
+            isSuccess=NO;
+        }
+        sqlite3_reset(statement);
+    }
+    sqlite3_close(database);
+    return isSuccess;
+}
+
 
 #pragma mark - newTicket table methods
 
@@ -408,5 +443,41 @@ static sqlite3_stmt *statement = nil;
     return record;
 
 }
+
+-(NSMutableArray*)RecieveTotalCompanysAllTickets:(ClientInfo*)Client
+{
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket where comp_name=\"%@\" and email=\"%@\"",Client.Comp_name,Client.Email];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                CInfo.calculated=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)]intValue];
+             
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
+}
+
 
 @end

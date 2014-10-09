@@ -79,6 +79,14 @@
 		0EABB5CE19D03946001E8D1E /* circleOrange.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CC19D03946001E8D1E /* circleOrange.png */; };
 		0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EABB5CF19D042F8001E8D1E /* circleGreen.png */; };
 		0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */; };
+		0EAC1E4219E50D6000C4068D /* DemoImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4019E50D6000C4068D /* DemoImageEditor.m */; };
+		0EAC1E4319E50D6000C4068D /* DemoImageEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4119E50D6000C4068D /* DemoImageEditor.xib */; };
+		0EAC1E4919E50E9A00C4068D /* HFImageEditorFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4619E50E9A00C4068D /* HFImageEditorFrameView.m */; };
+		0EAC1E4A19E50E9A00C4068D /* HFImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4719E50E9A00C4068D /* HFImageEditorViewController.m */; };
+		0EAC1E5419E51F0C00C4068D /* ImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4D19E51F0C00C4068D /* ImageEditor.m */; };
+		0EAC1E5519E51F0C00C4068D /* ImageEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4E19E51F0C00C4068D /* ImageEditor.xib */; };
+		0EAC1E5619E51F0C00C4068D /* ImageEditorFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E5019E51F0C00C4068D /* ImageEditorFrameView.m */; };
+		0EAC1E5719E51F0C00C4068D /* ImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E5219E51F0C00C4068D /* ImageEditorViewController.m */; };
 		0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */; };
 		0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */; };
 		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
@@ -185,6 +193,22 @@
 		0EABB5CF19D042F8001E8D1E /* circleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circleGreen.png; sourceTree = "<group>"; };
 		0EABB5D219D0518D001E8D1E /* ClientDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientDetailViewController.h; sourceTree = "<group>"; };
 		0EABB5D319D0518D001E8D1E /* ClientDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientDetailViewController.m; sourceTree = "<group>"; };
+		0EAC1E3F19E50D6000C4068D /* DemoImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoImageEditor.h; sourceTree = "<group>"; };
+		0EAC1E4019E50D6000C4068D /* DemoImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoImageEditor.m; sourceTree = "<group>"; };
+		0EAC1E4119E50D6000C4068D /* DemoImageEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DemoImageEditor.xib; sourceTree = "<group>"; };
+		0EAC1E4419E50E9A00C4068D /* HFImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFImageEditorViewController.h; sourceTree = "<group>"; };
+		0EAC1E4519E50E9A00C4068D /* HFImageEditorFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HFImageEditorFrameView.h; sourceTree = "<group>"; };
+		0EAC1E4619E50E9A00C4068D /* HFImageEditorFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HFImageEditorFrameView.m; sourceTree = "<group>"; };
+		0EAC1E4719E50E9A00C4068D /* HFImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HFImageEditorViewController.m; sourceTree = "<group>"; };
+		0EAC1E4819E50E9A00C4068D /* HFImageEditorViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HFImageEditorViewController+Private.h"; sourceTree = "<group>"; };
+		0EAC1E4C19E51F0C00C4068D /* ImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEditor.h; sourceTree = "<group>"; };
+		0EAC1E4D19E51F0C00C4068D /* ImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEditor.m; sourceTree = "<group>"; };
+		0EAC1E4E19E51F0C00C4068D /* ImageEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageEditor.xib; sourceTree = "<group>"; };
+		0EAC1E4F19E51F0C00C4068D /* ImageEditorFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEditorFrameView.h; sourceTree = "<group>"; };
+		0EAC1E5019E51F0C00C4068D /* ImageEditorFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEditorFrameView.m; sourceTree = "<group>"; };
+		0EAC1E5119E51F0C00C4068D /* ImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEditorViewController.h; sourceTree = "<group>"; };
+		0EAC1E5219E51F0C00C4068D /* ImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEditorViewController.m; sourceTree = "<group>"; };
+		0EAC1E5319E51F0C00C4068D /* ImageEditorViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageEditorViewController+Private.h"; sourceTree = "<group>"; };
 		0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
 		0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = LETTERGOTHICSTD.OTF; sourceTree = "<group>"; };
 		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
@@ -316,6 +340,8 @@
 		0EABB55719CFFBA7001E8D1E /* SnowPush */ = {
 			isa = PBXGroup;
 			children = (
+				0EAC1E4B19E51CE000C4068D /* ImageCropping */,
+				0EAC1E3E19E50B1400C4068D /* imageCroppingClasses */,
 				0EB8CF5E19D5645600200433 /* fonts */,
 				0EA7CCF819D4432100E57E67 /* DataBase */,
 				0EAADD1819D42FD800A9673A /* MapView */,
@@ -455,6 +481,36 @@
 			name = ClientDetailPage;
 			sourceTree = "<group>";
 		};
+		0EAC1E3E19E50B1400C4068D /* imageCroppingClasses */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC1E4419E50E9A00C4068D /* HFImageEditorViewController.h */,
+				0EAC1E4519E50E9A00C4068D /* HFImageEditorFrameView.h */,
+				0EAC1E4619E50E9A00C4068D /* HFImageEditorFrameView.m */,
+				0EAC1E4719E50E9A00C4068D /* HFImageEditorViewController.m */,
+				0EAC1E4819E50E9A00C4068D /* HFImageEditorViewController+Private.h */,
+				0EAC1E3F19E50D6000C4068D /* DemoImageEditor.h */,
+				0EAC1E4019E50D6000C4068D /* DemoImageEditor.m */,
+				0EAC1E4119E50D6000C4068D /* DemoImageEditor.xib */,
+			);
+			name = imageCroppingClasses;
+			sourceTree = "<group>";
+		};
+		0EAC1E4B19E51CE000C4068D /* ImageCropping */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC1E4C19E51F0C00C4068D /* ImageEditor.h */,
+				0EAC1E4D19E51F0C00C4068D /* ImageEditor.m */,
+				0EAC1E4E19E51F0C00C4068D /* ImageEditor.xib */,
+				0EAC1E4F19E51F0C00C4068D /* ImageEditorFrameView.h */,
+				0EAC1E5019E51F0C00C4068D /* ImageEditorFrameView.m */,
+				0EAC1E5119E51F0C00C4068D /* ImageEditorViewController.h */,
+				0EAC1E5219E51F0C00C4068D /* ImageEditorViewController.m */,
+				0EAC1E5319E51F0C00C4068D /* ImageEditorViewController+Private.h */,
+			);
+			name = ImageCropping;
+			sourceTree = "<group>";
+		};
 		0EB8CF5E19D5645600200433 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -544,6 +600,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EAC1E4319E50D6000C4068D /* DemoImageEditor.xib in Resources */,
 				0EABB5AD19D00AEC001E8D1E /* timer.png in Resources */,
 				0EAA5C2B19D1969C002D3E75 /* zip.png in Resources */,
 				0EABB56A19CFFBA7001E8D1E /* Images.xcassets in Resources */,
@@ -565,6 +622,7 @@
 				0EABB5B719D00AEC001E8D1E /* newTicket.png in Resources */,
 				0EABB5B819D00AEC001E8D1E /* OpenSt.png in Resources */,
 				0EABB5A519D00AEC001E8D1E /* images_16.png in Resources */,
+				0EAC1E5519E51F0C00C4068D /* ImageEditor.xib in Resources */,
 				0EAA5C3119D19DCC002D3E75 /* transparentImage.png in Resources */,
 				0EABB5AC19D00AEC001E8D1E /* image4.png in Resources */,
 				0E263DA219D9908700C7A99A /* service_Checked.png in Resources */,
@@ -613,18 +671,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */,
+				0EAC1E4919E50E9A00C4068D /* HFImageEditorFrameView.m in Sources */,
+				0EAC1E5419E51F0C00C4068D /* ImageEditor.m in Sources */,
 				0EAADD1719D4191800A9673A /* OpenPaidTicketsViewController.m in Sources */,
 				0EAA5C3919D1A1D4002D3E75 /* NewTicketViewController.m in Sources */,
 				0EAADD1B19D42FF000A9673A /* MapViewController.m in Sources */,
+				0EAC1E5619E51F0C00C4068D /* ImageEditorFrameView.m in Sources */,
 				0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */,
 				0EABB5CA19D03509001E8D1E /* TicketViewController.m in Sources */,
 				0EABB5C619D02C74001E8D1E /* CustomTableCell.m in Sources */,
 				0EABB56819CFFBA7001E8D1E /* ViewController.m in Sources */,
+				0EAC1E5719E51F0C00C4068D /* ImageEditorViewController.m in Sources */,
 				0EABB56219CFFBA7001E8D1E /* AppDelegate.m in Sources */,
 				0EABB55E19CFFBA7001E8D1E /* main.m in Sources */,
 				0EABB5C219D02AD8001E8D1E /* ClientViewController.m in Sources */,
+				0EAC1E4A19E50E9A00C4068D /* HFImageEditorViewController.m in Sources */,
 				0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */,
 				0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */,
+				0EAC1E4219E50D6000C4068D /* DemoImageEditor.m in Sources */,
 				0EAA5C3519D1A19C002D3E75 /* EditClientViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

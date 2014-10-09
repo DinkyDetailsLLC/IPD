@@ -24,6 +24,8 @@
 
 -(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName;
 
+-(BOOL)deleteClientFromClientsList:(ClientInfo*)Client;
+
 #pragma mark - new ticket
 
 -(BOOL)SaveNewTicket:(ClientInfo*)ticket;
@@ -33,5 +35,7 @@
 -(NSMutableArray*)reciveAllOpenAndPaidTickets:(ClientInfo*)client;
 
 -(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTickets:(ClientInfo*)Client;
+
+-(NSMutableArray*)RecieveTotalCompanysAllTickets:(ClientInfo*)Client;
 
 @end

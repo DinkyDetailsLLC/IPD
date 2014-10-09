@@ -142,8 +142,9 @@
     
    // ClientInfo *Client=[AllClientArr objectAtIndex:indexPath.row];
     
-    
-    
+    UISwipeGestureRecognizer *leftSwip=[[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(HandleGesture:)];
+    [cell addGestureRecognizer:leftSwip];
+    cell.tag=indexPath.row;
     NSDictionary *Client=[AllClientList objectAtIndex:indexPath.row];
     
     if (isSearching==YES) {
@@ -368,6 +369,84 @@
     //return isSearching;
 
     return YES;
+}
+
+-(void)HandleGesture:(UISwipeGestureRecognizer*)tap
+{
+
+    if (tap.direction==UISwipeGestureRecognizerDirectionRight) {
+        
+        
+       // NSLog(@"right gesture");
+       
+        CustomTableCell *cell=(CustomTableCell*)tap.view;
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Are you sure you want to delete" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+        [alert show];
+        alert.tag=cell.tag;
+        
+    }
+    
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"OK"]) {
+        NSDictionary *dic=[SearchArr objectAtIndex:alertView.tag];
+        ClientInfo *Client=[[ClientInfo alloc]init];
+        Client.Comp_name=[dic objectForKey:@"CompName"];
+        Client.Address =[dic objectForKey:@"address"];
+        Client.City=[dic objectForKey:@"city"];
+        Client.State=[dic objectForKey:@"state"];
+        Client.Zip= [dic objectForKey:@"zip"];
+        Client.phoneNo =[dic objectForKey:@"phone"];
+        Client.Email =[dic objectForKey:@"email"];
+        Client.Image= [dic objectForKey:@"image"];
+        Client.TripCost =[dic objectForKey:@"tripCost"];
+        Client.ContractCost=[dic objectForKey:@"contractCost"];
+        Client.SeasonalCost=[dic objectForKey:@"seasonalCost"];
+        Client.salt=[[dic objectForKey:@"salt"]intValue ];
+        Client.shovel= [[dic objectForKey:@"shovel"] intValue];
+        Client.plow= [[dic objectForKey:@"plow"] intValue];
+        Client.removal= [[dic objectForKey:@"removal"] intValue];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        NSString *filePath = Client.Image;
+        NSError *error;
+        BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+        if (success) {
+            
+        }
+        BOOL del=[[DataBase getSharedInstance]deleteClientFromClientsList:Client];
+        if(del==YES){
+            
+            AllClientArr=[[DataBase getSharedInstance]receiveAllData];
+            AllClientList=[[NSMutableArray alloc]init];
+            for (int i=0; i<AllClientArr.count; i++) {
+                ClientInfo *Client=[AllClientArr objectAtIndex:i];
+                NSMutableDictionary *Dic=[[NSMutableDictionary alloc]init];
+                [Dic setObject:Client.Comp_name forKey:@"CompName"];
+                [Dic setObject:Client.Address forKey:@"address"];
+                [Dic setObject:Client.City forKey:@"city"];
+                [Dic setObject:Client.State forKey:@"state"];
+                [Dic setObject:Client.Zip forKey:@"zip"];
+                [Dic setObject:Client.phoneNo forKey:@"phone"];
+                [Dic setObject:Client.Email forKey:@"email"];
+                [Dic setObject:Client.Image forKey:@"image"];
+                [Dic setObject:Client.TripCost forKey:@"tripCost"];
+                [Dic setObject:Client.ContractCost forKey:@"contractCost"];
+                [Dic setObject:Client.SeasonalCost forKey:@"seasonalCost"];
+                [Dic setObject:[NSString stringWithFormat:@"%d",Client.salt] forKey:@"salt"];
+                [Dic setObject:[NSString stringWithFormat:@"%d",Client.shovel] forKey:@"shovel"];
+                [Dic setObject:[NSString stringWithFormat:@"%d",Client.plow] forKey:@"plow"];
+                [Dic setObject:[NSString stringWithFormat:@"%d",Client.removal] forKey:@"removal"];
+                [AllClientList addObject:Dic];
+            }
+            SearchArr=AllClientList;
+            [AllClientTableView reloadData];
+        }
+
+    }
 }
 
 @end
