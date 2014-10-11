@@ -12,9 +12,14 @@
 {
     NSURLConnection *Connection;
     NSMutableData *WebData;
+    
+    NSURLConnection *connection2;
+    NSMutableData *Webdata2;
+    
     NSMutableArray *ForeCastDay;
     NSMutableArray *HourlyOfToday;
     NSString *super0;
+    int WTag;
 }
 @end
 
@@ -25,7 +30,7 @@
 @synthesize WetherTableView;
 @synthesize ReportLab,ViewAllTicketBtn,ViewOpenTicketBtn,ViewPaidTicketBtn;
 @synthesize ChangeZipBtn,ClientBtn,reportBtn,ReportImageView;
-@synthesize HourlyScrollView;
+//@synthesize HourlyScrollView;
 @synthesize lineLab1,lineLab2;
 - (void)viewDidLoad
 {
@@ -38,14 +43,15 @@
     
        
   //  NSData *weatherData = [NSData dataWithContentsOfURL:url];
-
+    WTag=0;
     [super viewDidLoad];
     
    super0 = @"\u2070";
 
     hud=[[MBProgressHUD alloc]init];
     [self.view addSubview:hud];
-    [hud show:YES];
+ 
+   
     
     ReportView.hidden=YES;
     self.manager=[[CLLocationManager alloc]init];
@@ -140,7 +146,7 @@
 
 -(IBAction)ChangeZip:(id)sender
 {
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Enter zip" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please give me your current zip code so I can load the most recent data for you" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
     [alert textFieldAtIndex:0].delegate=self;
     [alert textFieldAtIndex:0].keyboardType=UIKeyboardTypeNumberPad;
@@ -173,14 +179,15 @@
        didFailWithError:(NSError *)error;
 {
    
-    if(error ){
-   //  NSLog(@"%@",error);
+       //  NSLog(@"%@",error);
         [hud hide:YES];
-    }
+   
 }
 
 -(void)CallWetherApi
 {
+     [hud show:YES];
+    [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"Zip"];
    NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/%@,%@.json",self.Latitude,self.Longitude];
     
     // NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/452001.json"];
@@ -206,10 +213,16 @@
     if (connection==Connection) {
         [WebData setLength:0];
     }
+    if (connection==connection2) {
+        [Webdata2 setLength:0];
+    }
 }
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     if (connection==Connection) {
         [WebData appendData:data];
+    }
+    if (connection==connection2) {
+        [Webdata2 appendData:data];
     }
 }
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -230,7 +243,17 @@
         // NSString *ste=[NSJSONSerialization JSONObjectWithData:webData options:kNilOptions error:&err];
         NSDictionary *arr=[NSJSONSerialization JSONObjectWithData:WebData options:kNilOptions error:&err];
         //  NSDictionary *json=[NSJSONSerialization JSONObjectWithData:webData options:kNilOptions error:&err];
-        NSLog(@"arr  %@ ",arr);
+      //  NSLog(@"arr  %@ ",arr);
+        NSDateFormatter *formater=[[NSDateFormatter alloc]init];
+        [formater setDateFormat:@"HH:mm"];
+        NSString *CurrentTime=[formater stringFromDate:[NSDate date]];
+        NSString *checkTime=@"22:00";
+        NSString *ChackTime2=@"23:00";
+        
+        NSComparisonResult result=[CurrentTime compare:checkTime options:NSCaseInsensitiveSearch];
+        
+        NSComparisonResult result2=[CurrentTime compare:ChackTime2 options:NSCaseInsensitiveSearch];
+        
         NSArray *forecastArr=[[[arr objectForKey:@"forecast"]objectForKey:@"simpleforecast"]objectForKey:@"forecastday"];
       ForeCastDay=[[NSMutableArray alloc]init];
         HourlyOfToday=[[NSMutableArray alloc]init];
@@ -253,30 +276,68 @@
         
         for (int i=0; i<HArr.count; i++) {
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-//            if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
-//                [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
-//                [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
-//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
-//                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
-//                [HourlyOfToday addObject:dic];
-//            }
-            
-            if (i<25) {
-                [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
-                [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
-                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
-                [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
-                [HourlyOfToday addObject:dic];
-            }else{
-                break;
+           
+    
+            if (result==NSOrderedAscending) {
+                if (i<25) {
+                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                    [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                    [HourlyOfToday addObject:dic];
+                }else{
+                    break;
+                }
+            }else if (result==NSOrderedSame || (result==NSOrderedDescending && result2==NSOrderedAscending)){
+                
+                if (![[NSUserDefaults standardUserDefaults]objectForKey:@"Zip"]) {
+                    if (i<10) {
+                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                        [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                        [HourlyOfToday addObject:dic];
+                    }else{
+                        break;
+                    }
+                }else{
+                NSString *str=[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"];
+                    
+                    if (i<25) {
+                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                        [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                        [HourlyOfToday addObject:dic];
+                    }else{
+                        break;
+                    }
+                }
+                
+            }else if (result2==NSOrderedSame || result2==NSOrderedDescending){
+                if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]!=day) {
+                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                    [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                    [HourlyOfToday addObject:dic];
+                }
             }
             
         }
         [self HourlyTempretureToday];
         [WetherTableView reloadData];
     }
+    
+    if (connection==connection2) {
+         NSArray *arr=[NSJSONSerialization JSONObjectWithData:Webdata2 options:kNilOptions error:nil];
+    }
+    
+    
 }
 
 #pragma  mark - UITableView dataSource
@@ -310,40 +371,47 @@
 -(void)HourlyTempretureToday
 {
 
+    [HourlyScrollView removeFromSuperview];
+    HourlyScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(11, 91, 298, 76)];
+    HourlyScrollView.showsVerticalScrollIndicator=YES;
+    HourlyScrollView.scrollEnabled=YES;
+    HourlyScrollView.userInteractionEnabled=YES;
+    [self.view addSubview:HourlyScrollView];
     for (int i=0; i<HourlyOfToday.count; i++) {
         
         NSDictionary *dic=[HourlyOfToday objectAtIndex:i];
         
         UILabel *timeLab=[[UILabel alloc]initWithFrame:CGRectMake((15+30)*i, 0, 33, 20)];
         timeLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:10];
-        timeLab.textColor=[UIColor whiteColor];
+       // timeLab.textColor=[UIColor whiteColor];
         timeLab.text=[dic objectForKey:@"time"];
-        [self.HourlyScrollView addSubview:timeLab];
+        [HourlyScrollView addSubview:timeLab];
         
          UIImageView *IconImage=[[UIImageView alloc]initWithFrame:CGRectMake((15+30)*i, 22, 30, 30)];
         IconImage.image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[dic objectForKey:@"icon_url"]]]];
-        [self.HourlyScrollView addSubview:IconImage];
+        [HourlyScrollView addSubview:IconImage];
         
         UILabel *tempLab=[[UILabel alloc]initWithFrame:CGRectMake((15+30)*i, 55, 30, 20)];
        tempLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
-        tempLab.textColor=[UIColor whiteColor];
+      //  tempLab.textColor=[UIColor whiteColor];
         NSString *time=[[dic objectForKey:@"humidity"]stringByReplacingOccurrencesOfString:@" " withString:@""];
         tempLab.text=[NSString stringWithFormat:@"%@%@",[dic objectForKey:@"humidity"],super0];
         tempLab.textAlignment=NSTextAlignmentCenter;
-        [self.HourlyScrollView addSubview:tempLab];
+        [HourlyScrollView addSubview:tempLab];
         
     }
     [hud hide:YES];
-    self.HourlyScrollView.contentSize=CGSizeMake(HourlyOfToday.count*(15+30), HourlyScrollView.frame.size.height);
+    HourlyScrollView.contentSize=CGSizeMake(HourlyOfToday.count*(15+30), HourlyScrollView.frame.size.height);
     
-}
+    }
 
 #pragma mark - alert view delegates method
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if ([[alertView buttonTitleAtIndex:buttonIndex]isEqualToString:@"OK"]) {
-        NSLog(@"text %@",[alertView textFieldAtIndex:0].text);
+          WTag=2;
+                 NSLog(@"text %@",[alertView textFieldAtIndex:0].text);
         [self CallWetherApiWithNewZip:[alertView textFieldAtIndex:0].text];
     }
 }
@@ -359,6 +427,7 @@
 
 -(void)CallWetherApiWithNewZip:(NSString*)zipCode
 {
+    [[NSUserDefaults standardUserDefaults]setObject:@"Zip" forKey:@"Zip"];
     NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/%@.json",zipCode];
     
     // NSString *UrlString=[NSString stringWithFormat:@"http://api.wunderground.com/api/131d40d9ea437c31/hourly/conditions/forecast10day/q/452001.json"];

@@ -20,7 +20,10 @@ UINavigationControllerDelegate
     UIImage *AfterImg;
     int pickerTag;
     BOOL isImageBeforeSelected;
+    BOOL isImageBeforeChanged;
     BOOL isImageAfterSelected;
+    BOOL isImageAfterChanged;
+    NSMutableArray *ImageArr;
 }
 @end
 
@@ -33,6 +36,7 @@ UINavigationControllerDelegate
 @synthesize NewTicketScrollView,imageAfterLab,imageBeforeLab;
 @synthesize NewTicketInfo;
 @synthesize SelectTimeLab,SelectTimeSetBtn,SelectTimeView;
+@synthesize EditTicketTag,EditTicketInfo;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,10 +51,11 @@ UINavigationControllerDelegate
     [super viewDidLoad];
     
      self.imageEditor = [[ImageEditor alloc]init];
-    
+    ImageArr=[[NSMutableArray alloc]init];
     isImageBeforeSelected=NO;
     isImageAfterSelected=NO;
-    
+    isImageAfterChanged=NO;
+    isImageBeforeChanged=NO;
     DateTf.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
     StartTime.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
     FinshTimeTf.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
@@ -76,11 +81,70 @@ UINavigationControllerDelegate
     NSDateFormatter *dateFormate=[[NSDateFormatter alloc]init];
     [dateFormate setDateFormat:@"dd/MM/yyyy"];
     
+    
+    if (EditTicketTag==1) {
+        
+      //  NSLog(@"Dic %@",EditTicketInfo);
+        imageBeforeLab.text=@"";
+        imageAfterLab.text=@"";
+
+        isImageBeforeSelected=YES;
+        isImageAfterSelected=YES;
+        DateTf.text=[EditTicketInfo objectForKey:@"date"];
+        CompNameTf.text=[NSString stringWithFormat:@"    %@",[EditTicketInfo objectForKey:@"companyName"]];
+        PhoneNumTf.text=[EditTicketInfo objectForKey:@"phoneNumber"];
+        EmailTf.text=[EditTicketInfo objectForKey:@"email"];
+        CalculatedTf.text=[EditTicketInfo objectForKey:@"calculated"];
+        if ([[EditTicketInfo objectForKey:@"trip"] intValue]==1) {
+            [tripBtn setImage:[UIImage imageNamed:@"green-dot.png"] forState:UIControlStateNormal];
+            [ContractBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            [SeasonalBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            tripBtn.selected=YES;
+            ContractBtn.selected=NO;
+            SeasonalBtn.selected=NO;
+            
+        }else if ([[EditTicketInfo objectForKey:@"contract"] intValue]==1){
+            [tripBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            [ContractBtn setImage:[UIImage imageNamed:@"green-dot.png"] forState:UIControlStateNormal];
+            [SeasonalBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            tripBtn.selected=NO;
+            ContractBtn.selected=YES;
+            SeasonalBtn.selected=NO;
+            
+        }else if([[EditTicketInfo objectForKey:@"seasonal"] intValue]==1){
+            [tripBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            [ContractBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
+            [SeasonalBtn setImage:[UIImage imageNamed:@"green-dot.png"] forState:UIControlStateNormal];
+            
+            tripBtn.selected=NO;
+            ContractBtn.selected=NO;
+            SeasonalBtn.selected=YES;
+        }
+        
+        FinshTimeTf.text=[EditTicketInfo objectForKey:@"finishTime"];
+        HoursTf.text=[EditTicketInfo objectForKey:@"hours"];
+        StartTime.text=[EditTicketInfo objectForKey:@"startTime"];
+        SnowFallTf.text=[EditTicketInfo objectForKey:@"snowFall"];
+        ImageAfter.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageAfter"]];
+        ImageBefore.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageBefore"]];
+        
+        if ([[EditTicketInfo objectForKey:@"paidInFull"] intValue]==1) {
+            [paidInFullBtn setImage:[UIImage imageNamed:@"service_Checked.png"] forState:UIControlStateNormal];
+            paidInFullBtn.selected=YES;
+        }
+        
+        if ([[EditTicketInfo objectForKey:@"sendInVoice"] intValue]==1) {
+            [SendVoiceBtn setImage:[UIImage imageNamed:@"service_Checked.png"] forState:UIControlStateNormal];
+            SendVoiceBtn.selected=YES;
+        }
+
+    }else{
+    
     DateTf.text=[dateFormate stringFromDate:[NSDate date]];
     CompNameTf.text=[NSString stringWithFormat:@"    %@",NewTicketInfo.Comp_name];
     PhoneNumTf.text=NewTicketInfo.phoneNo;
     EmailTf.text=NewTicketInfo.Email;
-    
+    }
     if ([AppDelegate sharedInstance].DeviceHieght==480) {
         NewTicketScrollView.frame=CGRectMake(0, 50, 320, 430);
         CompNameTf.frame=CGRectMake(7, 39, 307, 33);
@@ -285,11 +349,18 @@ UINavigationControllerDelegate
     
         ClientInfo *addNewTicket=[[ClientInfo alloc]init];
         NSString *Comp=[NSString stringWithFormat:@"    %@",NewTicketInfo.Comp_name];
+        if (EditTicketTag==1) {
+            Comp=[NSString stringWithFormat:@"    %@",[EditTicketInfo objectForKey:@"companyName"]];
+        }
         if ([CompNameTf.text isEqualToString:Comp]) {
             checkName=YES;
         }
         if (checkName==YES) {
+        
             addNewTicket.Comp_name=NewTicketInfo.Comp_name;
+            if (EditTicketTag==1) {
+                addNewTicket.Comp_name=[EditTicketInfo objectForKey:@"companyName"];
+            }
         }else{
             addNewTicket.Comp_name=CompNameTf.text;
         }
@@ -333,6 +404,91 @@ UINavigationControllerDelegate
             addNewTicket.seasonal=0;
         }
         
+        if (EditTicketTag==1) {
+            if (isImageBeforeChanged==YES) {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                
+                NSString *filePath =[EditTicketInfo objectForKey:@"imageBefore"];
+                NSError *error;
+                BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+                if (success) {
+                    
+                }
+                NSString *imageB=CompNameTf.text;
+                imageB=[[[[imageB stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
+                NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.png"]; // or .jpg
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsDirectory = [paths objectAtIndex:0];
+                NSString *savedImageBeforePath = [documentsDirectory stringByAppendingPathComponent:filenameBefore];
+                NSData *imageData = UIImageJPEGRepresentation(BeforeImg, 1.0);
+                [imageData writeToFile:savedImageBeforePath atomically:NO];
+                addNewTicket.imageBefore=savedImageBeforePath;
+                
+                NSMutableDictionary *BeforeDic=[[NSMutableDictionary alloc]init];
+                [BeforeDic setObject:savedImageBeforePath forKey:@"imagePath"];
+                [BeforeDic setObject:@"Image Before" forKey:@"imageName"];
+                [ImageArr addObject:BeforeDic];
+                
+            }else{
+            addNewTicket.imageBefore=[EditTicketInfo objectForKey:@"imageBefore"];
+                NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
+                [AfterDic setObject:[EditTicketInfo objectForKey:@"imageBefore"] forKey:@"imagePath"];
+                [AfterDic setObject:@"Image After" forKey:@"imageName"];
+                
+                [ImageArr addObject:AfterDic];
+            }
+           
+            
+            if (isImageAfterChanged==YES) {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                
+                NSString *filePath =[EditTicketInfo objectForKey:@"imageAfter"];
+                NSError *error;
+                BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+                if (success) {
+                    
+                }
+                
+                NSString *imageA=CompNameTf.text;
+                imageA=[[[[imageA stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
+                NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.png"]; // or .jpg
+                NSArray *pathsA = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *documentsDirectoryA = [pathsA objectAtIndex:0];
+                NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:filenameAfter];
+                NSData *imageDataA = UIImageJPEGRepresentation(AfterImg, 1.0);
+                [imageDataA writeToFile:savedImageAfterPath atomically:NO];
+                addNewTicket.imageAfter=savedImageAfterPath;
+                
+                NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
+                [AfterDic setObject:savedImageAfterPath forKey:@"imagePath"];
+                [AfterDic setObject:@"Image After" forKey:@"imageName"];
+                
+                [ImageArr addObject:AfterDic];
+            }else{
+             addNewTicket.imageAfter=[EditTicketInfo objectForKey:@"imageAfter"];
+                NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
+                [AfterDic setObject:[EditTicketInfo objectForKey:@"imageAfter"] forKey:@"imagePath"];
+                [AfterDic setObject:@"Image After" forKey:@"imageName"];
+                
+                [ImageArr addObject:AfterDic];
+            }
+            
+        
+            
+            
+            BOOL yes=[[DataBase getSharedInstance]updateTicketDetail:addNewTicket whereCompName:[EditTicketInfo objectForKey:@"companyName"] andPaid:[[EditTicketInfo objectForKey:@"paidInFull"] intValue] andStartTime:[EditTicketInfo objectForKey:@"startTime"] andEndTime:[EditTicketInfo objectForKey:@"finishTime"]];
+            if (yes==YES) {
+                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Ticket Updated successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                alert.tag=1;
+                alert.delegate=self;
+                [alert show];
+                
+            }
+        }else{
+        
+       
         NSString *imageB=CompNameTf.text;
         imageB=[[[[imageB stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
         NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.png"]; // or .jpg
@@ -342,16 +498,30 @@ UINavigationControllerDelegate
         NSData *imageData = UIImageJPEGRepresentation(BeforeImg, 1.0);
         [imageData writeToFile:savedImageBeforePath atomically:NO];
         addNewTicket.imageBefore=savedImageBeforePath;
-    
+        
+        NSMutableDictionary *BeforeDic=[[NSMutableDictionary alloc]init];
+        [BeforeDic setObject:savedImageBeforePath forKey:@"imagePath"];
+        [BeforeDic setObject:@"Image Before" forKey:@"imageName"];
+        [ImageArr addObject:BeforeDic];
+       
+        
         NSString *imageA=CompNameTf.text;
         imageA=[[[[imageA stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
         NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.png"]; // or .jpg
         NSArray *pathsA = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectoryA = [pathsA objectAtIndex:0];
         NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:filenameAfter];
-        NSData *imageDataA = UIImageJPEGRepresentation(BeforeImg, 1.0);
-        [imageDataA writeToFile:savedImageBeforePath atomically:NO];
+        NSData *imageDataA = UIImageJPEGRepresentation(AfterImg, 1.0);
+        [imageDataA writeToFile:savedImageAfterPath atomically:NO];
         addNewTicket.imageAfter=savedImageAfterPath;
+        
+        NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
+        [AfterDic setObject:savedImageAfterPath forKey:@"imagePath"];
+        [AfterDic setObject:@"Image After" forKey:@"imageName"];
+        
+        [ImageArr addObject:AfterDic];
+        
+        
         
         BOOL yes=[[DataBase getSharedInstance]SaveNewTicket:addNewTicket];
         if (yes==YES) {
@@ -360,8 +530,7 @@ UINavigationControllerDelegate
             alert.delegate=self;
             [alert show];
             
-        }
-    
+        }}
     
     }
 }
@@ -482,7 +651,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
    
     UIView *v=sender.view;
-    NSLog(@" %d ",v.tag);
+    NSLog(@" %ld ",(long)v.tag);
     pickerTag=v.tag;
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select Option" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Open Gallery", @"Open Camera", nil];
         actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
@@ -496,6 +665,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
     if (pickerTag==1) {
@@ -503,15 +673,15 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         BeforeImg=image;
         imageBeforeLab.text=@"";
         isImageBeforeSelected=YES;
-        
+        if (EditTicketTag==1) {
+            isImageBeforeChanged=YES;
+        }
         self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
             if(!canceled) {
                 self.ImageBefore.image=editedImage;
                 BeforeImg=editedImage;
-                
             }
             [self.navigationController popViewControllerAnimated:YES];
-            
         };
         self.imageEditor.sourceImage = image;
         self.imageEditor.previewImage = image;
@@ -524,7 +694,9 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         AfterImg=image;
         imageAfterLab.text=@"";
         isImageAfterSelected=YES;
-        
+        if (EditTicketTag==1) {
+            isImageAfterChanged=YES;
+        }
         self.imageEditor.doneCallback = ^(UIImage *editedImage, BOOL canceled){
             if(!canceled) {
                 self.ImageAfter.image=editedImage;
@@ -541,13 +713,6 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         [self.navigationController setNavigationBarHidden:YES animated:NO];
     }
     
-//    ClientImageView.image=image;
-//    ClientImage=image;
-//    imageLab.text=@"";
-//    isimageSelected=YES;
-    //    imageViewForProfile.layer.borderWidth = 1.0f;
-    //    imageViewForProfile.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    //    imageViewForProfile.layer.masksToBounds = YES;
     [self dismissViewControllerAnimated:YES completion:^{
     }];
 }
@@ -630,7 +795,9 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     [picker setSubject:@"Hello !"];
     
     // Set up recipients
-    NSArray *toRecipients = [NSArray arrayWithObject:NewTicketInfo.Email];
+    
+    
+    NSArray *toRecipients = [NSArray arrayWithObject:EmailTf.text];
     // NSArray *ccRecipients = [NSArray arrayWithObjects:@"second@example.com", @"third@example.com", nil];
     // NSArray *bccRecipients = [NSArray arrayWithObject:@"fourth@example.com"];
     
@@ -640,19 +807,87 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
     // Attach an image to the email
     //    NSString *path = [[NSBundle mainBundle] pathForResource:@"rainy" ofType:@"jpg"];
-    //    NSData *myData = [NSData dataWithContentsOfFile:path];
-    //    [picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"rainy"];
     
+    
+//    
+//        NSData *myData = [NSData dataWithContentsOfFile:imageBeforePath];
+//        [picker addAttachmentData:myData mimeType:@"image/png" fileName:@"image before"];
+//    
+//    NSData *newData=[NSData dataWithContentsOfFile:ImageAfterPath];
+//    [picker addAttachmentData:newData mimeType:@"image/png" fileName:@"image after"];
     // Fill out the email body text
     
-    //NSIndexPath *index=[NotifyTableView indexPathForSelectedRow];
+    for (int i = 0; i < ImageArr.count; i++)
+    {
+       
+        NSDictionary *dic=[ImageArr objectAtIndex:i];
+        
+        UIImage *image = [UIImage imageWithContentsOfFile:[dic objectForKey:@"imagePath"] ];
+        NSData*   imageData = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
+                          
+    [picker addAttachmentData:imageData mimeType:@"image/png" fileName:[dic objectForKey:@"imageName"]];
+    }
     
+    NSString *paid;
+    if (paidInFullBtn.selected==YES) {
+        paid=@"Yes";
+    }else{
+    paid=@"No";
+    }
     
-    NSString *emailBody =@"snow push invoice";
-    [picker setMessageBody:emailBody isHTML:NO];
+     NSMutableString *emailBody = [[NSMutableString alloc] initWithString:@"<html><body>"] ;
+    [emailBody appendString:@"<p>********************************************************************************************************************************************************************************\nThank you for your Business... Attached are the following details of your last service trip brought to you by SnowPush.\n********************************************************************************************************************************************************************************</p>\n\n"];
+   [emailBody appendString:[NSString stringWithFormat:@"<p>Date:%@</p>\n\n",DateTf.text]];
+//    
+    [emailBody appendString:[NSString stringWithFormat:@"<p><h1><font face=\"MYRIADPRO-COND\">Name:%@</font></h1><p>\n\n",CompNameTf.text]];
+    [emailBody appendString:[NSString stringWithFormat:@"<br>Start Time:%@</br>",StartTime.text]];
+    [emailBody appendString:[NSString stringWithFormat:@"End Time:%@",FinshTimeTf.text]];
+    [emailBody appendString:[NSString stringWithFormat:@"<br>Snowfall:%@</br>",SnowFallTf.text]];
+    [emailBody appendString:[NSString stringWithFormat:@"Hours Worked:%@",HoursTf.text]];
+    [emailBody appendString:@"<br></br><br></br>"];
+   // [emailBody appendString:@""];
+    [emailBody appendString:[NSString stringWithFormat:@"<p>______________________________________________________<h1><font face=\"MYRIADPRO-COND\">Total Billed:$%@</font></h1></p>",CalculatedTf.text]];
+    [emailBody appendString:[NSString stringWithFormat:@"Paid:%@",paid]];
+    [emailBody appendString:@"</body></html>"];
+    [picker setMessageBody:emailBody isHTML:YES];
+    
     
     [self presentViewController:picker animated:YES completion:NULL];
+    
 }
+
+
+/*- (void)createEmail {
+    //Create a string with HTML formatting for the email body
+    NSMutableString *emailBody = [[[NSMutableString alloc] initWithString:@"<html><body>"] retain];
+    //Add some text to it however you want
+    [emailBody appendString:@"<p>Some email body text can go here</p>"];
+    //Pick an image to insert
+    //This example would come from the main bundle, but your source can be elsewhere
+    UIImage *emailImage = [UIImage imageNamed:@"myImageName.png"];
+    //Convert the image into data
+    NSData *imageData = [NSData dataWithData:UIImagePNGRepresentation(emailImage)];
+    //Create a base64 string representation of the data using NSData+Base64
+    NSString *base64String = [imageData base64EncodedString];
+    //Add the encoded string to the emailBody string
+    //Don't forget the "<b>" tags are required, the "<p>" tags are optional
+    [emailBody appendString:[NSString stringWithFormat:@"<p><b><img src='data:image/png;base64,%@'></b></p>",base64String]];
+    //You could repeat here with more text or images, otherwise
+    //close the HTML formatting
+    [emailBody appendString:@"</body></html>"];
+    NSLog(@"%@",emailBody);
+    
+    //Create the mail composer window
+    MFMailComposeViewController *emailDialog = [[MFMailComposeViewController alloc] init];
+    emailDialog.mailComposeDelegate = self;
+    [emailDialog setSubject:@"My Inline Image Document"];
+    [emailDialog setMessageBody:emailBody isHTML:YES];
+    
+    [self presentModalViewController:emailDialog animated:YES];
+    [emailDialog release];
+    [emailBody release];
+}*/
+
 /*
  - (void)displaySMSComposerSheet
  {

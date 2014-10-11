@@ -38,4 +38,6 @@
 
 -(NSMutableArray*)RecieveTotalCompanysAllTickets:(ClientInfo*)Client;
 
+-(BOOL)updateTicketDetail:(ClientInfo*)ticket whereCompName:(NSString*)CompName andPaid:(int)paid andStartTime:(NSString*)start andEndTime:(NSString*)end;
+
 @end

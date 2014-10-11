@@ -77,7 +77,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="1" sectionFooterHeight="1" id="Y3S-jf-4lw">
                                 <rect key="frame" x="6" y="168" width="307" height="160"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="wether" rowHeight="32" id="bGy-cx-ZxO" customClass="CustomTableCell">
@@ -91,7 +91,6 @@
                                                     <rect key="frame" x="10" y="4" width="103" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="D2b-DY-oRX">
@@ -102,7 +101,6 @@
                                                     <rect key="frame" x="241" y="4" width="27" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u35-vL-27a">
@@ -145,12 +143,8 @@
                             <view contentMode="scaleToFill" id="UEf-7y-YCL">
                                 <rect key="frame" x="6" y="91" width="307" height="76"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="lFI-jJ-YjQ">
-                                <rect key="frame" x="11" y="91" width="298" height="76"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </scrollView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aay-cN-dcJ">
                                 <rect key="frame" x="6" y="90" width="307" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -177,7 +171,7 @@
                                         <rect key="frame" x="10" y="139" width="300" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="View Opent Ticket(s)" backgroundImage="blankWhite.png">
+                                        <state key="normal" title="View Open Ticket(s)" backgroundImage="blankWhite.png">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -226,7 +220,6 @@
                         <outlet property="ChangeZipBtn" destination="XcR-R9-x93" id="Ciw-cX-g7a"/>
                         <outlet property="ClientBtn" destination="4a2-KF-DYF" id="ehY-fh-82S"/>
                         <outlet property="ForeCastLab" destination="VES-WE-5P1" id="PFw-gj-yab"/>
-                        <outlet property="HourlyScrollView" destination="lFI-jJ-YjQ" id="Xei-Dd-64m"/>
                         <outlet property="ReportImageView" destination="21X-8s-QNa" id="lUv-mw-beF"/>
                         <outlet property="ReportLab" destination="S6z-bP-1AD" id="Y8f-vF-odW"/>
                         <outlet property="ReportView" destination="10Z-jf-nTk" id="8p5-XD-enJ"/>
@@ -1023,7 +1016,7 @@
                                         <rect key="frame" x="10" y="136" width="300" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <state key="normal" title="Opent Ticket(s)" backgroundImage="blankWhite.png">
+                                        <state key="normal" title="Open Ticket(s)" backgroundImage="blankWhite.png">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -1255,6 +1248,7 @@
                     <connections>
                         <outlet property="OPTSearchTF" destination="KzS-Nx-pwN" id="YIq-7J-l76"/>
                         <outlet property="OPTTableView" destination="n6Y-yA-T2r" id="euN-OT-Exe"/>
+                        <segue destination="jDp-y0-tRp" kind="push" identifier="EditTicket" id="EeE-bg-ee4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SB1-nG-af9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1710,5 +1704,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="zfj-M3-yOy"/>
+        <segue reference="EeE-bg-ee4"/>
     </inferredMetricsTieBreakers>
 </document>

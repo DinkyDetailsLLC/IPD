@@ -479,5 +479,81 @@ static sqlite3_stmt *statement = nil;
     
 }
 
+-(BOOL)updateTicketDetail:(ClientInfo*)ticket whereCompName:(NSString*)CompName andPaid:(int)paid andStartTime:(NSString*)start andEndTime:(NSString*)end
+{
+    BOOL isSuccess;
+    
+    const char *dbpath = [databasepath UTF8String];
+    
+    // NSLog(@"DBPATH:%s",dbpath);
+    
+    // BOOL isSuccess=NO;
+    
+    // NSLog(@"updateing contact");
+    
+    //sqlite3_stmt *statement;
+    
+    //const char*dbpath=[databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &database) == SQLITE_OK)
+        
+    {
+        
+        /* CREATE TABLE "NewTicket" ("date" TEXT, "comp_name" TEXT, "start_time" TEXT, "finish_time" TEXT, "phone_num" TEXT, "email" TEXT, "image_before" TEXT, "image_after" TEXT, "snow_fall" TEXT, "hours" TEXT, "calculated" TEXT, "trip" INTEGER, "contract" INTEGER, "seasonal" INTEGER, "send_invoice" INTEGER, "paid_in_full" INTEGER)*/
+        
+        
+        NSString *querySQL = [NSString stringWithFormat:@"update NewTicket set date=\"%@\",comp_name=\"%@\",start_time=\"%@\",finish_time=\"%@\",phone_num=\"%@\",email=\"%@\",image_before=\"%@\",image_after=\"%@\",snow_fall=\"%@\",hours=%d,calculated=%d,trip=%d,contract=%d,seasonal=%d,send_invoice=%d,paid_in_full=%d where Comp_Name=\"%@\" and paid_in_full=%d and start_time=\"%@\" and finish_time=\"%@\"",ticket.date,ticket.Comp_name,ticket.startTime,ticket.finishTime,ticket.phoneNo,ticket.Email,ticket.imageBefore,ticket.imageAfter,ticket.snowFall,ticket.hours,ticket.calculated,ticket.trip,ticket.contract,ticket.seasonal,ticket.sendInVoice,ticket.paidInFull,CompName,paid,start,end];
+        
+        //NSLog(@"%@",querySQL);
+        
+        const char *update_stmt = [querySQL UTF8String];
+        
+        // NSLog(@" error msg.%s",sqlite3_errmsg(database));
+        
+        // NSLog(@"%i",sqlite3_prepare_v2(database, update_stmt, -1, &statement, NULL));
+        
+        if(sqlite3_prepare_v2(database, update_stmt, -1, &statement, NULL)==SQLITE_OK)
+            
+        {
+            
+            //                        NSLog(@"---> %d",sqlite3_step(statement));
+            
+            //            //sqlite3_bind_text(statement,1,update_stmt,-1,SQLITE_TRANSIENT);
+            
+            //            NSLog(@"%i",sqlite3_step(statement));
+            
+            if (sqlite3_step(statement) == SQLITE_DONE)
+                
+            {
+                
+                isSuccess=YES;
+                
+                //  NSLog(@"Updated");
+                
+                
+                
+            }
+            
+            else
+                
+            {
+                
+                isSuccess=NO;
+                
+                //  NSLog(@"File to update");
+                
+            }
+            
+            sqlite3_finalize(statement);
+            
+        }
+        
+        sqlite3_close(database);
+        
+    }
+    
+    return isSuccess;
+}
+
 
 @end

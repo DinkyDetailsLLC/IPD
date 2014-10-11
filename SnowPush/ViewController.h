@@ -13,13 +13,14 @@
   MBProgressHUD *hud;
     CLGeocoder *geocoder;
     CLPlacemark *placemark;
+    UIScrollView *HourlyScrollView;
 }
 @property(nonatomic,strong)CLLocationManager *manager;
 
 @property (nonatomic,strong)NSString* Latitude;
 @property(nonatomic,strong)NSString* Longitude;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *HourlyScrollView;
+//@property (weak, nonatomic) IBOutlet UIScrollView *HourlyScrollView;
 
 @property (weak, nonatomic) IBOutlet UILabel *ForeCastLab;
 

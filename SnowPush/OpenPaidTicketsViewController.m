@@ -7,7 +7,7 @@
 //
 
 #import "OpenPaidTicketsViewController.h"
-
+#import "NewTicketViewController.h"
 @interface OpenPaidTicketsViewController ()
 {
     UILabel *HeaderLab;
@@ -106,16 +106,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)OpTBackBtnClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:NO];
@@ -177,6 +168,11 @@
 }
 
 #pragma mark - UITableView Delegates method
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"EditTicket" sender:self];
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 {
@@ -283,5 +279,20 @@
     
     return YES;
 }
+
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+     if ([segue.destinationViewController isKindOfClass:[NewTicketViewController class]]) {
+         //  [(MoreViewController*).SegueId]
+         NSIndexPath *index=[OPTTableView indexPathForSelectedRow];
+         NSDictionary* dic=[[[searchArr objectAtIndex:index.section]objectForKey:@"dateDetail"]objectAtIndex:index.row];
+         NewTicketViewController *newTicket=(NewTicketViewController*)[segue destinationViewController];
+         newTicket.EditTicketInfo=dic;
+         newTicket.EditTicketTag=1;
+     }
+ }
 
 @end

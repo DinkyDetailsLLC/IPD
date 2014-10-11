@@ -214,6 +214,7 @@
 		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
 		0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuickNotifyBg.png; sourceTree = "<group>"; };
 		0EB8CF6A19D5923E00200433 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
+		0EBC5BD919E7A88D00B9361F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -324,6 +325,7 @@
 		0EABB55019CFFBA7001E8D1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EBC5BD919E7A88D00B9361F /* QuartzCore.framework */,
 				0EA9BAD019DAD2B2000FFE85 /* Social.framework */,
 				0EA9BACE19DAD282000FFE85 /* MessageUI.framework */,
 				0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */,
@@ -568,10 +570,9 @@
 				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					0EABB54D19CFFBA7001E8D1E = {
-						DevelopmentTeam = J65LBYSK7T;
+						DevelopmentTeam = RXRA63Q8FB;
 					};
 					0EABB56E19CFFBA7001E8D1E = {
-						DevelopmentTeam = J65LBYSK7T;
 						TestTargetID = 0EABB54D19CFFBA7001E8D1E;
 					};
 				};
@@ -847,8 +848,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -862,7 +861,6 @@
 				);
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -872,8 +870,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -883,7 +879,6 @@
 				GCC_PREFIX_HEADER = "SnowPush/SnowPush-Prefix.pch";
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
