@@ -282,7 +282,7 @@
                 if (i<25) {
                     [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                     [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                     [HourlyOfToday addObject:dic];
@@ -295,7 +295,7 @@
                     if (i<10) {
                         [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                         [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                       [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                         [HourlyOfToday addObject:dic];
@@ -308,7 +308,7 @@
                     if (i<25) {
                         [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                         [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                         [HourlyOfToday addObject:dic];
@@ -321,7 +321,7 @@
                 if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]!=day) {
                     [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                     [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"humidity"] forKey:@"humidity"];
+                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                     [HourlyOfToday addObject:dic];
@@ -395,7 +395,7 @@
        tempLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
       //  tempLab.textColor=[UIColor whiteColor];
         NSString *time=[[dic objectForKey:@"humidity"]stringByReplacingOccurrencesOfString:@" " withString:@""];
-        tempLab.text=[NSString stringWithFormat:@"%@%@",[dic objectForKey:@"humidity"],super0];
+        tempLab.text=[NSString stringWithFormat:@"%@%@",[dic objectForKey:@"tempF"],super0];
         tempLab.textAlignment=NSTextAlignmentCenter;
         [HourlyScrollView addSubview:tempLab];
         
