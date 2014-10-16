@@ -16,6 +16,8 @@ UINavigationControllerDelegate
 {
     NSString *STime;;
     NSString *FTime;
+    NSDate *StartdateTime;
+    NSDate *EndDateTime;
     UIImage *BeforeImg;
     UIImage *AfterImg;
     int pickerTag;
@@ -24,6 +26,7 @@ UINavigationControllerDelegate
     BOOL isImageAfterSelected;
     BOOL isImageAfterChanged;
     NSMutableArray *ImageArr;
+    NSDateFormatter *dateF;
 }
 @end
 
@@ -50,6 +53,10 @@ UINavigationControllerDelegate
 {
     [super viewDidLoad];
     
+    dateF=[[NSDateFormatter alloc]init];
+    [dateF setDateFormat:@"MM.dd.yyyy HH:mm"];
+     [[NSUserDefaults standardUserDefaults]setObject:@"not paid" forKey:@"Paid"];
+    [self requestAccessToEvents];
      self.imageEditor = [[ImageEditor alloc]init];
     ImageArr=[[NSMutableArray alloc]init];
     isImageBeforeSelected=NO;
@@ -79,22 +86,39 @@ UINavigationControllerDelegate
     
     
     NSDateFormatter *dateFormate=[[NSDateFormatter alloc]init];
-    [dateFormate setDateFormat:@"dd/MM/yyyy"];
+    [dateFormate setDateFormat:@"MM/dd/yyyy"];
     
     
     if (EditTicketTag==1) {
         
       //  NSLog(@"Dic %@",EditTicketInfo);
+        
+        NSArray *arr=[[DataBase getSharedInstance]receiveSpecificClientfromClientsList:[EditTicketInfo objectForKey:@"companyName"]];
+        if (arr.count>0) {
+            NewTicketInfo=[arr objectAtIndex:0];
+        }
         imageBeforeLab.text=@"";
         imageAfterLab.text=@"";
 
         isImageBeforeSelected=YES;
         isImageAfterSelected=YES;
         DateTf.text=[EditTicketInfo objectForKey:@"date"];
-        CompNameTf.text=[NSString stringWithFormat:@"    %@",[EditTicketInfo objectForKey:@"companyName"]];
+        CompNameTf.text=[EditTicketInfo objectForKey:@"companyName"];
         PhoneNumTf.text=[EditTicketInfo objectForKey:@"phoneNumber"];
         EmailTf.text=[EditTicketInfo objectForKey:@"email"];
-        CalculatedTf.text=[EditTicketInfo objectForKey:@"calculated"];
+        if([[EditTicketInfo objectForKey:@"calculated"] intValue]>0){
+             CalculatedTf.text=[EditTicketInfo objectForKey:@"calculated"];
+          
+        }else{
+         CalculatedTf.text=@"";
+        }
+        
+        if ([[EditTicketInfo objectForKey:@"hours"] intValue]>0) {
+             HoursTf.text=[EditTicketInfo objectForKey:@"hours"];
+        }else{
+        HoursTf.text=@"";
+        }
+       
         if ([[EditTicketInfo objectForKey:@"trip"] intValue]==1) {
             [tripBtn setImage:[UIImage imageNamed:@"green-dot.png"] forState:UIControlStateNormal];
             [ContractBtn setImage:[UIImage imageNamed:@"grey-dot.png"] forState:UIControlStateNormal];
@@ -122,15 +146,21 @@ UINavigationControllerDelegate
         }
         
         FinshTimeTf.text=[EditTicketInfo objectForKey:@"finishTime"];
-        HoursTf.text=[EditTicketInfo objectForKey:@"hours"];
+       
         StartTime.text=[EditTicketInfo objectForKey:@"startTime"];
         SnowFallTf.text=[EditTicketInfo objectForKey:@"snowFall"];
         ImageAfter.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageAfter"]];
+        if ([UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageAfter"]]==nil) {
+            isImageAfterSelected=NO;
+            ImageAfter.image=[UIImage imageNamed:@"transparentImage.png"];
+            imageAfterLab.text=@"Image after";
+        }
         ImageBefore.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageBefore"]];
         
         if ([[EditTicketInfo objectForKey:@"paidInFull"] intValue]==1) {
             [paidInFullBtn setImage:[UIImage imageNamed:@"service_Checked.png"] forState:UIControlStateNormal];
             paidInFullBtn.selected=YES;
+              [[NSUserDefaults standardUserDefaults]setObject:@"paid" forKey:@"Paid"];
         }
         
         if ([[EditTicketInfo objectForKey:@"sendInVoice"] intValue]==1) {
@@ -141,7 +171,7 @@ UINavigationControllerDelegate
     }else{
     
     DateTf.text=[dateFormate stringFromDate:[NSDate date]];
-    CompNameTf.text=[NSString stringWithFormat:@"    %@",NewTicketInfo.Comp_name];
+        CompNameTf.text=NewTicketInfo.Comp_name;
     PhoneNumTf.text=NewTicketInfo.phoneNo;
     EmailTf.text=NewTicketInfo.Email;
     }
@@ -183,6 +213,8 @@ UINavigationControllerDelegate
     UITapGestureRecognizer *imageAfterTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(ImageViewTapped:)];
     [ImageAfter addGestureRecognizer:imageAfterTap];
     
+    
+    
     // Do any additional setup after loading the view.
 }
 
@@ -208,9 +240,11 @@ UINavigationControllerDelegate
     if (timeTag==1) {
         timePicker.tag=1;
           STime = [outputFormatter stringFromDate:timePicker.date];
+        StartdateTime=timePicker.date;
     }else{
         timePicker.tag=2;
           FTime = [outputFormatter stringFromDate:timePicker.date];
+        EndDateTime=timePicker.date;
     }
     
     //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -232,9 +266,11 @@ UINavigationControllerDelegate
     if (timePicker.tag==1) {
       
         STime = [outputFormatter stringFromDate:timePicker.date];
+        StartdateTime=timePicker.date;
     }else{
       
         FTime = [outputFormatter stringFromDate:timePicker.date];
+        EndDateTime=timePicker.date;
     }
 
 }
@@ -304,6 +340,9 @@ UINavigationControllerDelegate
 }
 
 - (IBAction)NewTicketSaveBtnClicked:(id)sender {
+    
+    [self createCalendar];
+    
     BOOL checkName=NO;
     if (![self CheckLength:DateTf.text]) {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter current date" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -317,9 +356,6 @@ UINavigationControllerDelegate
     }else if (![self CheckLength:StartTime.text]){
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter start time" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-    }else if (![self CheckLength:FinshTimeTf.text]){
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter finish time" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
     }else if (![self CheckLength:PhoneNumTf.text]){
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter phone number" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
@@ -330,40 +366,35 @@ UINavigationControllerDelegate
     {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter email" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
-    }else if (![self CheckLength:SnowFallTf.text]){
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter snowfalls" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }else if (![self CheckLength:HoursTf.text]){
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter hours" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }else if (![self CheckLength:CalculatedTf.text]){
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please choose any radial trip/contract/seasonal" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
     }else if (!isImageBeforeSelected){
         UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"please select image before" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [Alert show];
-    }else if (!isImageAfterSelected){
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"please select image after" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alert show];
-    }else{
-    
-        ClientInfo *addNewTicket=[[ClientInfo alloc]init];
-        NSString *Comp=[NSString stringWithFormat:@"    %@",NewTicketInfo.Comp_name];
-        if (EditTicketTag==1) {
-            Comp=[NSString stringWithFormat:@"    %@",[EditTicketInfo objectForKey:@"companyName"]];
-        }
-        if ([CompNameTf.text isEqualToString:Comp]) {
-            checkName=YES;
-        }
-        if (checkName==YES) {
-        
-            addNewTicket.Comp_name=NewTicketInfo.Comp_name;
-            if (EditTicketTag==1) {
-                addNewTicket.Comp_name=[EditTicketInfo objectForKey:@"companyName"];
+    }
+    else{
+        if (ContractBtn.selected){
+            if (![self CheckLength:HoursTf.text]) {
+                UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"please enter hours" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [Alert show];
+                return;
             }
-        }else{
+    }
+        ClientInfo *addNewTicket=[[ClientInfo alloc]init];
+//        NSString *Comp=[NSString stringWithFormat:@"    %@",NewTicketInfo.Comp_name];
+//        if (EditTicketTag==1) {
+//            Comp=[NSString stringWithFormat:@"    %@",[EditTicketInfo objectForKey:@"companyName"]];
+//        }
+//        if ([CompNameTf.text isEqualToString:Comp]) {
+//            checkName=YES;
+//        }
+//        if (checkName==YES) {
+//        
+//            addNewTicket.Comp_name=NewTicketInfo.Comp_name;
+//            if (EditTicketTag==1) {
+//                addNewTicket.Comp_name=[EditTicketInfo objectForKey:@"companyName"];
+//            }
+//        }else{
             addNewTicket.Comp_name=CompNameTf.text;
-        }
+       // }
     
         addNewTicket.date=DateTf.text;
         addNewTicket.startTime=StartTime.text;
@@ -504,7 +535,7 @@ UINavigationControllerDelegate
         [BeforeDic setObject:@"Image Before" forKey:@"imageName"];
         [ImageArr addObject:BeforeDic];
        
-        
+            if (isImageAfterSelected==YES) {
         NSString *imageA=CompNameTf.text;
         imageA=[[[[imageA stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
         NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.png"]; // or .jpg
@@ -519,7 +550,8 @@ UINavigationControllerDelegate
         [AfterDic setObject:savedImageAfterPath forKey:@"imagePath"];
         [AfterDic setObject:@"Image After" forKey:@"imageName"];
         
-        [ImageArr addObject:AfterDic];
+                [ImageArr addObject:AfterDic];
+            }
         
         
         
@@ -530,13 +562,15 @@ UINavigationControllerDelegate
             alert.delegate=self;
             [alert show];
             
-        }}
-    
+        }
+        }
     }
 }
 
 -(void)setValueInCalculated
 {
+   
+    
     if (tripBtn.selected==YES) {
         CalculatedTf.text=NewTicketInfo.TripCost;
     }else if (ContractBtn.selected==YES){
@@ -565,12 +599,15 @@ UINavigationControllerDelegate
 
 - (IBAction)PaidInFullBtnClicked:(id)sender {
     UIButton *but=(UIButton*)sender;
+    
     if (but.selected==NO) {
         [paidInFullBtn setImage:[UIImage imageNamed:@"service_Checked.png"] forState:UIControlStateNormal];
         paidInFullBtn.selected=YES;
+        [[NSUserDefaults standardUserDefaults]setObject:@"paid" forKey:@"Paid"];
     }else{
         [paidInFullBtn setImage:[UIImage imageNamed:@"service_Check.png"] forState:UIControlStateNormal];
         paidInFullBtn.selected=NO;
+        [[NSUserDefaults standardUserDefaults]setObject:@"not paid" forKey:@"Paid"];
     }
 }
 
@@ -580,10 +617,12 @@ UINavigationControllerDelegate
 {
     if (textField==StartTime) {
         [StartTime resignFirstResponder];
+       
         [self addTimePicker:1];
       
     }else if (textField==FinshTimeTf){
         [FinshTimeTf resignFirstResponder];
+     
         [self addTimePicker:2];
     }
     if (textField==SnowFallTf) {
@@ -597,6 +636,9 @@ UINavigationControllerDelegate
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
+    if (textField==HoursTf) {
+        [self setValueInCalculated];
+    }
 NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 }
 
@@ -954,7 +996,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 	}
     
 	[self dismissViewControllerAnimated:YES completion:NULL];
-    [self.navigationController popViewControllerAnimated:YES];
+    [self saveEvent];
 }
 
 #pragma mark - alertView delegate method
@@ -964,13 +1006,298 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     if (alertView.tag==1) {
         NSString *title=[alertView buttonTitleAtIndex:buttonIndex];
         if ([title isEqualToString:@"OK"]) {
+            
             if (SendVoiceBtn.selected) {
                 [self displayMailComposerSheet];
             }else{
-            [self.navigationController popViewControllerAnimated:YES];
+                [self saveEvent];
+           
             }
         }
     }
+}
+
+#pragma mark - calender events methods
+
+/*-(void)event
+{
+  //  EKEventStore *eventStore = [[EKEventStore alloc] init];
+    
+    
+ ///////////////////////////////////////////?*****************************************************?/////////////////////////////////////
+ 
+    EKEventStore *eventStore = [[EKEventStore alloc] init];
+    if ([eventStore respondsToSelector:@selector(requestAccessToEntityType:completion:)])
+    {
+        // the selector is available, so we must be on iOS 6 or newer
+        [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error)
+                {
+                    // display error message here
+                }
+                else if (!granted)
+                {
+                    // display access denied error message here
+                }
+                else
+                {
+                    // access granted
+                    // ***** do the important stuff here *****
+                    
+                    EKEvent *event  = [EKEvent eventWithEventStore:eventStore];
+                    event.title     = CompNameTf.text;
+                    if (EditTicketTag==1) {
+                        event.location=@"";
+                    }else 
+                    event.location=NewTicketInfo.Address;
+                    
+                    NSMutableArray *service=[[NSMutableArray alloc]init];
+                    if (EditTicketTag==1) {
+                        
+                    }else{
+                        if (NewTicketInfo.salt==1) {
+                            [service addObject:@"salt"];
+                        }if (NewTicketInfo.shovel==1) {
+                            [service addObject:@"shovel"];
+                        }if (NewTicketInfo.plow==1) {
+                            [service addObject:@"plow"];
+                        }if (NewTicketInfo.removal==1) {
+                            [service addObject:@"removal"];
+                        }
+                    }
+                    
+                    NSString *noteStr=[NSString stringWithFormat:@"%@,%@,%@",[service componentsJoinedByString:@","],CalculatedTf.text,[[NSUserDefaults standardUserDefaults] objectForKey:@"Paid"]];
+                    
+                    event.notes=noteStr;
+                    NSDateFormatter *tempFormatter = [[NSDateFormatter alloc]init];
+                    [tempFormatter setDateFormat:@"MM.dd.yyyy HH:mm"];
+                    
+                    
+//                    NSString *dateandtime =[NSString stringWithFormat:@"%@%@%@",datestring,@" ",starttimestring];
+//                    NSString *dateandtimeend =[NSString stringWithFormat:@"%@%@%@",datestring,@" ",endtimestring];
+                    
+                    
+                    
+                    event.startDate =[dateF dateFromString:StartdateTime];
+                    event.endDate =[dateF dateFromString:EndDateTime];
+                    
+                    
+                    [event addAlarm:[EKAlarm alarmWithRelativeOffset:60.0f * -60.0f * 24]];
+                    [event addAlarm:[EKAlarm alarmWithRelativeOffset:60.0f * -15.0f]];
+                    
+                    [event setCalendar:[eventStore defaultCalendarForNewEvents]];
+                    
+                   event.calendar= [[AppDelegate sharedInstance].eventManager.eventStore calendarWithIdentifier:@"SnowPush"];
+                    
+                    NSError *err;
+                    [eventStore saveEvent:event span:EKSpanThisEvent error:&err];
+
+                }
+            });
+        }];
+    }
+    else
+    {
+        // this code runs in iOS 4 or iOS 5
+        // ***** do the important stuff here *****
+    }
+}
+*/
+
+- (IBAction)saveEvent {
+    // Check if a title was typed in for the event.
+    
+    if ([AppDelegate sharedInstance].eventManager.selectedEventIdentifier.length > 0) {
+        [[AppDelegate sharedInstance].eventManager deleteEventWithIdentifier:[AppDelegate sharedInstance].eventManager.selectedEventIdentifier];
+        [AppDelegate sharedInstance].eventManager.selectedEventIdentifier = @"";
+    }
+    
+    // Create a new event object.
+    EKEvent *event = [EKEvent eventWithEventStore:[AppDelegate sharedInstance].eventManager.eventStore];
+    
+    // Set the event title.
+    event.title = CompNameTf.text;
+   
+        event.location=NewTicketInfo.Address;
+    
+    NSMutableArray *service=[[NSMutableArray alloc]init];
+    
+        if (NewTicketInfo.salt==1) {
+            [service addObject:@"salt"];
+        }if (NewTicketInfo.shovel==1) {
+            [service addObject:@"shovel"];
+        }if (NewTicketInfo.plow==1) {
+            [service addObject:@"plow"];
+        }if (NewTicketInfo.removal==1) {
+            [service addObject:@"removal"];
+        }
+  
+    
+    NSString *noteStr=[NSString stringWithFormat:@"%@,%@,%@",[service componentsJoinedByString:@","],CalculatedTf.text,[[NSUserDefaults standardUserDefaults] objectForKey:@"Paid"]];
+    
+    event.notes=noteStr;
+    NSDateFormatter *tempFormatter = [[NSDateFormatter alloc]init];
+    [tempFormatter setDateFormat:@"MM.dd.yyyy HH:mm"];
+    // Set its calendar.
+       event.calendar = [[AppDelegate sharedInstance].eventManager.eventStore calendarWithIdentifier:[AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier];
+    
+    // Set the start and end dates to the event.
+    event.startDate = StartdateTime;
+    event.endDate = EndDateTime;
+    
+    
+    // Add any alarms the user has set.
+//    for (int i=0; i<self.arrAlarms.count; i++) {
+//        // Get the date for the current alarm.
+//        NSDate *alarmDate = [self.arrAlarms objectAtIndex:i];
+//        
+//        // Create a new alarm.
+//        EKAlarm *alarm = [EKAlarm alarmWithAbsoluteDate:alarmDate];
+//        
+//        // Add the alarm to the event.
+//        [event addAlarm:alarm];
+//    }
+    
+    
+    // Specify the recurrence frequency and interval values based on the respective selected option.
+    EKRecurrenceFrequency frequency;
+    NSInteger interval=0;
+   /* switch (self.indexOfSelectedRepeatOption) {
+        case 1:
+            frequency = EKRecurrenceFrequencyDaily;
+            interval = 1;
+            break;
+        case 2:
+            frequency = EKRecurrenceFrequencyDaily;
+            interval = 3;
+        case 3:
+            frequency = EKRecurrenceFrequencyWeekly;
+            interval = 1;
+        case 4:
+            frequency = EKRecurrenceFrequencyWeekly;
+            interval = 2;
+        case 5:
+            frequency = EKRecurrenceFrequencyMonthly;
+            interval = 1;
+        case 6:
+            frequency = EKRecurrenceFrequencyMonthly;
+            interval = 6;
+        case 7:
+            frequency = EKRecurrenceFrequencyYearly;
+            interval = 1;
+            
+        default:
+            interval = 0;
+            frequency = EKRecurrenceFrequencyDaily;
+            break;
+    }*/
+    
+    // Create a rule and assign it to the reminder object if the interval is greater than 0.
+    if (interval > 0) {
+        EKRecurrenceEnd *recurrenceEnd = [EKRecurrenceEnd recurrenceEndWithEndDate:event.endDate];
+        EKRecurrenceRule *rule = [[EKRecurrenceRule alloc] initRecurrenceWithFrequency:frequency interval:interval end:recurrenceEnd];
+        event.recurrenceRules = @[rule];
+    }
+    else{
+        event.recurrenceRules = nil;
+    }
+    
+    
+    // Save and commit the event.
+    NSError *error;
+    if ([[AppDelegate sharedInstance].eventManager.eventStore saveEvent:event span:EKSpanFutureEvents commit:YES error:&error]) {
+        // Call the delegate method to notify the caller class (the ViewController class) that the event was saved.
+        //[self.delegate eventWasSuccessfullySaved];
+        
+        // Pop the current view controller from the navigation stack.
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        // An error occurred, so log the error description.
+        NSLog(@"%@", [error localizedDescription]);
+         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+
+-(void)createCalendar{
+    // Hide the keyboard. To do so, it's necessary to access the textfield of the first cell.
+  
+    BOOL CalA=NO;
+    
+    // Create a new calendar.
+    EKCalendar *calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent
+                                                  eventStore:[AppDelegate sharedInstance].eventManager.eventStore];
+    
+    // Set the calendar title.
+    calendar.title = @"SnowPush";
+    
+    // Find the proper source type value.
+    
+    NSArray *AllCal=[[AppDelegate sharedInstance].eventManager getLocalEventCalendars];
+    
+    
+    for (int i=0; i<AllCal.count; i++) {
+        EKCalendar *check=[AllCal objectAtIndex:i];
+        if ([check.title isEqualToString:calendar.title]) {
+            CalA=YES;
+             [AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier=check.calendarIdentifier;
+            break;
+        }
+    }
+    
+    if (CalA==NO) {
+        
+    
+    
+        for (int i=0; i<[AppDelegate sharedInstance].eventManager.eventStore.sources.count; i++) {
+            EKSource *source = (EKSource *)[[AppDelegate sharedInstance].eventManager.eventStore.sources objectAtIndex:i];
+            EKSourceType currentSourceType = source.sourceType;
+        
+            if (currentSourceType == EKSourceTypeLocal) {
+                calendar.source = source;
+                break;
+            }
+        }
+    
+    
+    // Save and commit the calendar.
+        NSError *error;
+        [[AppDelegate sharedInstance].eventManager.eventStore saveCalendar:calendar commit:YES error:&error];
+    
+    // If no error occurs then turn the editing mode off, store the new calendar identifier and reload the calendars.
+        if (error == nil) {
+        // Turn off the edit mode.
+       // [self.tblCalendars setEditing:NO animated:YES];
+        
+        // Store the calendar identifier.
+            [[AppDelegate sharedInstance].eventManager saveCustomCalendarIdentifier:calendar.calendarIdentifier];
+            [AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier=calendar.calendarIdentifier;
+        // Reload all calendars.
+       // [self loadEventCalendars];
+        }
+        else{
+        // Display the error description to the debugger.
+            NSLog(@"%@", [error localizedDescription]);
+        }
+    
+    }else {
+        return;
+    }
+}
+
+-(void)requestAccessToEvents{
+    [[AppDelegate sharedInstance].eventManager.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        if (error == nil) {
+            // Store the returned granted value.
+            [AppDelegate sharedInstance].eventManager.eventsAccessGranted = granted;
+        }
+        else{
+            // In case of error, just log its description to the debugger.
+            NSLog(@"%@", [error localizedDescription]);
+        }
+    }];
 }
 
 @end

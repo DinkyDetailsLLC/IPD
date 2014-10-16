@@ -11,11 +11,31 @@
 @implementation AppDelegate
 
 @synthesize DeviceHieght;
+@synthesize eventManager;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    
+
     [AppDelegate sharedInstance].DeviceHieght=[UIScreen mainScreen].bounds.size.height;
+    
+  NSMetadataQuery  *metadataQuery = [[NSMetadataQuery alloc] init];
+    
+    [metadataQuery setPredicate:[NSPredicate
+                                  predicateWithFormat:@"%K like 'SnowPush.xml'",
+                                  NSMetadataItemFSNameKey]];
+    
+//    [metadataQuery setSearchScopes:[NSArray
+//                                     arrayWithObjects:NSMetadataQueryUbiquitousDocumentsScope,nil]];
+//    
+//    [[NSNotificationCenter defaultCenter]
+//     addObserver:self
+//     selector:@selector(metadataQueryDidFinishGathering:)
+//     name: NSMetadataQueryDidFinishGatheringNotification
+//     object:metadataQuery];
+    
+    [metadataQuery startQuery];
+    
+    [self loadData:metadataQuery];
        return YES;
 }
 
@@ -44,6 +64,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     self.eventManager = [[EventManager alloc] init];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -51,7 +72,94 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)loadData:(NSMetadataQuery *)queryData
+{
+    for (NSMetadataItem *item in [queryData results])
+    {
+        NSString *filename = [item valueForAttribute:NSMetadataItemDisplayNameKey];
+        NSNumber *filesize = [item valueForAttribute:NSMetadataItemFSSizeKey];
+        NSDate *updated = [item valueForAttribute:NSMetadataItemFSContentChangeDateKey];
+        NSLog(@"%@ (%@ bytes, updated %@) ", filename, filesize, updated);
+        
+        NSURL *url = [item valueForAttribute:NSMetadataItemURLKey];
+        MyDocument *doc = [[MyDocument alloc] initWithFileURL:url];
+        if([filename isEqualToString:@"ClientDetails"])
+        {
+            [doc openWithCompletionHandler:^(BOOL success) {
+                if (success) {
+                    NSLog(@"XML: Success to open from iCloud");
+                    NSData *file = [NSData dataWithContentsOfURL:url];
+                    //NSString *xmlFile = [[NSString alloc] initWithData:file encoding:NSASCIIStringEncoding];
+                    //NSLog(@"%@",xmlFile);
+                    
+                    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:file];
+                    [parser setDelegate:self];
+                    [parser parse];
+                    //We hold here until the parser finishes execution
+                }
+                else
+                {
+                    NSLog(@"XML: failed to open from iCloud");
+                }
+            }]; 
+        }
+    }
+}
 
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)nameSpaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+{
+    if ([elementName isEqual:@"ClientDetail"])
+    {
+        NSLog(@"Property attributes : %@|%@|%@|%@|%@|%@|%@|%@", [attributeDict objectForKey:@"Comp_Name"],[attributeDict objectForKey:@"Address"], [attributeDict objectForKey:@"city"], [attributeDict objectForKey:@"state"],[attributeDict objectForKey:@"zip"],[attributeDict objectForKey:@"PhoneNo"],[attributeDict objectForKey:@"email"],[attributeDict objectForKey:@"Image"]);
+    }
+    //like this way fetch all data and insert in db
+}
 
+- (void)metadataQueryDidFinishGathering:
+(NSNotification *)notification {
+    NSMetadataQuery *query = [notification object];
+    [query disableUpdates];
+    
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:NSMetadataQueryDidFinishGatheringNotification
+     object:query];
+    
+    [query stopQuery];
+    NSArray *results = [[NSArray alloc] initWithArray:[query results]];
+    
+//    if ([results count] == 1)
+//    {
+//        // File exists in cloud so get URL
+//        _ubiquityURL = [results[0]
+//                        valueForAttribute:NSMetadataItemURLKey];
+//        
+//        _document = [[MyDocument alloc]
+//                     initWithFileURL:_ubiquityURL];
+//        [_document openWithCompletionHandler:
+//         ^(BOOL success) {
+//             if (success){
+//                 NSLog(@"Opened iCloud doc");
+//                 _textView.text = _document.userText;
+//             } else {
+//                 NSLog(@"Failed to open iCloud doc");
+//             }
+//         }];
+//    } else {
+//        // File does not exist in cloud.
+//        _document = [[MyDocument alloc]
+//                     initWithFileURL:_ubiquityURL];
+//        
+//        [_document saveToURL:_ubiquityURL
+//            forSaveOperation: UIDocumentSaveForCreating
+//           completionHandler:^(BOOL success) {
+//               if (success){
+//                   NSLog(@"Saved to cloud");
+//               }  else {
+//                   NSLog(@"Failed to save to cloud");
+//               }
+//           }];
+//    }
+}
 
 @end

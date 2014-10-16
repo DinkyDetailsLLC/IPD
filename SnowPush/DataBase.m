@@ -30,7 +30,7 @@ static sqlite3_stmt *statement = nil;
 
 #pragma mark - find dbpath method
 
-- (void)findDBPath
+- (NSString*)findDBPath
 {
     NSString *databaseName = @"NewSnowPush.sqlite";
     NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -44,7 +44,7 @@ static sqlite3_stmt *statement = nil;
         NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:databaseName];
         [fileManager copyItemAtPath:databasePathFromApp toPath:databasepath error:nil];
     }
-    
+    return databasepath;
     
 }
 
@@ -136,6 +136,107 @@ static sqlite3_stmt *statement = nil;
     
 }
 
+-(NSMutableArray*)receiveAllDataDESC
+{
+    //[self findDBPath];
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from ClientDetail order by Comp_Name desc"];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                // medInfo.ID=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)]intValue];
+                
+                CInfo.Comp_name=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)];
+                CInfo.Address=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 1)];
+                CInfo.City=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 2)];
+                CInfo.State=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 3)];
+                CInfo.Zip=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 4)];
+                CInfo.phoneNo=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 5)];
+                CInfo.Email=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 6)];
+                CInfo.Image=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 7)];
+                CInfo.TripCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
+                CInfo.ContractCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)];
+                CInfo.SeasonalCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)];
+                CInfo.salt=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.shovel=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.plow=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.removal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
+}
+
+-(NSMutableArray*)receiveSpecificClientfromClientsList:(NSString*)Client
+{
+    //[self findDBPath];
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from ClientDetail where Comp_Name=\"%@\"",Client];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                // medInfo.ID=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)]intValue];
+                
+                CInfo.Comp_name=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)];
+                CInfo.Address=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 1)];
+                CInfo.City=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 2)];
+                CInfo.State=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 3)];
+                CInfo.Zip=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 4)];
+                CInfo.phoneNo=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 5)];
+                CInfo.Email=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 6)];
+                CInfo.Image=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 7)];
+                CInfo.TripCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
+                CInfo.ContractCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)];
+                CInfo.SeasonalCost=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)];
+                CInfo.salt=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.shovel=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.plow=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.removal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
+}
 
 -(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName
 {
@@ -342,6 +443,58 @@ static sqlite3_stmt *statement = nil;
     
 }
 
+-(NSMutableArray*)receiveAllDataFromNewTicketDESC
+{
+    //[self findDBPath];
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket order by comp_name desc"];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                // medInfo.ID=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)]intValue];
+                
+                CInfo.date=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)];
+                CInfo.Comp_name=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 1)];
+                CInfo.startTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 2)];
+                CInfo.finishTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 3)];
+                CInfo.phoneNo=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 4)];
+                CInfo.Email=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 5)];
+                CInfo.imageBefore=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 6)];
+                CInfo.imageAfter=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 7)];
+                CInfo.snowFall=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
+                CInfo.hours=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)]intValue];
+                CInfo.calculated=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)]intValue];
+                CInfo.trip=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.contract=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.seasonal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.sendInVoice=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
+                CInfo.paidInFull=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 15)]intValue];
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
+}
+
 -(NSMutableArray*)reciveAllOpenAndPaidTickets:(ClientInfo*)client
 {
     NSMutableArray *record = [[NSMutableArray alloc]init];
@@ -391,6 +544,57 @@ static sqlite3_stmt *statement = nil;
     sqlite3_close(database);
     return record;
 
+}
+
+-(NSMutableArray*)reciveAllOpenAndPaidTicketsDESC:(ClientInfo*)client
+{
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket where paid_in_full=%d order by comp_name desc",client.paidInFull];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                // medInfo.ID=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)]intValue];
+                
+                CInfo.date=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)];
+                CInfo.Comp_name=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 1)];
+                CInfo.startTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 2)];
+                CInfo.finishTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 3)];
+                CInfo.phoneNo=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 4)];
+                CInfo.Email=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 5)];
+                CInfo.imageBefore=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 6)];
+                CInfo.imageAfter=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 7)];
+                CInfo.snowFall=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
+                CInfo.hours=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)]intValue];
+                CInfo.calculated=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)]intValue];
+                CInfo.trip=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.contract=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.seasonal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.sendInVoice=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
+                CInfo.paidInFull=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 15)]intValue];
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
 }
 
 -(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTickets:(ClientInfo*)Client
@@ -444,6 +648,57 @@ static sqlite3_stmt *statement = nil;
 
 }
 
+-(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTicketsASC:(ClientInfo*)Client
+{
+    NSMutableArray *record = [[NSMutableArray alloc]init];
+    //  NSLog(@"%@",databasepath);
+    //  NSLog(@"%s",[databasepath UTF8String]);
+    const char *dbpath=[databasepath UTF8String];
+    //NSLog(@"DBPATH:%s",dbpath);
+    if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket where paid_in_full=%d and comp_name=\"%@\" order by date desc",Client.paidInFull,Client.Comp_name];
+        const char *select_stmt=[selectSQL UTF8String];
+        // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
+        int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
+        if (res!=SQLITE_OK){
+            // NSLog(@"Problem with prepare statement.");
+        }
+        else{
+            //NSInteger temp=0,num=0;
+            
+            while(sqlite3_step(statement)==SQLITE_ROW){
+                CInfo = [[ClientInfo alloc]init];
+                
+                // medInfo.ID=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)]intValue];
+                
+                CInfo.date=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 0)];
+                CInfo.Comp_name=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 1)];
+                CInfo.startTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 2)];
+                CInfo.finishTime=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 3)];
+                CInfo.phoneNo=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 4)];
+                CInfo.Email=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 5)];
+                CInfo.imageBefore=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 6)];
+                CInfo.imageAfter=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 7)];
+                CInfo.snowFall=[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 8)];
+                CInfo.hours=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 9)]intValue];
+                CInfo.calculated=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 10)]intValue];
+                CInfo.trip=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 11)]intValue];
+                CInfo.contract=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 12)]intValue];
+                CInfo.seasonal=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 13)]intValue];
+                CInfo.sendInVoice=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 14)]intValue];
+                CInfo.paidInFull=[[NSString stringWithUTF8String:(char*)sqlite3_column_text(statement, 15)]intValue];
+                [record addObject:CInfo];
+            }
+        }
+        sqlite3_reset(statement);
+        sqlite3_finalize(statement);
+    }
+    
+    sqlite3_close(database);
+    return record;
+    
+}
+
 -(NSMutableArray*)RecieveTotalCompanysAllTickets:(ClientInfo*)Client
 {
     NSMutableArray *record = [[NSMutableArray alloc]init];
@@ -452,7 +707,7 @@ static sqlite3_stmt *statement = nil;
     const char *dbpath=[databasepath UTF8String];
     //NSLog(@"DBPATH:%s",dbpath);
     if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
-        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket where comp_name=\"%@\" and email=\"%@\"",Client.Comp_name,Client.Email];
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from NewTicket where comp_name=\"%@\" and email=\"%@\" and paid_in_full=1",Client.Comp_name,Client.Email];
         const char *select_stmt=[selectSQL UTF8String];
         // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
         int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);

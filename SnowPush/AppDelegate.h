@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-
+#import "EventManager.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate,NSURLConnectionDelegate>
 {
     NSURLConnection *Connection;
@@ -17,6 +17,7 @@
 }
 @property (strong, nonatomic) UIWindow *window;
 
+@property (nonatomic, strong) EventManager *eventManager;
 
 
 @property int DeviceHieght;

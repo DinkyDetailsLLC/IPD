@@ -7,7 +7,7 @@
 //
 
 #import "TicketViewController.h"
-
+#import "NewTicketViewController.h"
 @interface TicketViewController ()
 {
     UIColor *SectionViewColor;
@@ -157,7 +157,7 @@
             
         }
     }
-    
+    SearchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
     // Do any additional setup after loading the view.
 }
 
@@ -171,7 +171,233 @@
 }
 
 -(IBAction)TicketMoreBtnClicked:(id)sender{
+    UIButton *sortBtn=(UIButton*)sender;
+    if (sortBtn.selected==NO) {
+        
+        if (ViewTag==0) {
+            AllTickets=[[DataBase getSharedInstance]receiveAllDataFromNewTicketDESC];
+            numberOfSection=[[NSMutableArray alloc]init];
+            NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+            NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+            NSString *CDate=@"";
+            
+            //        AllTickets = [AllTickets sortedArrayUsingComparator:^NSComparisonResult(ClientInfo *a, ClientInfo *b) {
+            //            return [a.Comp_name compare:b.Comp_name]==NSOrderedAscending;
+            //
+            //            // [time1 compare: time2] == NSOrderDescending
+            //        }];
+            
+            for (int i=0; i<AllTickets.count; i++) {
+                
+                ClientInfo *client=[AllTickets objectAtIndex:i];
+                NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:client.date forKey:@"date"];
+                [dic setObject:client.Comp_name forKey:@"companyName"];
+                [dic setObject:client.startTime forKey:@"startTime"];
+                [dic setObject:client.finishTime forKey:@"finishTime"];
+                [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+                [dic setObject:client.Email forKey:@"email"];
+                [dic setObject:client.imageBefore forKey:@"imageBefore"];
+                [dic setObject:client.imageAfter forKey:@"imageAfter"];
+                [dic setObject:client.snowFall forKey:@"snowFall"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+                if (![CDate isEqualToString:client.Comp_name]) {
+                    detailDic=[[NSMutableDictionary alloc]init];
+                    DetailArr=[[NSMutableArray alloc]init];
+                    [detailDic setObject:client.Comp_name forKey:@"company"];
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection addObject:detailDic];
+                }else{
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection removeLastObject];
+                    [numberOfSection addObject:detailDic];
+                }
+                
+                CDate=client.Comp_name;
+                
+            }
+        }else{
+            int val=0;
+            if (ViewTag==2){
+                val=1;
+            }
+            ClientInfo *client=[[ClientInfo alloc]init];
+            client.paidInFull=val;
+            
+            AllTickets=[[DataBase getSharedInstance]reciveAllOpenAndPaidTicketsDESC:client];
+            numberOfSection=[[NSMutableArray alloc]init];
+            NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+            NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+            NSString *CDate=@"";
+            
+            //        AllTickets = [AllTickets sortedArrayUsingComparator:^NSComparisonResult(ClientInfo *a, ClientInfo *b) {
+            //            return [a.Comp_name compare:b.Comp_name]==NSOrderedAscending;
+            //
+            //            // [time1 compare: time2] == NSOrderDescending
+            //        }];
+            
+            for (int i=0; i<AllTickets.count; i++) {
+                
+                ClientInfo *client=[AllTickets objectAtIndex:i];
+                NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:client.date forKey:@"date"];
+                [dic setObject:client.Comp_name forKey:@"companyName"];
+                [dic setObject:client.startTime forKey:@"startTime"];
+                [dic setObject:client.finishTime forKey:@"finishTime"];
+                [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+                [dic setObject:client.Email forKey:@"email"];
+                [dic setObject:client.imageBefore forKey:@"imageBefore"];
+                [dic setObject:client.imageAfter forKey:@"imageAfter"];
+                [dic setObject:client.snowFall forKey:@"snowFall"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+                if (![CDate isEqualToString:client.Comp_name]) {
+                    detailDic=[[NSMutableDictionary alloc]init];
+                    DetailArr=[[NSMutableArray alloc]init];
+                    [detailDic setObject:client.Comp_name forKey:@"company"];
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection addObject:detailDic];
+                }else{
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection removeLastObject];
+                    [numberOfSection addObject:detailDic];
+                }
+                CDate=client.Comp_name;
+                
+            }
+        }
 
+        
+        sortBtn.selected=YES;
+    }else{
+        
+        if (ViewTag==0) {
+            AllTickets=[[DataBase getSharedInstance]receiveAllDataFromNewTicket];
+            numberOfSection=[[NSMutableArray alloc]init];
+            NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+            NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+            NSString *CDate=@"";
+            
+            //        AllTickets = [AllTickets sortedArrayUsingComparator:^NSComparisonResult(ClientInfo *a, ClientInfo *b) {
+            //            return [a.Comp_name compare:b.Comp_name]==NSOrderedAscending;
+            //
+            //            // [time1 compare: time2] == NSOrderDescending
+            //        }];
+            
+            for (int i=0; i<AllTickets.count; i++) {
+                
+                ClientInfo *client=[AllTickets objectAtIndex:i];
+                NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:client.date forKey:@"date"];
+                [dic setObject:client.Comp_name forKey:@"companyName"];
+                [dic setObject:client.startTime forKey:@"startTime"];
+                [dic setObject:client.finishTime forKey:@"finishTime"];
+                [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+                [dic setObject:client.Email forKey:@"email"];
+                [dic setObject:client.imageBefore forKey:@"imageBefore"];
+                [dic setObject:client.imageAfter forKey:@"imageAfter"];
+                [dic setObject:client.snowFall forKey:@"snowFall"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+                if (![CDate isEqualToString:client.Comp_name]) {
+                    detailDic=[[NSMutableDictionary alloc]init];
+                    DetailArr=[[NSMutableArray alloc]init];
+                    [detailDic setObject:client.Comp_name forKey:@"company"];
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection addObject:detailDic];
+                }else{
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection removeLastObject];
+                    [numberOfSection addObject:detailDic];
+                }
+                
+                CDate=client.Comp_name;
+                
+            }
+        }else{
+            int val=0;
+            if (ViewTag==2){
+                val=1;
+            }
+            ClientInfo *client=[[ClientInfo alloc]init];
+            client.paidInFull=val;
+            
+            AllTickets=[[DataBase getSharedInstance]reciveAllOpenAndPaidTickets:client];
+            numberOfSection=[[NSMutableArray alloc]init];
+            NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+            NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+            NSString *CDate=@"";
+            
+            //        AllTickets = [AllTickets sortedArrayUsingComparator:^NSComparisonResult(ClientInfo *a, ClientInfo *b) {
+            //            return [a.Comp_name compare:b.Comp_name]==NSOrderedAscending;
+            //
+            //            // [time1 compare: time2] == NSOrderDescending
+            //        }];
+            
+            for (int i=0; i<AllTickets.count; i++) {
+                
+                ClientInfo *client=[AllTickets objectAtIndex:i];
+                NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:client.date forKey:@"date"];
+                [dic setObject:client.Comp_name forKey:@"companyName"];
+                [dic setObject:client.startTime forKey:@"startTime"];
+                [dic setObject:client.finishTime forKey:@"finishTime"];
+                [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+                [dic setObject:client.Email forKey:@"email"];
+                [dic setObject:client.imageBefore forKey:@"imageBefore"];
+                [dic setObject:client.imageAfter forKey:@"imageAfter"];
+                [dic setObject:client.snowFall forKey:@"snowFall"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+                [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+                if (![CDate isEqualToString:client.Comp_name]) {
+                    detailDic=[[NSMutableDictionary alloc]init];
+                    DetailArr=[[NSMutableArray alloc]init];
+                    [detailDic setObject:client.Comp_name forKey:@"company"];
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection addObject:detailDic];
+                }else{
+                    [DetailArr addObject:dic];
+                    [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                    [numberOfSection removeLastObject];
+                    [numberOfSection addObject:detailDic];
+                }
+                CDate=client.Comp_name;
+                
+            }
+        }
+        
+        sortBtn.selected=NO;
+    }
+      SearchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
+    [TicketTableView reloadData];
 }
 
 
@@ -254,6 +480,11 @@
 }
 
 #pragma mark - UITableView Delegates method
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"ViewTicket" sender:self];
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 {
@@ -361,7 +592,7 @@
     return YES;
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -369,7 +600,15 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([segue.destinationViewController isKindOfClass:[NewTicketViewController class]]) {
+        //  [(MoreViewController*).SegueId]
+        NSIndexPath *index=[TicketTableView indexPathForSelectedRow];
+        NSDictionary* dic=[[[SearchArr objectAtIndex:index.section]objectForKey:@"dateDetail"]objectAtIndex:index.row];
+        NewTicketViewController *newTicket=(NewTicketViewController*)[segue destinationViewController];
+        newTicket.EditTicketInfo=dic;
+        newTicket.EditTicketTag=1;
+    }
 }
-*/
+
 
 @end

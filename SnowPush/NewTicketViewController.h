@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ImageEditor.h"
-
+#import <EventKit/EventKit.h>
 @interface NewTicketViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {

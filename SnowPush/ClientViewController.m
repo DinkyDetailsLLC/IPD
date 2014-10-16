@@ -92,7 +92,7 @@
         [Dic setObject:[NSString stringWithFormat:@"%d",Client.removal] forKey:@"removal"];
         [AllClientList addObject:Dic];
     }
-    
+    SearchArr=[[NSMutableArray alloc]initWithArray:AllClientList];
     [AllClientTableView reloadData];
 }
 
@@ -109,7 +109,65 @@
 }
 -(IBAction)MoreBtnClicked:(id)sender
 {
-
+    AllClientList=[[NSMutableArray alloc]init];
+    UIButton *sortBtn=(UIButton*)sender;
+    
+    if (sortBtn.selected==NO) {
+        
+        AllClientArr=[[DataBase getSharedInstance]receiveAllDataDESC];
+        
+        for (int i=0; i<AllClientArr.count; i++) {
+            ClientInfo *Client=[AllClientArr objectAtIndex:i];
+            NSMutableDictionary *Dic=[[NSMutableDictionary alloc]init];
+            [Dic setObject:Client.Comp_name forKey:@"CompName"];
+            [Dic setObject:Client.Address forKey:@"address"];
+            [Dic setObject:Client.City forKey:@"city"];
+            [Dic setObject:Client.State forKey:@"state"];
+            [Dic setObject:Client.Zip forKey:@"zip"];
+            [Dic setObject:Client.phoneNo forKey:@"phone"];
+            [Dic setObject:Client.Email forKey:@"email"];
+            [Dic setObject:Client.Image forKey:@"image"];
+            [Dic setObject:Client.TripCost forKey:@"tripCost"];
+            [Dic setObject:Client.ContractCost forKey:@"contractCost"];
+            [Dic setObject:Client.SeasonalCost forKey:@"seasonalCost"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.salt] forKey:@"salt"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.shovel] forKey:@"shovel"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.plow] forKey:@"plow"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.removal] forKey:@"removal"];
+            [AllClientList addObject:Dic];
+        }
+        
+        sortBtn.selected=YES;
+    }else{
+        
+        AllClientArr=[[DataBase getSharedInstance]receiveAllData];
+        
+        for (int i=0; i<AllClientArr.count; i++) {
+            ClientInfo *Client=[AllClientArr objectAtIndex:i];
+            NSMutableDictionary *Dic=[[NSMutableDictionary alloc]init];
+            [Dic setObject:Client.Comp_name forKey:@"CompName"];
+            [Dic setObject:Client.Address forKey:@"address"];
+            [Dic setObject:Client.City forKey:@"city"];
+            [Dic setObject:Client.State forKey:@"state"];
+            [Dic setObject:Client.Zip forKey:@"zip"];
+            [Dic setObject:Client.phoneNo forKey:@"phone"];
+            [Dic setObject:Client.Email forKey:@"email"];
+            [Dic setObject:Client.Image forKey:@"image"];
+            [Dic setObject:Client.TripCost forKey:@"tripCost"];
+            [Dic setObject:Client.ContractCost forKey:@"contractCost"];
+            [Dic setObject:Client.SeasonalCost forKey:@"seasonalCost"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.salt] forKey:@"salt"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.shovel] forKey:@"shovel"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.plow] forKey:@"plow"];
+            [Dic setObject:[NSString stringWithFormat:@"%d",Client.removal] forKey:@"removal"];
+            [AllClientList addObject:Dic];
+        }
+        
+        sortBtn.selected=NO;
+    }
+      SearchArr=[[NSMutableArray alloc]initWithArray:AllClientList];
+    [AllClientTableView reloadData];
+    
 }
 -(IBAction)EditBtnClicked:(id)sender
 {
@@ -130,10 +188,10 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (isSearching==YES) {
-        return SearchArr.count;
-    }
-    return AllClientList.count;
+//    if (isSearching==YES) {
+//        return SearchArr.count;
+//    }
+    return SearchArr.count;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

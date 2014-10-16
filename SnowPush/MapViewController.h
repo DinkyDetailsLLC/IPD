@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-@interface MapViewController : UIViewController<MKMapViewDelegate>
+#import "MapPoint.h"
+@interface MapViewController : UIViewController<MKMapViewDelegate,MKOverlay>
+
 @property (weak, nonatomic) IBOutlet MKMapView *MyMapVIew;
 
 - (IBAction)MapBackBtnClicked:(id)sender;
-
+@property (strong, nonatomic) NSMutableDictionary *placeDictionary;
 @end

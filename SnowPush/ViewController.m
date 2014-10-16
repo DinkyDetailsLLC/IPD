@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "TicketViewController.h"
+static sqlite3 *dbconn = nil;
 @interface ViewController ()
 {
     NSURLConnection *Connection;
@@ -42,7 +43,7 @@
     //http://api.wunderground.com/api/a988d453ebe759ad/hourly7day/conditions/q/-33.957550,151.230850.json
     
        
-  //  NSData *weatherData = [NSData dataWithContentsOfURL:url];
+  //  NSData *weatherData = [NSData dataWithContentsOfURL:url];    45103
     WTag=0;
     [super viewDidLoad];
     
@@ -148,6 +149,7 @@
 {
     UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please give me your current zip code so I can load the most recent data for you" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:@"Cancel", nil];
     alert.alertViewStyle=UIAlertViewStylePlainTextInput;
+    alert.tag=1;
     [alert textFieldAtIndex:0].delegate=self;
     [alert textFieldAtIndex:0].keyboardType=UIKeyboardTypeNumberPad;
     [alert show];
@@ -259,6 +261,13 @@
         HourlyOfToday=[[NSMutableArray alloc]init];
         NSDateComponents *components=[[NSCalendar currentCalendar]components:NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:[NSDate date]];
         NSInteger day=[components day];
+        
+        NSDate *nextDat=[[NSDate date]addTimeInterval:60*60*24];
+        
+        NSDateComponents *nextDayComp=[[NSCalendar currentCalendar]components:NSCalendarUnitDay|NSCalendarUnitMonth|NSCalendarUnitYear fromDate:nextDat];
+        NSInteger nextday=[nextDayComp day];
+        
+        
         for (int i=0; i<forecastArr.count; i++) {
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
             
@@ -282,7 +291,7 @@
                 if (i<25) {
                     [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                     [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
+                   [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                     [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                     [HourlyOfToday addObject:dic];
@@ -291,40 +300,81 @@
                 }
             }else if (result==NSOrderedSame || (result==NSOrderedDescending && result2==NSOrderedAscending)){
                 
-                if (![[NSUserDefaults standardUserDefaults]objectForKey:@"Zip"]) {
-                    if (i<10) {
-                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
-                        [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                       [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
-                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
-                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
-                        [HourlyOfToday addObject:dic];
+//                if (![[NSUserDefaults standardUserDefaults]objectForKey:@"Zip"]) {
+//                    if (i<10) {
+//                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+//                        [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+//                       [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
+//                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+//                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+//                        [HourlyOfToday addObject:dic];
+//                    }else{
+//                        break;
+//                    }
+//                }else{
+                NSString *str=[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"];
+                    
+                    if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
+                        NSLog(@"%@ str ",str);
+                        NSArray *arrt=[str componentsSeparatedByString:@" "];
+                        NSString *ampm=[arrt objectAtIndex:1];
+                        NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
+                        int hour=[[HMArr objectAtIndex:0]intValue];
+                        if (hour>=10 && ([ampm isEqualToString:@"PM"] || [ampm isEqualToString:@"pm"]) && hour!=12) {
+                            [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                            [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                            [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
+                            [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                            [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                            [HourlyOfToday addObject:dic];
+                        }
+                        
+                    }else if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==nextday){
+                        NSLog(@"%@ str ",str);
+                        NSArray *arrt=[str componentsSeparatedByString:@" "];
+                        NSString *ampm=[arrt objectAtIndex:1];
+                        NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
+                        int hour=[[HMArr objectAtIndex:0]intValue];
+                        if ((hour<=4 || hour==12) && ([ampm isEqualToString:@"AM"] || [ampm isEqualToString:@"am"] )) {
+                            [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                            [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                            [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
+                            [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                            [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                            [HourlyOfToday addObject:dic];
+                        }
                     }else{
                         break;
                     }
-                }else{
+               // }
+                
+            }else if (result2==NSOrderedSame || result2==NSOrderedDescending){
                 NSString *str=[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"];
-                    
-                    if (i<25) {
+                
+                if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
+                    NSLog(@"%@ str ",str);
+                    NSArray *arrt=[str componentsSeparatedByString:@" "];
+                    NSString *ampm=[arrt objectAtIndex:1];
+                    NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
+                    int hour=[[HMArr objectAtIndex:0]intValue];
+                    if (hour>=11 && ([ampm isEqualToString:@"PM"] || [ampm isEqualToString:@"pm"]) && hour!=12) {
                         [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                         [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
                         [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                         [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                         [HourlyOfToday addObject:dic];
-                    }else{
-                        break;
                     }
-                }
-                
-            }else if (result2==NSOrderedSame || result2==NSOrderedDescending){
-                if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]!=day) {
-                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
-                    [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
-                    [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
-                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
-                    [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
-                    [HourlyOfToday addObject:dic];
+                    
+                }else if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==nextday){
+                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
+                        [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
+                        [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
+                        [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
+                        [HourlyOfToday addObject:dic];
+                }else{
+                    break;
                 }
             }
             
@@ -394,8 +444,8 @@
         UILabel *tempLab=[[UILabel alloc]initWithFrame:CGRectMake((15+30)*i, 55, 30, 20)];
        tempLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
       //  tempLab.textColor=[UIColor whiteColor];
-        NSString *time=[[dic objectForKey:@"humidity"]stringByReplacingOccurrencesOfString:@" " withString:@""];
-        tempLab.text=[NSString stringWithFormat:@"%@%@",[dic objectForKey:@"tempF"],super0];
+      //  NSString *time=[[dic objectForKey:@"humidity"]stringByReplacingOccurrencesOfString:@" " withString:@""];
+      tempLab.text=[NSString stringWithFormat:@"%@%@",[dic objectForKey:@"tempF"],super0];
         tempLab.textAlignment=NSTextAlignmentCenter;
         [HourlyScrollView addSubview:tempLab];
         
@@ -409,10 +459,15 @@
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if (alertView.tag==1) {
+        
+  
     if ([[alertView buttonTitleAtIndex:buttonIndex]isEqualToString:@"OK"]) {
           WTag=2;
                  NSLog(@"text %@",[alertView textFieldAtIndex:0].text);
         [self CallWetherApiWithNewZip:[alertView textFieldAtIndex:0].text];
+    }
+    
     }
 }
 
@@ -445,6 +500,158 @@
         WebData = [[NSMutableData alloc]init];
     }
 
+}
+
+-(IBAction) btniCloudPressed:(id)sender
+{
+    // create the document with it’s root element
+    APDocument *doc = [[APDocument alloc] initWithRootElement:[APElement elementWithName:@"NewSnowPush"]];
+    APElement *rootElement = [doc rootElement]; // retrieves same element we created the line above
+    
+    NSMutableArray *addrList = [[NSMutableArray alloc] init];
+    NSMutableArray *NameArr=[[NSMutableArray alloc]init];
+    NSString *select_query;
+    const char *select_stmt;
+    sqlite3_stmt *compiled_stmt;
+    if (sqlite3_open([[[DataBase getSharedInstance]findDBPath] UTF8String], &dbconn) == SQLITE_OK)
+    {
+        select_query = [NSString stringWithFormat:@"SELECT * FROM ClientDetail"];
+        select_stmt = [select_query UTF8String];
+        if(sqlite3_prepare_v2(dbconn, select_stmt, -1, &compiled_stmt, NULL) == SQLITE_OK)
+        {
+            while(sqlite3_step(compiled_stmt) == SQLITE_ROW)
+            {
+                NSString *addr = [NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,0)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,1)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,2)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,3)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,4)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,5)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,6)]];
+                addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,7)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,8)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,9)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,10)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,11)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,12)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,13)]];
+                 addr = [NSString stringWithFormat:@"%@#%@",addr,[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,14)]];
+                
+                //NSLog(@"%@",addr);
+                [addrList addObject:addr];
+            }
+            sqlite3_finalize(compiled_stmt);
+        }
+        else
+        {
+            NSLog(@"Error while creating detail view statement. '%s'", sqlite3_errmsg(dbconn));
+        }
+        
+    }
+    
+    for(int i =0 ; i < [addrList count]; i++)
+    {
+        NSArray *addr = [[NSArray alloc] initWithArray:[[addrList objectAtIndex:i] componentsSeparatedByString:@"#"]];
+        
+       
+        
+        APElement *property = [APElement elementWithName:@"ClientDetail"];
+        [NameArr addObject:[addr objectAtIndex:0]];
+        [property addAttributeNamed:@"Comp_Name" withValue:[addr objectAtIndex:0]];
+        [property addAttributeNamed:@"Address" withValue:[addr objectAtIndex:1]];
+        [property addAttributeNamed:@"city" withValue:[addr objectAtIndex:2]];
+        [property addAttributeNamed:@"state" withValue:[addr objectAtIndex:3]];
+        [property addAttributeNamed:@"zip" withValue:[addr objectAtIndex:4]];
+        [property addAttributeNamed:@"PhoneNo" withValue:[addr objectAtIndex:5]];
+        [property addAttributeNamed:@"email" withValue:[addr objectAtIndex:6]];
+        [property addAttributeNamed:@"Image" withValue:[addr objectAtIndex:7]];
+        [property addAttributeNamed:@"tripCost" withValue:[addr objectAtIndex:8]];
+        [property addAttributeNamed:@"contactCost" withValue:[addr objectAtIndex:9]];
+        [property addAttributeNamed:@"seasonalCost" withValue:[addr objectAtIndex:10]];
+        [property addAttributeNamed:@"Salt" withValue:[addr objectAtIndex:11]];
+        [property addAttributeNamed:@"shovel" withValue:[addr objectAtIndex:12]];
+        [property addAttributeNamed:@"plow" withValue:[addr objectAtIndex:13]];
+        [property addAttributeNamed:@"removal" withValue:[addr objectAtIndex:14]];
+        [rootElement addChild:property];
+        
+    }
+    sqlite3_close(dbconn);
+    APElement *fullscore = [APElement elementWithName:@"NewTicket"];
+    [rootElement addChild:fullscore];
+    
+    for (int i=0; i<NameArr.count; i++) {
+        if (sqlite3_open([[[DataBase getSharedInstance]findDBPath] UTF8String], &dbconn) == SQLITE_OK)
+        {
+       NSString*  newselect_query = [NSString stringWithFormat:@"select * from NewTicket where comp_name=\"%@\"",[NameArr objectAtIndex:i]];
+    const char  *Newselect_stmt = [newselect_query UTF8String];
+    if(sqlite3_prepare_v2(dbconn, Newselect_stmt, -1, &compiled_stmt, NULL) == SQLITE_OK)
+    {
+        NSLog(@"Error while creating detail view statement. '%s'", sqlite3_errmsg(dbconn));
+        
+        while(sqlite3_step(compiled_stmt) == SQLITE_ROW)
+        {
+            APElement *answer = [APElement elementWithName:@"Ticket"];
+            [answer addAttributeNamed:@"date" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,0)]]];
+            [answer addAttributeNamed:@"comp_name" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,1)]]];
+            [answer addAttributeNamed:@"start_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,2)]]];
+            [answer addAttributeNamed:@"finish_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,3)]]];
+            [answer addAttributeNamed:@"phone_num" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,4)]]];
+            [answer addAttributeNamed:@"email" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,5)]]];
+            [answer addAttributeNamed:@"image_before" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,6)]]];
+            [answer addAttributeNamed:@"image_after" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,7)]]];
+            [answer addAttributeNamed:@"snow_fall" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,8)]]];
+            [answer addAttributeNamed:@"hours" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,9)]]];
+            [answer addAttributeNamed:@"calculated" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,10)]]];
+            [answer addAttributeNamed:@"trip" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,11)]]];
+            [answer addAttributeNamed:@"contract" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,12)]]];
+            [answer addAttributeNamed:@"seasonal" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,13)]]];
+            [answer addAttributeNamed:@"send_invoice" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,14)]]];
+            [answer addAttributeNamed:@"paid_in_full" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,15)]]];
+            [fullscore addChild:answer];
+            
+        }
+      
+        sqlite3_finalize(compiled_stmt);
+    }else{
+      NSLog(@"Error while creating detail view statement. '%s'", sqlite3_errmsg(dbconn));
+    }
+        
+    }
+}
+    sqlite3_close(dbconn);
+    
+    NSString *prettyXML = [doc prettyXML];
+    NSLog(@"\n\n%@",prettyXML);
+    
+    
+    //***** PARSE XML FILE *****
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"SnowPush.xml" ];
+    NSData *file = [NSData dataWithBytes:[prettyXML UTF8String] length:strlen([prettyXML UTF8String])];
+    [file writeToFile:path atomically:YES];
+    
+    
+    NSString *fileName = [NSString stringWithFormat:@"SnowPush.xml"];
+    NSURL *ubiq = [[NSFileManager defaultManager]URLForUbiquityContainerIdentifier:nil];
+    NSURL *ubiquitousPackage = [[ubiq URLByAppendingPathComponent:@"Documents"]  URLByAppendingPathComponent:fileName];
+    
+    
+    MyDocument *mydoc = [[MyDocument alloc] initWithFileURL:ubiquitousPackage];
+    mydoc.xmlContent = prettyXML;
+    [mydoc saveToURL:[mydoc fileURL]forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success)
+     {
+        if (success)
+         {
+             NSLog(@"XML: Synced with icloud");
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"iCloud Syncing" message:@"Successfully synced with iCloud." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+             
+         }
+         else
+             NSLog(@"XML: Syncing FAILED with icloud");
+         
+        }];
+    
 }
 
 @end

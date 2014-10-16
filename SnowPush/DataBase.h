@@ -15,12 +15,16 @@
 }
 
 +(DataBase*)getSharedInstance;
-
+- (NSString*)findDBPath;
 #pragma mark - New client
 
 - (BOOL) SaveClientDetail:(ClientInfo*)client;
 
 -(NSMutableArray*)receiveAllData;
+
+-(NSMutableArray*)receiveAllDataDESC;
+
+-(NSMutableArray*)receiveSpecificClientfromClientsList:(NSString*)Client;
 
 -(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName;
 
@@ -37,6 +41,14 @@
 -(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTickets:(ClientInfo*)Client;
 
 -(NSMutableArray*)RecieveTotalCompanysAllTickets:(ClientInfo*)Client;
+
+-(NSMutableArray*)RecieveSpecificClientsOpenAndPaidTicketsASC:(ClientInfo*)Client;
+
+-(NSMutableArray*)reciveAllOpenAndPaidTicketsDESC:(ClientInfo*)client;
+
+-(NSMutableArray*)receiveAllDataFromNewTicketDESC;
+
+
 
 -(BOOL)updateTicketDetail:(ClientInfo*)ticket whereCompName:(NSString*)CompName andPaid:(int)paid andStartTime:(NSString*)start andEndTime:(NSString*)end;
 

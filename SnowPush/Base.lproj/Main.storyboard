@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="CGh-2G-SIn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="CGh-2G-SIn">
     <dependencies>
-        <deployment defaultVersion="1808" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -37,7 +36,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4a2-KF-DYF">
-                                <rect key="frame" x="85" y="374" width="150" height="150"/>
+                                <rect key="frame" x="85" y="372" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 <state key="normal" image="clients.png">
@@ -58,7 +57,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="XcR-R9-x93">
-                                <rect key="frame" x="239" y="348" width="78" height="22"/>
+                                <rect key="frame" x="215" y="333" width="100" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="zip.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -66,14 +65,6 @@
                                 <connections>
                                     <action selector="ChangeZip:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="P6M-MW-BGS"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eCG-kV-qVT">
-                                <rect key="frame" x="285" y="14" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" image="info.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="32" sectionHeaderHeight="1" sectionFooterHeight="1" id="Y3S-jf-4lw">
                                 <rect key="frame" x="6" y="168" width="307" height="160"/>
@@ -160,6 +151,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="J2j-I9-SaS">
+                                <rect key="frame" x="6" y="333" width="100" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="icloudBackup.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="btniCloudPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="yFo-ZV-hAG"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" id="10Z-jf-nTk">
                                 <rect key="frame" x="0.0" y="279" width="320" height="289"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -838,6 +839,7 @@
                     <connections>
                         <outlet property="TicketSearchTextField" destination="kSh-rE-x6I" id="4Ao-vS-TbX"/>
                         <outlet property="TicketTableView" destination="ekJ-eH-ZhE" id="CiY-JO-Cew"/>
+                        <segue destination="jDp-y0-tRp" kind="push" identifier="ViewTicket" id="Wdf-Hl-RMm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Kf-3e-v9I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1298,7 +1300,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B1S-RY-gQL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1958" y="-742"/>
+            <point key="canvasLocation" x="-173" y="-686"/>
         </scene>
         <!--New Ticket View Controller-->
         <scene sceneID="Nj7-ON-RqF">
@@ -1450,7 +1452,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
                                             <outlet property="delegate" destination="jDp-y0-tRp" id="CHf-6U-aRu"/>
                                         </connections>
@@ -1665,7 +1667,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jMV-qs-cSW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2227" y="754"/>
+            <point key="canvasLocation" x="2507" y="-754"/>
         </scene>
     </scenes>
     <resources>
@@ -1682,11 +1684,11 @@
         <image name="email.png" width="80" height="60"/>
         <image name="grey-dot.png" width="36" height="36"/>
         <image name="ice.png" width="59" height="59"/>
+        <image name="icloudBackup.png" width="150" height="44"/>
         <image name="image2.png" width="59" height="59"/>
         <image name="image4.png" width="59" height="59"/>
         <image name="images3.png" width="59" height="59"/>
         <image name="images_16.png" width="625" height="343"/>
-        <image name="info.png" width="44" height="44"/>
         <image name="line.png" width="608" height="4"/>
         <image name="map.png" width="90" height="88"/>
         <image name="more.png" width="58" height="52"/>
@@ -1705,6 +1707,6 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="zfj-M3-yOy"/>
-        <segue reference="EeE-bg-ee4"/>
+        <segue reference="Wdf-Hl-RMm"/>
     </inferredMetricsTieBreakers>
 </document>

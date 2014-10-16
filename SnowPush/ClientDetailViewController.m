@@ -21,6 +21,7 @@ UINavigationControllerDelegate
     NSArray *NotifyArr;
     NSMutableArray *NewNotifyArr;
     NSMutableArray *ImageCountArr;
+    NSMutableDictionary *PlaceDic;
 }
 @end
 
@@ -95,6 +96,14 @@ UINavigationControllerDelegate
     
     
     AddressLab.text=[NSString stringWithFormat:@"%@ \n %@,%@ %@",SingleClientDetail.Address,SingleClientDetail.City,SingleClientDetail.State,SingleClientDetail.Zip];
+    
+    PlaceDic=[[NSMutableDictionary alloc]init];
+    [PlaceDic setValue:SingleClientDetail.Address forKey:@"Street"];
+    [PlaceDic setValue:SingleClientDetail.City forKey:@"City"];
+    [PlaceDic setValue:SingleClientDetail.State forKey:@"State"];
+    [PlaceDic setValue:SingleClientDetail.Zip forKey:@"ZIP"];
+
+    
     AddressLab.font=[UIFont fontWithName:@"LETTERGOTHICSTD" size:14];
     
     PhoneNumLab.text=SingleClientDetail.phoneNo;
@@ -351,6 +360,7 @@ UINavigationControllerDelegate
 - (IBAction)MapBtnClicked:(id)sender {
     
     MapViewController *mapView=[self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+    mapView.placeDictionary=[NSMutableDictionary dictionaryWithDictionary:PlaceDic];
     [self.navigationController pushViewController:mapView animated:NO];
 }
 

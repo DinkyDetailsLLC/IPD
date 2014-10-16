@@ -48,7 +48,8 @@
     
     UITapGestureRecognizer *editScrollViewTap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(editScrollViewTapped)];
     [EditClientScrollView addGestureRecognizer:editScrollViewTap];
-    
+    isimageSelected=NO;
+    isImageChanged=NO;
     
     if (editTag==1) {
      
@@ -65,7 +66,11 @@
         
         ClientImageView.image=[self loadImage:ClientInformation.Image];
         ClientImage=[self loadImage:ClientInformation.Image];
-        isimageSelected=YES;
+        if (ClientImage==nil) {
+            isimageSelected=YES;
+            ClientImageView.image=[UIImage imageNamed:@"transparentImage.png"];
+            imageLab.text=@"image";
+        }
         
         if (ClientInformation.salt==1) {
             isSaltSelected=YES;
@@ -204,9 +209,9 @@
             
          
             
-            NSData *imageData = UIImagePNGRepresentation(image);
+            NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
             
-            NSData *imagepat=UIImagePNGRepresentation(ClientImage);
+          //  NSData *imagepat=UIImagePNGRepresentation(ClientImage);
             
             [imageData writeToFile:savedImagePath atomically:NO];
             
@@ -260,7 +265,9 @@
     }
 
    NSString *imagen=Clientdetail.Comp_name;
-        
+        if (isimageSelected==YES) {
+            
+       
      imagen=[[[[imagen stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
         
           NSString *filename = [imagen stringByAppendingString:@".png"]; // or .jpg
@@ -284,6 +291,8 @@
         //  Here you save the savedImagePath to your DB
         
        Clientdetail.Image=savedImagePath;
+         }
+        
         BOOL yes=[[DataBase getSharedInstance]SaveClientDetail:Clientdetail];
         if (yes==YES) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Save client detail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -354,10 +363,11 @@
         }else if (![self CheckLength:SeasonalCost.text]){
             UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter seasonal cost" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
             [Alert show];
-        }else if (!isimageSelected){
-            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please select image" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            [Alert show];
         }
+//        else if (!isimageSelected){
+//            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please select image" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//            [Alert show];
+//        }
         
         else{
             
@@ -406,10 +416,10 @@
             UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please enter seasonal cost" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
             [Alert show];
         }
-        else if (!isimageSelected){
-            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please select image" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            [Alert show];
-        }
+//        else if (!isimageSelected){
+//            UIAlertView *Alert=[[UIAlertView alloc]initWithTitle:nil message:@"Please select image" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//            [Alert show];
+//        }
         else{
     
             [self saveImage:ClientImage WithCupInfo:nil];
@@ -676,7 +686,9 @@
         //        {
         
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
+        picker.editing=YES;
+        picker.allowsEditing=YES;
+
         //   }
         
         [self presentViewController:picker animated:YES completion:nil];
@@ -704,7 +716,7 @@
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             
             picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-            
+            picker.editing=YES;
             [self presentViewController:picker animated:YES completion:nil];
             
             picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;

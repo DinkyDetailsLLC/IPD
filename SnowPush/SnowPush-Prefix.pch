@@ -17,6 +17,11 @@
 #import "AppDelegate.h"
 #import "DataBase.h"
 #import "ClientInfo.h"
+#import <sqlite3.h>
+#import "APDocument.h"
+#import "APElement.h"
+#import "APAttribute.h"
+#import "MyDocument.h"
 
 #endif
 

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h";
+#import "MBProgressHUD.h"
+
 @interface ViewController : UIViewController<NSURLConnectionDelegate,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
   MBProgressHUD *hud;
-    CLGeocoder *geocoder;
-    CLPlacemark *placemark;
+    
     UIScrollView *HourlyScrollView;
 }
 @property(nonatomic,strong)CLLocationManager *manager;
@@ -61,5 +61,5 @@
 -(IBAction)ViewPaidTickets:(id)sender;
 
 -(IBAction)ChangeZip:(id)sender;
-
+-(IBAction) btniCloudPressed:(id)sender;
 @end

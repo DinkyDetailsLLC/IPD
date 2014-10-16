@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0E263DA219D9908700C7A99A /* service_Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E263DA119D9908700C7A99A /* service_Checked.png */; };
+		0E27386719EB8922005DF69A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E27386619EB8922005DF69A /* EventKit.framework */; };
+		0E27386B19EB92BE005DF69A /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E27386A19EB92BE005DF69A /* EventManager.m */; };
 		0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFA19D4433A00E57E67 /* DataBase.m */; };
 		0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */; };
 		0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */; };
+		0EA9B59F19EBFD3C0051AB02 /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9B59E19EBFD3C0051AB02 /* MapPoint.m */; };
 		0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BACE19DAD282000FFE85 /* MessageUI.framework */; };
 		0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BAD019DAD2B2000FFE85 /* Social.framework */; };
 		0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAA5C1019D17285002D3E75 /* MBProgressHUD.m */; };
@@ -87,6 +90,11 @@
 		0EAC1E5519E51F0C00C4068D /* ImageEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAC1E4E19E51F0C00C4068D /* ImageEditor.xib */; };
 		0EAC1E5619E51F0C00C4068D /* ImageEditorFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E5019E51F0C00C4068D /* ImageEditorFrameView.m */; };
 		0EAC1E5719E51F0C00C4068D /* ImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC1E5219E51F0C00C4068D /* ImageEditorViewController.m */; };
+		0EAC853E19E9396C00C45272 /* APDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC853B19E9396C00C45272 /* APDocument.m */; };
+		0EAC853F19E9396C00C45272 /* APElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC853C19E9396C00C45272 /* APElement.m */; };
+		0EAC854019E9396C00C45272 /* APAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC853D19E9396C00C45272 /* APAttribute.m */; };
+		0EAC854719E93A6900C45272 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC854619E93A6900C45272 /* MyDocument.m */; };
+		0EAC854B19E94E6C00C45272 /* icloudBackup.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAC854A19E94E6C00C45272 /* icloudBackup.png */; };
 		0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */; };
 		0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */; };
 		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
@@ -106,11 +114,16 @@
 
 /* Begin PBXFileReference section */
 		0E263DA119D9908700C7A99A /* service_Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = service_Checked.png; sourceTree = "<group>"; };
+		0E27386619EB8922005DF69A /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		0E27386919EB92BE005DF69A /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventManager.h; sourceTree = "<group>"; };
+		0E27386A19EB92BE005DF69A /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventManager.m; sourceTree = "<group>"; };
 		0EA7CCF919D4433A00E57E67 /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
 		0EA7CCFA19D4433A00E57E67 /* DataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
 		0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientInfo.h; sourceTree = "<group>"; };
 		0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientInfo.m; sourceTree = "<group>"; };
 		0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0EA9B59D19EBFD3C0051AB02 /* MapPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapPoint.h; sourceTree = "<group>"; };
+		0EA9B59E19EBFD3C0051AB02 /* MapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPoint.m; sourceTree = "<group>"; };
 		0EA9BACE19DAD282000FFE85 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0EA9BAD019DAD2B2000FFE85 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		0EAA5C0F19D17285002D3E75 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -209,6 +222,17 @@
 		0EAC1E5119E51F0C00C4068D /* ImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageEditorViewController.h; sourceTree = "<group>"; };
 		0EAC1E5219E51F0C00C4068D /* ImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageEditorViewController.m; sourceTree = "<group>"; };
 		0EAC1E5319E51F0C00C4068D /* ImageEditorViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ImageEditorViewController+Private.h"; sourceTree = "<group>"; };
+		0EAC853719E9396C00C45272 /* APDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APDocument.h; sourceTree = "<group>"; };
+		0EAC853819E9396C00C45272 /* APAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APAttribute.h; sourceTree = "<group>"; };
+		0EAC853919E9396C00C45272 /* APXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APXML.h; sourceTree = "<group>"; };
+		0EAC853A19E9396C00C45272 /* APElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APElement.h; sourceTree = "<group>"; };
+		0EAC853B19E9396C00C45272 /* APDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APDocument.m; sourceTree = "<group>"; };
+		0EAC853C19E9396C00C45272 /* APElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APElement.m; sourceTree = "<group>"; };
+		0EAC853D19E9396C00C45272 /* APAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APAttribute.m; sourceTree = "<group>"; };
+		0EAC854519E93A6900C45272 /* MyDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDocument.h; sourceTree = "<group>"; };
+		0EAC854619E93A6900C45272 /* MyDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDocument.m; sourceTree = "<group>"; };
+		0EAC854A19E94E6C00C45272 /* icloudBackup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icloudBackup.png; sourceTree = "<group>"; };
+		0EAC854D19E95D5A00C45272 /* SnowPush.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SnowPush.entitlements; sourceTree = "<group>"; };
 		0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
 		0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = LETTERGOTHICSTD.OTF; sourceTree = "<group>"; };
 		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
@@ -222,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E27386719EB8922005DF69A /* EventKit.framework in Frameworks */,
 				0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */,
 				0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */,
 				0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */,
@@ -246,6 +271,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E27386819EB928D005DF69A /* EventHelperClass */ = {
+			isa = PBXGroup;
+			children = (
+				0E27386919EB92BE005DF69A /* EventManager.h */,
+				0E27386A19EB92BE005DF69A /* EventManager.m */,
+			);
+			name = EventHelperClass;
+			sourceTree = "<group>";
+		};
 		0EA7CCF819D4432100E57E67 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +331,8 @@
 		0EAADD1819D42FD800A9673A /* MapView */ = {
 			isa = PBXGroup;
 			children = (
+				0EA9B59D19EBFD3C0051AB02 /* MapPoint.h */,
+				0EA9B59E19EBFD3C0051AB02 /* MapPoint.m */,
 				0EAADD1919D42FF000A9673A /* MapViewController.h */,
 				0EAADD1A19D42FF000A9673A /* MapViewController.m */,
 			);
@@ -325,6 +361,7 @@
 		0EABB55019CFFBA7001E8D1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E27386619EB8922005DF69A /* EventKit.framework */,
 				0EBC5BD919E7A88D00B9361F /* QuartzCore.framework */,
 				0EA9BAD019DAD2B2000FFE85 /* Social.framework */,
 				0EA9BACE19DAD282000FFE85 /* MessageUI.framework */,
@@ -342,6 +379,10 @@
 		0EABB55719CFFBA7001E8D1E /* SnowPush */ = {
 			isa = PBXGroup;
 			children = (
+				0E27386819EB928D005DF69A /* EventHelperClass */,
+				0EAC854D19E95D5A00C45272 /* SnowPush.entitlements */,
+				0EAC854419E93A4600C45272 /* MyDocument */,
+				0EAC853619E9393A00C45272 /* AppElement */,
 				0EAC1E4B19E51CE000C4068D /* ImageCropping */,
 				0EAC1E3E19E50B1400C4068D /* imageCroppingClasses */,
 				0EB8CF5E19D5645600200433 /* fonts */,
@@ -399,6 +440,7 @@
 		0EABB58619D00AD5001E8D1E /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EAC854A19E94E6C00C45272 /* icloudBackup.png */,
 				0E263DA119D9908700C7A99A /* service_Checked.png */,
 				0EB8CF6A19D5923E00200433 /* line.png */,
 				0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */,
@@ -513,6 +555,29 @@
 			name = ImageCropping;
 			sourceTree = "<group>";
 		};
+		0EAC853619E9393A00C45272 /* AppElement */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC853719E9396C00C45272 /* APDocument.h */,
+				0EAC853819E9396C00C45272 /* APAttribute.h */,
+				0EAC853919E9396C00C45272 /* APXML.h */,
+				0EAC853A19E9396C00C45272 /* APElement.h */,
+				0EAC853B19E9396C00C45272 /* APDocument.m */,
+				0EAC853C19E9396C00C45272 /* APElement.m */,
+				0EAC853D19E9396C00C45272 /* APAttribute.m */,
+			);
+			name = AppElement;
+			sourceTree = "<group>";
+		};
+		0EAC854419E93A4600C45272 /* MyDocument */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC854519E93A6900C45272 /* MyDocument.h */,
+				0EAC854619E93A6900C45272 /* MyDocument.m */,
+			);
+			name = MyDocument;
+			sourceTree = "<group>";
+		};
 		0EB8CF5E19D5645600200433 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -567,13 +632,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = Dannis;
+				ORGANIZATIONNAME = "___FULLUSERNAME___";
 				TargetAttributes = {
 					0EABB54D19CFFBA7001E8D1E = {
 						DevelopmentTeam = J65LBYSK7T;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					0EABB56E19CFFBA7001E8D1E = {
-						DevelopmentTeam = J65LBYSK7T;
 						TestTargetID = 0EABB54D19CFFBA7001E8D1E;
 					};
 				};
@@ -643,6 +715,7 @@
 				0EABB5B419D00AEC001E8D1E /* images_69.png in Resources */,
 				0EAA5C2819D1969C002D3E75 /* orange-dot.png in Resources */,
 				0EABB5A319D00AEC001E8D1E /* more.png in Resources */,
+				0EAC854B19E94E6C00C45272 /* icloudBackup.png in Resources */,
 				0EABB5BC19D0239E001E8D1E /* SearchBar.png in Resources */,
 				0EAA5C2519D1969C002D3E75 /* grey-dot.png in Resources */,
 				0EB8CF6B19D5923E00200433 /* line.png in Resources */,
@@ -681,14 +754,20 @@
 				0EAC1E5619E51F0C00C4068D /* ImageEditorFrameView.m in Sources */,
 				0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */,
 				0EABB5CA19D03509001E8D1E /* TicketViewController.m in Sources */,
+				0EAC853F19E9396C00C45272 /* APElement.m in Sources */,
 				0EABB5C619D02C74001E8D1E /* CustomTableCell.m in Sources */,
 				0EABB56819CFFBA7001E8D1E /* ViewController.m in Sources */,
 				0EAC1E5719E51F0C00C4068D /* ImageEditorViewController.m in Sources */,
 				0EABB56219CFFBA7001E8D1E /* AppDelegate.m in Sources */,
+				0EAC854019E9396C00C45272 /* APAttribute.m in Sources */,
 				0EABB55E19CFFBA7001E8D1E /* main.m in Sources */,
+				0EAC853E19E9396C00C45272 /* APDocument.m in Sources */,
 				0EABB5C219D02AD8001E8D1E /* ClientViewController.m in Sources */,
 				0EAC1E4A19E50E9A00C4068D /* HFImageEditorViewController.m in Sources */,
+				0E27386B19EB92BE005DF69A /* EventManager.m in Sources */,
 				0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */,
+				0EA9B59F19EBFD3C0051AB02 /* MapPoint.m in Sources */,
+				0EAC854719E93A6900C45272 /* MyDocument.m in Sources */,
 				0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */,
 				0EAC1E4219E50D6000C4068D /* DemoImageEditor.m in Sources */,
 				0EAA5C3519D1A19C002D3E75 /* EditClientViewController.m in Sources */,
@@ -757,7 +836,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -775,7 +855,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "5475ab4c-ff2b-4dbb-a3b8-ca7d95f58675";
+				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -796,7 +876,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -807,7 +888,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PROVISIONING_PROFILE = "5475ab4c-ff2b-4dbb-a3b8-ca7d95f58675";
+				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -818,6 +899,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = SnowPush/SnowPush.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -834,6 +916,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = SnowPush/SnowPush.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -849,8 +932,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -864,7 +945,6 @@
 				);
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -874,8 +954,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -885,7 +963,6 @@
 				GCC_PREFIX_HEADER = "SnowPush/SnowPush-Prefix.pch";
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

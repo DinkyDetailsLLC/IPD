@@ -15,6 +15,7 @@
     NSMutableArray *numberOfSection;
     NSMutableArray *searchArr;
     BOOL isSearching;
+    int val;
 }
 @end
 
@@ -45,7 +46,7 @@
     }
     AllTickets=[[NSMutableArray alloc]init];
     
-    int val=0;
+     val=0;
     
     if (OPTViewTag==2) {
         val=1;
@@ -100,6 +101,64 @@
     // Do any additional setup after loading the view.
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    AllTickets=[[NSMutableArray alloc]init];
+    
+    val=0;
+    
+    if (OPTViewTag==2) {
+        val=1;
+    }
+    ClientInfo *client=[[ClientInfo alloc]init];
+    client.Comp_name=OPTClientDtail.Comp_name;
+    client.paidInFull=val;
+    AllTickets=[[DataBase getSharedInstance]RecieveSpecificClientsOpenAndPaidTickets:client];
+    numberOfSection=[[NSMutableArray alloc]init];
+    NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+    NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+    NSString *CDate=@"";
+    for (int i=0; i<AllTickets.count; i++) {
+        
+        ClientInfo *client=[AllTickets objectAtIndex:i];
+        
+        NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+        [dic setObject:client.date forKey:@"date"];
+        [dic setObject:client.Comp_name forKey:@"companyName"];
+        [dic setObject:client.startTime forKey:@"startTime"];
+        [dic setObject:client.finishTime forKey:@"finishTime"];
+        [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+        [dic setObject:client.Email forKey:@"email"];
+        [dic setObject:client.imageBefore forKey:@"imageBefore"];
+        [dic setObject:client.imageAfter forKey:@"imageAfter"];
+        [dic setObject:client.snowFall forKey:@"snowFall"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+        [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+        
+        if (![CDate isEqualToString:client.date]) {
+            detailDic=[[NSMutableDictionary alloc]init];
+            DetailArr=[[NSMutableArray alloc]init];
+            [detailDic setObject:client.date forKey:@"date"];
+            [DetailArr addObject:dic];
+            [detailDic setObject:DetailArr forKey:@"dateDetail"];
+            [numberOfSection addObject:detailDic];
+        }else{
+            [DetailArr addObject:dic];
+            [detailDic setObject:DetailArr forKey:@"dateDetail"];
+            [numberOfSection removeLastObject];
+            [numberOfSection addObject:detailDic];
+        }
+        CDate=client.date;
+    }
+    searchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
+
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -114,6 +173,107 @@
 
 - (IBAction)OPTMoreBtnClicked:(id)sender {
     
+    UIButton *SortBtn=(UIButton*)sender;
+    if (SortBtn.selected==NO) {
+        ClientInfo *client=[[ClientInfo alloc]init];
+        client.Comp_name=OPTClientDtail.Comp_name;
+        client.paidInFull=val;
+        AllTickets=[[DataBase getSharedInstance]RecieveSpecificClientsOpenAndPaidTicketsASC:client];
+        numberOfSection=[[NSMutableArray alloc]init];
+        NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+        NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+        NSString *CDate=@"";
+        for (int i=0; i<AllTickets.count; i++) {
+            
+            ClientInfo *client=[AllTickets objectAtIndex:i];
+            
+            NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:client.date forKey:@"date"];
+            [dic setObject:client.Comp_name forKey:@"companyName"];
+            [dic setObject:client.startTime forKey:@"startTime"];
+            [dic setObject:client.finishTime forKey:@"finishTime"];
+            [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+            [dic setObject:client.Email forKey:@"email"];
+            [dic setObject:client.imageBefore forKey:@"imageBefore"];
+            [dic setObject:client.imageAfter forKey:@"imageAfter"];
+            [dic setObject:client.snowFall forKey:@"snowFall"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+            
+            if (![CDate isEqualToString:client.date]) {
+                detailDic=[[NSMutableDictionary alloc]init];
+                DetailArr=[[NSMutableArray alloc]init];
+                [detailDic setObject:client.date forKey:@"date"];
+                [DetailArr addObject:dic];
+                [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                [numberOfSection addObject:detailDic];
+            }else{
+                [DetailArr addObject:dic];
+                [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                [numberOfSection removeLastObject];
+                [numberOfSection addObject:detailDic];
+            }
+            CDate=client.date;
+        }
+        searchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
+        SortBtn.selected=YES;
+    }else{
+        ClientInfo *client=[[ClientInfo alloc]init];
+        client.Comp_name=OPTClientDtail.Comp_name;
+        client.paidInFull=val;
+        AllTickets=[[DataBase getSharedInstance]RecieveSpecificClientsOpenAndPaidTickets:client];
+        numberOfSection=[[NSMutableArray alloc]init];
+        NSMutableArray *DetailArr=[[NSMutableArray alloc]init];
+        NSMutableDictionary *detailDic=[[NSMutableDictionary alloc]init];
+        NSString *CDate=@"";
+        for (int i=0; i<AllTickets.count; i++) {
+            
+            ClientInfo *client=[AllTickets objectAtIndex:i];
+            
+            NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:client.date forKey:@"date"];
+            [dic setObject:client.Comp_name forKey:@"companyName"];
+            [dic setObject:client.startTime forKey:@"startTime"];
+            [dic setObject:client.finishTime forKey:@"finishTime"];
+            [dic setObject:client.phoneNo forKey:@"phoneNumber"];
+            [dic setObject:client.Email forKey:@"email"];
+            [dic setObject:client.imageBefore forKey:@"imageBefore"];
+            [dic setObject:client.imageAfter forKey:@"imageAfter"];
+            [dic setObject:client.snowFall forKey:@"snowFall"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.hours] forKey:@"hours"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.calculated] forKey:@"calculated"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.trip] forKey:@"trip"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.contract] forKey:@"contract"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.seasonal] forKey:@"seasonal"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.sendInVoice] forKey:@"sendInVoice"];
+            [dic setObject:[NSString stringWithFormat:@"%d",client.paidInFull] forKey:@"paidInFull"];
+            
+            if (![CDate isEqualToString:client.date]) {
+                detailDic=[[NSMutableDictionary alloc]init];
+                DetailArr=[[NSMutableArray alloc]init];
+                [detailDic setObject:client.date forKey:@"date"];
+                [DetailArr addObject:dic];
+                [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                [numberOfSection addObject:detailDic];
+            }else{
+                [DetailArr addObject:dic];
+                [detailDic setObject:DetailArr forKey:@"dateDetail"];
+                [numberOfSection removeLastObject];
+                [numberOfSection addObject:detailDic];
+            }
+            CDate=client.date;
+        }
+        searchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
+
+        SortBtn.selected=NO;
+    }
+    
+    [self.OPTTableView reloadData];
 }
 
 
@@ -181,7 +341,7 @@
        HeaderLab.backgroundColor=[UIColor whiteColor];
     
     NSDateFormatter *format=[[NSDateFormatter alloc]init];
-    [format setDateFormat:@"dd/MM/yyyy"];
+    [format setDateFormat:@"MM/dd/yyyy"];
     if (isSearching) {
          HeaderLab.text=[[searchArr objectAtIndex:section]objectForKey:@"date"];
     }else{
