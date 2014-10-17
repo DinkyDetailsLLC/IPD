@@ -12,4 +12,5 @@
 @synthesize Comp_name,ContractCost,Email,SeasonalCost,State,City,phoneNo,Image,Address,TripCost,Zip,date,startTime,finishTime;
 @synthesize salt,shovel,plow,removal,hours,calculated,contract,seasonal,trip,sendInVoice,paidInFull;
 @synthesize imageAfter,imageBefore,snowFall;
+@synthesize invoice_no;
 @end

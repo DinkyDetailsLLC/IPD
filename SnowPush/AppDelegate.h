@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "EventManager.h"
+#import "MyDocument.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate,NSURLConnectionDelegate>
 {
     NSURLConnection *Connection;
@@ -19,10 +20,11 @@
 
 @property (nonatomic, strong) EventManager *eventManager;
 
+@property (strong)MyDocument* document;
+
+@property (strong)NSMetadataQuery *query;
 
 @property int DeviceHieght;
-
-
 
 +(AppDelegate*)sharedInstance;
 

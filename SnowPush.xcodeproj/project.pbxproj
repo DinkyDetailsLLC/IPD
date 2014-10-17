@@ -10,6 +10,7 @@
 		0E263DA219D9908700C7A99A /* service_Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E263DA119D9908700C7A99A /* service_Checked.png */; };
 		0E27386719EB8922005DF69A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E27386619EB8922005DF69A /* EventKit.framework */; };
 		0E27386B19EB92BE005DF69A /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E27386A19EB92BE005DF69A /* EventManager.m */; };
+		0E66222F19EFC3CF00DE9912 /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0E66222E19EFC3CF00DE9912 /* NewSnowPush.sqlite */; };
 		0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFA19D4433A00E57E67 /* DataBase.m */; };
 		0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */; };
 		0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */; };
@@ -95,7 +96,6 @@
 		0EAC854019E9396C00C45272 /* APAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC853D19E9396C00C45272 /* APAttribute.m */; };
 		0EAC854719E93A6900C45272 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC854619E93A6900C45272 /* MyDocument.m */; };
 		0EAC854B19E94E6C00C45272 /* icloudBackup.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAC854A19E94E6C00C45272 /* icloudBackup.png */; };
-		0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */; };
 		0EB8CF6119D5648100200433 /* LETTERGOTHICSTD.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */; };
 		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
 		0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */; };
@@ -117,6 +117,7 @@
 		0E27386619EB8922005DF69A /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		0E27386919EB92BE005DF69A /* EventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventManager.h; sourceTree = "<group>"; };
 		0E27386A19EB92BE005DF69A /* EventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventManager.m; sourceTree = "<group>"; };
+		0E66222E19EFC3CF00DE9912 /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
 		0EA7CCF919D4433A00E57E67 /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
 		0EA7CCFA19D4433A00E57E67 /* DataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
 		0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientInfo.h; sourceTree = "<group>"; };
@@ -233,7 +234,6 @@
 		0EAC854619E93A6900C45272 /* MyDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyDocument.m; sourceTree = "<group>"; };
 		0EAC854A19E94E6C00C45272 /* icloudBackup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icloudBackup.png; sourceTree = "<group>"; };
 		0EAC854D19E95D5A00C45272 /* SnowPush.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SnowPush.entitlements; sourceTree = "<group>"; };
-		0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
 		0EB8CF5F19D5648100200433 /* LETTERGOTHICSTD.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = LETTERGOTHICSTD.OTF; sourceTree = "<group>"; };
 		0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MYRIADPRO-COND.OTF"; sourceTree = "<group>"; };
 		0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuickNotifyBg.png; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 		0EA7CCF819D4432100E57E67 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
-				0EB8296019DA8CF7001A201F /* NewSnowPush.sqlite */,
+				0E66222E19EFC3CF00DE9912 /* NewSnowPush.sqlite */,
 				0EA7CCF919D4433A00E57E67 /* DataBase.h */,
 				0EA7CCFA19D4433A00E57E67 /* DataBase.m */,
 				0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */,
@@ -646,6 +646,7 @@
 						};
 					};
 					0EABB56E19CFFBA7001E8D1E = {
+						DevelopmentTeam = J65LBYSK7T;
 						TestTargetID = 0EABB54D19CFFBA7001E8D1E;
 					};
 				};
@@ -719,6 +720,7 @@
 				0EABB5BC19D0239E001E8D1E /* SearchBar.png in Resources */,
 				0EAA5C2519D1969C002D3E75 /* grey-dot.png in Resources */,
 				0EB8CF6B19D5923E00200433 /* line.png in Resources */,
+				0E66222F19EFC3CF00DE9912 /* NewSnowPush.sqlite in Resources */,
 				0EABB5B019D00AEC001E8D1E /* clients.png in Resources */,
 				0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */,
 				0EAA5C2319D1969C002D3E75 /* email.png in Resources */,
@@ -726,7 +728,6 @@
 				0EABB5AF19D00AEC001E8D1E /* report.png in Resources */,
 				0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */,
 				0EABB5A219D00AEC001E8D1E /* Back.png in Resources */,
-				0EB8296119DA8CF7001A201F /* NewSnowPush.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,8 +837,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -855,7 +856,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
+				PROVISIONING_PROFILE = "a3b721ed-a359-4b58-bcad-c9282b68b7f8";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -876,8 +877,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -888,7 +889,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
+				PROVISIONING_PROFILE = "a3b721ed-a359-4b58-bcad-c9282b68b7f8";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -932,6 +933,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -945,6 +948,7 @@
 				);
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -954,6 +958,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SnowPush.app/SnowPush";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -963,6 +969,7 @@
 				GCC_PREFIX_HEADER = "SnowPush/SnowPush-Prefix.pch";
 				INFOPLIST_FILE = "SnowPushTests/SnowPushTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

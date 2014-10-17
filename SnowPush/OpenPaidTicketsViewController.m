@@ -64,6 +64,7 @@
         ClientInfo *client=[AllTickets objectAtIndex:i];
        
         NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+        [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
         [dic setObject:client.date forKey:@"date"];
         [dic setObject:client.Comp_name forKey:@"companyName"];
         [dic setObject:client.startTime forKey:@"startTime"];
@@ -123,6 +124,7 @@
         ClientInfo *client=[AllTickets objectAtIndex:i];
         
         NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+        [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
         [dic setObject:client.date forKey:@"date"];
         [dic setObject:client.Comp_name forKey:@"companyName"];
         [dic setObject:client.startTime forKey:@"startTime"];
@@ -188,6 +190,7 @@
             ClientInfo *client=[AllTickets objectAtIndex:i];
             
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
             [dic setObject:client.date forKey:@"date"];
             [dic setObject:client.Comp_name forKey:@"companyName"];
             [dic setObject:client.startTime forKey:@"startTime"];
@@ -236,6 +239,7 @@
             ClientInfo *client=[AllTickets objectAtIndex:i];
             
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
             [dic setObject:client.date forKey:@"date"];
             [dic setObject:client.Comp_name forKey:@"companyName"];
             [dic setObject:client.startTime forKey:@"startTime"];
@@ -320,7 +324,7 @@
     dic=[[[numberOfSection objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];
     }
     
-    cell.InvoiceLab.text=[dic objectForKey:@"companyName"];
+    cell.InvoiceLab.text=[NSString stringWithFormat:@"Invoice %@",[dic objectForKey:@"invoice"]];
     float rs=[[dic objectForKey:@"calculated"] floatValue];
     cell.PriseLab.text=[NSString stringWithFormat:@"$%.2f",rs];
     

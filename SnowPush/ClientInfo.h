@@ -14,4 +14,7 @@
 @property int salt,shovel,plow,removal,hours,calculated,contract,seasonal,sendInVoice,paidInFull,trip;
 
 @property NSString *imageBefore,*imageAfter,*snowFall;
+
+@property NSInteger invoice_no;
+
 @end

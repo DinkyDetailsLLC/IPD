@@ -2,7 +2,7 @@
 //  EventManager.m
 //  EventKitDemo
 //
-//  Created by Dannis on 10/13/2014.
+//  Created by Dannis on 11/7/14.
 //  Copyright (c) 2014 Dannis. All rights reserved.
 //
 

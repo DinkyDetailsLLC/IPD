@@ -315,7 +315,7 @@ static sqlite3 *dbconn = nil;
                 NSString *str=[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"];
                     
                     if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
-                        NSLog(@"%@ str ",str);
+                      //  NSLog(@"%@ str ",str);
                         NSArray *arrt=[str componentsSeparatedByString:@" "];
                         NSString *ampm=[arrt objectAtIndex:1];
                         NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
@@ -330,7 +330,7 @@ static sqlite3 *dbconn = nil;
                         }
                         
                     }else if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==nextday){
-                        NSLog(@"%@ str ",str);
+                      //  NSLog(@"%@ str ",str);
                         NSArray *arrt=[str componentsSeparatedByString:@" "];
                         NSString *ampm=[arrt objectAtIndex:1];
                         NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
@@ -352,7 +352,7 @@ static sqlite3 *dbconn = nil;
                 NSString *str=[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"];
                 
                 if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==day) {
-                    NSLog(@"%@ str ",str);
+                   // NSLog(@"%@ str ",str);
                     NSArray *arrt=[str componentsSeparatedByString:@" "];
                     NSString *ampm=[arrt objectAtIndex:1];
                     NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
@@ -591,22 +591,23 @@ static sqlite3 *dbconn = nil;
         while(sqlite3_step(compiled_stmt) == SQLITE_ROW)
         {
             APElement *answer = [APElement elementWithName:@"Ticket"];
-            [answer addAttributeNamed:@"date" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,0)]]];
-            [answer addAttributeNamed:@"comp_name" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,1)]]];
-            [answer addAttributeNamed:@"start_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,2)]]];
-            [answer addAttributeNamed:@"finish_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,3)]]];
-            [answer addAttributeNamed:@"phone_num" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,4)]]];
-            [answer addAttributeNamed:@"email" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,5)]]];
-            [answer addAttributeNamed:@"image_before" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,6)]]];
-            [answer addAttributeNamed:@"image_after" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,7)]]];
-            [answer addAttributeNamed:@"snow_fall" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,8)]]];
-            [answer addAttributeNamed:@"hours" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,9)]]];
-            [answer addAttributeNamed:@"calculated" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,10)]]];
-            [answer addAttributeNamed:@"trip" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,11)]]];
-            [answer addAttributeNamed:@"contract" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,12)]]];
-            [answer addAttributeNamed:@"seasonal" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,13)]]];
-            [answer addAttributeNamed:@"send_invoice" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,14)]]];
-            [answer addAttributeNamed:@"paid_in_full" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,15)]]];
+            [answer addAttributeNamed:@"invoice" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,0)]]];
+            [answer addAttributeNamed:@"date" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,1)]]];
+            [answer addAttributeNamed:@"comp_name" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,2)]]];
+            [answer addAttributeNamed:@"start_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,3)]]];
+            [answer addAttributeNamed:@"finish_time" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,4)]]];
+            [answer addAttributeNamed:@"phone_num" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,5)]]];
+            [answer addAttributeNamed:@"email" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,6)]]];
+            [answer addAttributeNamed:@"image_before" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,7)]]];
+            [answer addAttributeNamed:@"image_after" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,8)]]];
+            [answer addAttributeNamed:@"snow_fall" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,9)]]];
+            [answer addAttributeNamed:@"hours" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,10)]]];
+            [answer addAttributeNamed:@"calculated" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,11)]]];
+            [answer addAttributeNamed:@"trip" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,12)]]];
+            [answer addAttributeNamed:@"contract" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,13)]]];
+            [answer addAttributeNamed:@"seasonal" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,14)]]];
+            [answer addAttributeNamed:@"send_invoice" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,15)]]];
+            [answer addAttributeNamed:@"paid_in_full" withValue:[NSString stringWithFormat:@"%@",[NSString stringWithUTF8String:(char *)sqlite3_column_text(compiled_stmt,16)]]];
             [fullscore addChild:answer];
             
         }

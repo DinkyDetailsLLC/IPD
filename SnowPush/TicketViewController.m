@@ -67,6 +67,7 @@
            
             ClientInfo *client=[AllTickets objectAtIndex:i];
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
             [dic setObject:client.date forKey:@"date"];
             [dic setObject:client.Comp_name forKey:@"companyName"];
             [dic setObject:client.startTime forKey:@"startTime"];
@@ -124,6 +125,7 @@
           
             ClientInfo *client=[AllTickets objectAtIndex:i];
             NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+            [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
             [dic setObject:client.date forKey:@"date"];
             [dic setObject:client.Comp_name forKey:@"companyName"];
             [dic setObject:client.startTime forKey:@"startTime"];
@@ -191,6 +193,7 @@
                 
                 ClientInfo *client=[AllTickets objectAtIndex:i];
                 NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
                 [dic setObject:client.date forKey:@"date"];
                 [dic setObject:client.Comp_name forKey:@"companyName"];
                 [dic setObject:client.startTime forKey:@"startTime"];
@@ -248,6 +251,7 @@
                 
                 ClientInfo *client=[AllTickets objectAtIndex:i];
                 NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
                 [dic setObject:client.date forKey:@"date"];
                 [dic setObject:client.Comp_name forKey:@"companyName"];
                 [dic setObject:client.startTime forKey:@"startTime"];
@@ -303,6 +307,7 @@
                 
                 ClientInfo *client=[AllTickets objectAtIndex:i];
                 NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
                 [dic setObject:client.date forKey:@"date"];
                 [dic setObject:client.Comp_name forKey:@"companyName"];
                 [dic setObject:client.startTime forKey:@"startTime"];
@@ -360,6 +365,7 @@
                 
                 ClientInfo *client=[AllTickets objectAtIndex:i];
                 NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
+                [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
                 [dic setObject:client.date forKey:@"date"];
                 [dic setObject:client.Comp_name forKey:@"companyName"];
                 [dic setObject:client.startTime forKey:@"startTime"];
@@ -441,13 +447,13 @@
              dic=[[[SearchArr objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];
         }else{
             dic=[[[numberOfSection objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];}
-        
-        cell.InvoiceLab.text=[dic objectForKey:@"companyName"];
+        //[dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
+        cell.InvoiceLab.text=[NSString stringWithFormat:@"Invoice %@",[dic objectForKey:@"invoice"]];
         cell.DateLab.text=[dic objectForKey:@"date"];
         float rs=[[dic objectForKey:@"calculated"]floatValue];
         cell.PriseLab.text=[NSString stringWithFormat:@"$%.2f",rs];
         cell.InvoiceLab2.hidden=YES;
-        
+         [cell.CircleButton setImage:[UIImage imageNamed:@"orange-dot.png"] forState:UIControlStateNormal];
         if ([[dic objectForKey:@"paidInFull"]integerValue]==1) {
             
             [cell.CircleButton setImage:[UIImage imageNamed:@"green-dot.png"] forState:UIControlStateNormal];
@@ -463,7 +469,7 @@
             dic=[[[numberOfSection objectAtIndex:indexPath.section]objectForKey:@"dateDetail"]objectAtIndex:indexPath.row];}
 
         cell.InvoiceLab.hidden=YES;
-        cell.InvoiceLab2.text=[dic objectForKey:@"companyName"];
+        cell.InvoiceLab2.text=[NSString stringWithFormat:@"Invoice %@",[dic objectForKey:@"invoice"]];
         cell.DateLab.text=[dic objectForKey:@"date"];
         float rs=[[dic objectForKey:@"calculated"]floatValue];
         cell.PriseLab.text=[NSString stringWithFormat:@"$%.2f",rs];
