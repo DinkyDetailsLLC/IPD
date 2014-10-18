@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "EventManager.h"
+
 #import "MyDocument.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate,NSURLConnectionDelegate>
 {
@@ -18,13 +18,15 @@
 }
 @property (strong, nonatomic) UIWindow *window;
 
-@property (nonatomic, strong) EventManager *eventManager;
+
 
 @property (strong)MyDocument* document;
 
 @property (strong)NSMetadataQuery *query;
 
 @property int DeviceHieght;
+
+@property NSString* UserCurrentAdd;
 
 +(AppDelegate*)sharedInstance;
 

@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ClientDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UITextFieldDelegate>
+#import <MapKit/MapKit.h>
+@interface ClientDetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate,UITextFieldDelegate,MKMapViewDelegate>
 -(IBAction)ClientDetailBackBtnClicked:(id)sender;
 -(IBAction)ClientReportsViewPopUp:(id)sender;
 @property (weak, nonatomic) IBOutlet UIView *ClientReportView;
@@ -20,6 +20,8 @@
 -(IBAction)PaidTicketsBtn:(id)sender;
 - (IBAction)MapBtnClicked:(id)sender;
 - (IBAction)NotifyAddBtnClicked:(id)sender;
+@property (strong, nonatomic) NSMutableDictionary *placeDictionary;
+
 @property (weak, nonatomic) IBOutlet UIView *NotifyView;
 @property (weak, nonatomic) IBOutlet UITableView *NotifyTableView;
 

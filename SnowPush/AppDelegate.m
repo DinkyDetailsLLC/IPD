@@ -11,10 +11,10 @@
 @implementation AppDelegate
 
 @synthesize DeviceHieght;
-@synthesize eventManager;
+
 @synthesize document = _document;
 @synthesize query = _query;
-
+@synthesize UserCurrentAdd;
 - (void)loadData:(NSMetadataQuery *)query {
     
     if ([query resultCount] == 1) {
@@ -157,7 +157,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     self.eventManager = [[EventManager alloc] init];
+//     self.eventManager = [[EventManager alloc] init];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -228,7 +228,7 @@
         clientI.plow=[[attributeDict objectForKey:@"plow"]intValue];
         clientI.removal=[[attributeDict objectForKey:@"removal"]intValue];
         
-        BOOL cl=[[DataBase getSharedInstance]IsclientAvailble:clientI.Comp_name];
+        BOOL cl=[[DataBase getSharedInstance]IsclientAvailble:clientI];
         if (cl==NO) {
             BOOL insert=[[DataBase getSharedInstance]SaveClientDetail:clientI];
         }

@@ -350,7 +350,7 @@ static sqlite3_stmt *statement = nil;
 }
 
 
--(BOOL)IsclientAvailble:(NSString*)Client
+-(BOOL)IsclientAvailble:(ClientInfo*)Client
 {
     //[self findDBPath];
     
@@ -362,7 +362,7 @@ static sqlite3_stmt *statement = nil;
     const char *dbpath=[databasepath UTF8String];
     //NSLog(@"DBPATH:%s",dbpath);
     if (sqlite3_open(dbpath, &database)==SQLITE_OK) {
-        NSString *selectSQL=[NSString stringWithFormat:@"select * from ClientDetail where Comp_Name=\"%@\"",Client];
+        NSString *selectSQL=[NSString stringWithFormat:@"select * from ClientDetail where Comp_Name=\"%@\" and email=\"%@\"",Client.Comp_name,Client.Email];
         const char *select_stmt=[selectSQL UTF8String];
         // NSLog(@"%i",sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL));
         int res = sqlite3_prepare_v2(database, select_stmt, -1, &statement, NULL);
@@ -771,7 +771,7 @@ static sqlite3_stmt *statement = nil;
     
 }
 
--(BOOL)updateTicketDetail:(ClientInfo*)ticket whereCompName:(NSString*)CompName andPaid:(int)paid andStartTime:(NSString*)start andEndTime:(NSString*)end
+-(BOOL)updateTicketDetail:(ClientInfo*)ticket
 {
     BOOL isSuccess;
     
@@ -794,7 +794,7 @@ static sqlite3_stmt *statement = nil;
         /* CREATE TABLE "NewTicket" ("date" TEXT, "comp_name" TEXT, "start_time" TEXT, "finish_time" TEXT, "phone_num" TEXT, "email" TEXT, "image_before" TEXT, "image_after" TEXT, "snow_fall" TEXT, "hours" TEXT, "calculated" TEXT, "trip" INTEGER, "contract" INTEGER, "seasonal" INTEGER, "send_invoice" INTEGER, "paid_in_full" INTEGER)*/
         
         
-        NSString *querySQL = [NSString stringWithFormat:@"update NewTicket set date=\"%@\",comp_name=\"%@\",start_time=\"%@\",finish_time=\"%@\",phone_num=\"%@\",email=\"%@\",image_before=\"%@\",image_after=\"%@\",snow_fall=\"%@\",hours=%d,calculated=%d,trip=%d,contract=%d,seasonal=%d,send_invoice=%d,paid_in_full=%d where Comp_Name=\"%@\" and paid_in_full=%d and start_time=\"%@\" and finish_time=\"%@\"",ticket.date,ticket.Comp_name,ticket.startTime,ticket.finishTime,ticket.phoneNo,ticket.Email,ticket.imageBefore,ticket.imageAfter,ticket.snowFall,ticket.hours,ticket.calculated,ticket.trip,ticket.contract,ticket.seasonal,ticket.sendInVoice,ticket.paidInFull,CompName,paid,start,end];
+        NSString *querySQL = [NSString stringWithFormat:@"update NewTicket set date=\"%@\",comp_name=\"%@\",start_time=\"%@\",finish_time=\"%@\",phone_num=\"%@\",email=\"%@\",image_before=\"%@\",image_after=\"%@\",snow_fall=\"%@\",hours=%d,calculated=%d,trip=%d,contract=%d,seasonal=%d,send_invoice=%d,paid_in_full=%d where invoice_no=%ld",ticket.date,ticket.Comp_name,ticket.startTime,ticket.finishTime,ticket.phoneNo,ticket.Email,ticket.imageBefore,ticket.imageAfter,ticket.snowFall,ticket.hours,ticket.calculated,ticket.trip,ticket.contract,ticket.seasonal,ticket.sendInVoice,ticket.paidInFull,(long)ticket.invoice_no];
         
         //NSLog(@"%@",querySQL);
         

@@ -293,12 +293,19 @@
        Clientdetail.Image=savedImagePath;
          }
         
+        BOOL checkC=[[DataBase getSharedInstance]IsclientAvailble:Clientdetail];
+        if (checkC==YES) {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Client is already available" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else{
         BOOL yes=[[DataBase getSharedInstance]SaveClientDetail:Clientdetail];
         if (yes==YES) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Save client detail" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             alert.tag=1;
             [alert show];
-        }     
+            }
+        }
     }
 }
 

@@ -64,7 +64,7 @@
         ClientInfo *client=[AllTickets objectAtIndex:i];
        
         NSMutableDictionary *dic=[[NSMutableDictionary alloc]init];
-        [dic setObject:[NSString stringWithFormat:@"%i",client.invoice_no] forKey:@"invoice"];
+        [dic setObject:[NSString stringWithFormat:@"%li",(long)client.invoice_no] forKey:@"invoice"];
         [dic setObject:client.date forKey:@"date"];
         [dic setObject:client.Comp_name forKey:@"companyName"];
         [dic setObject:client.startTime forKey:@"startTime"];
@@ -158,7 +158,7 @@
         CDate=client.date;
     }
     searchArr=[[NSMutableArray alloc]initWithArray:numberOfSection];
-
+    [OPTTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

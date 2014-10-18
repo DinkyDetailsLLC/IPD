@@ -38,7 +38,7 @@ static sqlite3 *dbconn = nil;
     // my api === 131d40d9ea437c31
     
     //client afpi == a988d453ebe759ad
-    
+     // self.eventManager = [[EventManager alloc] init];
     //http://api.wunderground.com/api/a988d453ebe759ad/hourly/planner/conditions/forecast10day/q/-33.957550,151.230850.json
     //http://api.wunderground.com/api/a988d453ebe759ad/hourly7day/conditions/q/-33.957550,151.230850.json
     
@@ -92,6 +92,7 @@ static sqlite3 *dbconn = nil;
         
         lineLab1.frame=CGRectMake(6, 78, 307, 1);
         lineLab2.frame=CGRectMake(6, 152, 307, 1);
+    
     }
     
     WetherTableView.allowsSelection=NO;
@@ -167,6 +168,20 @@ static sqlite3 *dbconn = nil;
         self.Longitude = [NSString stringWithFormat:@"%f", location.coordinate.longitude];
         
         }
+    
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if(placemarks && placemarks.count > 0)
+         {
+             CLPlacemark *placemark= [placemarks objectAtIndex:0];
+             // address defined in .h file
+            [AppDelegate sharedInstance].UserCurrentAdd = [NSString stringWithFormat:@"%@, %@, %@, %@", [placemark thoroughfare], [placemark locality], [placemark administrativeArea], [placemark country]];
+             NSLog(@"New Address Is:%@", [AppDelegate sharedInstance].UserCurrentAdd);
+            
+         }
+     }];
+    
     [manager stopUpdatingLocation];
     
     NSLog(@"Resolving the Address");
@@ -331,18 +346,18 @@ static sqlite3 *dbconn = nil;
                         
                     }else if ([[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"]objectForKey:@"mday"]integerValue]==nextday){
                       //  NSLog(@"%@ str ",str);
-                        NSArray *arrt=[str componentsSeparatedByString:@" "];
-                        NSString *ampm=[arrt objectAtIndex:1];
-                        NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
-                        int hour=[[HMArr objectAtIndex:0]intValue];
-                        if ((hour<=4 || hour==12) && ([ampm isEqualToString:@"AM"] || [ampm isEqualToString:@"am"] )) {
+//                        NSArray *arrt=[str componentsSeparatedByString:@" "];
+//                        NSString *ampm=[arrt objectAtIndex:1];
+//                        NSArray *HMArr=[[arrt objectAtIndex:0] componentsSeparatedByString:@":"];
+//                        int hour=[[HMArr objectAtIndex:0]intValue];
+//                        if ((hour<=4 || hour==12) && ([ampm isEqualToString:@"AM"] || [ampm isEqualToString:@"am"] )) {
                             [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"FCTTIME"] objectForKey:@"civil"] forKey:@"time"];
                             [dic setObject:[[[HArr objectAtIndex:i]objectForKey:@"FCTTIME"] objectForKey:@"weekday_name"] forKey:@"weekday"];
                             [dic setObject:[[[HArr objectAtIndex:i] objectForKey:@"temp"] objectForKey:@"english"] forKey:@"tempF"];
                             [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon"] forKey:@"icon"];
                             [dic setObject:[[HArr objectAtIndex:i] objectForKey:@"icon_url"] forKey:@"icon_url"];
                             [HourlyOfToday addObject:dic];
-                        }
+                     //   }
                     }else{
                         break;
                     }
@@ -427,6 +442,12 @@ static sqlite3 *dbconn = nil;
     HourlyScrollView.scrollEnabled=YES;
     HourlyScrollView.userInteractionEnabled=YES;
     [self.view addSubview:HourlyScrollView];
+    
+    if ([[AppDelegate sharedInstance]DeviceHieght]==480) {
+        HourlyScrollView.frame=CGRectMake(11, 81, 298, 76);
+        HourlyScrollView.backgroundColor=[UIColor whiteColor];
+    }
+    
     for (int i=0; i<HourlyOfToday.count; i++) {
         
         NSDictionary *dic=[HourlyOfToday objectAtIndex:i];

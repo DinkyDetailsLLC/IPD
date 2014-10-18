@@ -39,7 +39,7 @@ UINavigationControllerDelegate
 @synthesize NewTicketScrollView,imageAfterLab,imageBeforeLab;
 @synthesize NewTicketInfo;
 @synthesize SelectTimeLab,SelectTimeSetBtn,SelectTimeView;
-@synthesize EditTicketTag,EditTicketInfo;
+@synthesize EditTicketTag,EditTicketInfo,eventManager;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,7 +52,7 @@ UINavigationControllerDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.eventManager = [[EventManager alloc] init];
     dateF=[[NSDateFormatter alloc]init];
     [dateF setDateFormat:@"MM.dd.yyyy HH:mm"];
      [[NSUserDefaults standardUserDefaults]setObject:@"not paid" forKey:@"Paid"];
@@ -507,9 +507,9 @@ UINavigationControllerDelegate
             }
             
         
+            addNewTicket.invoice_no=[[EditTicketInfo objectForKey:@"invoice"]integerValue];
             
-            
-            BOOL yes=[[DataBase getSharedInstance]updateTicketDetail:addNewTicket whereCompName:[EditTicketInfo objectForKey:@"companyName"] andPaid:[[EditTicketInfo objectForKey:@"paidInFull"] intValue] andStartTime:[EditTicketInfo objectForKey:@"startTime"] andEndTime:[EditTicketInfo objectForKey:@"finishTime"]];
+            BOOL yes=[[DataBase getSharedInstance]updateTicketDetail:addNewTicket];
             if (yes==YES) {
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"Ticket Updated successfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 alert.tag=1;
@@ -552,9 +552,7 @@ UINavigationControllerDelegate
         
                 [ImageArr addObject:AfterDic];
             }
-        
-        
-        
+            
         BOOL yes=[[DataBase getSharedInstance]SaveNewTicket:addNewTicket];
         if (yes==YES) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"New Ticket Created" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -569,9 +567,7 @@ UINavigationControllerDelegate
 
 -(void)setValueInCalculated
 {
-   
-    
-    if (tripBtn.selected==YES) {
+     if (tripBtn.selected==YES) {
         CalculatedTf.text=NewTicketInfo.TripCost;
     }else if (ContractBtn.selected==YES){
         int newValue=HoursTf.text.intValue*NewTicketInfo.ContractCost.intValue;
@@ -1108,13 +1104,13 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 - (IBAction)saveEvent {
     // Check if a title was typed in for the event.
     
-    if ([AppDelegate sharedInstance].eventManager.selectedEventIdentifier.length > 0) {
-        [[AppDelegate sharedInstance].eventManager deleteEventWithIdentifier:[AppDelegate sharedInstance].eventManager.selectedEventIdentifier];
-        [AppDelegate sharedInstance].eventManager.selectedEventIdentifier = @"";
+    if (self.eventManager.selectedEventIdentifier.length > 0) {
+        [self.eventManager deleteEventWithIdentifier:self.eventManager.selectedEventIdentifier];
+        self.eventManager.selectedEventIdentifier = @"";
     }
     
     // Create a new event object.
-    EKEvent *event = [EKEvent eventWithEventStore:[AppDelegate sharedInstance].eventManager.eventStore];
+    EKEvent *event = [EKEvent eventWithEventStore:self.eventManager.eventStore];
     
     // Set the event title.
     event.title = CompNameTf.text;
@@ -1140,8 +1136,13 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     NSDateFormatter *tempFormatter = [[NSDateFormatter alloc]init];
     [tempFormatter setDateFormat:@"MM.dd.yyyy HH:mm"];
     // Set its calendar.
-       event.calendar = [[AppDelegate sharedInstance].eventManager.eventStore calendarWithIdentifier:[AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier];
+       event.calendar = [self.eventManager.eventStore calendarWithIdentifier:self.eventManager.selectedCalendarIdentifier];
+    NSString *sdate=[DateTf.text stringByReplacingOccurrencesOfString:@"/" withString:@"."];
+    NSString *start=[NSString stringWithFormat:@"%@ %@",sdate,StartTime.text];
+    NSString *end=[NSString stringWithFormat:@"%@ %@",sdate,FinshTimeTf.text];
     
+    StartdateTime=[tempFormatter dateFromString:start];
+    EndDateTime=[tempFormatter dateFromString:end];
     // Set the start and end dates to the event.
     event.startDate = StartdateTime;
     event.endDate = EndDateTime;
@@ -1206,7 +1207,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
     // Save and commit the event.
     NSError *error;
-    if ([[AppDelegate sharedInstance].eventManager.eventStore saveEvent:event span:EKSpanFutureEvents commit:YES error:&error]) {
+    if ([self.eventManager.eventStore saveEvent:event span:EKSpanFutureEvents commit:YES error:&error]) {
         // Call the delegate method to notify the caller class (the ViewController class) that the event was saved.
         //[self.delegate eventWasSuccessfullySaved];
         
@@ -1228,21 +1229,21 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
     // Create a new calendar.
     EKCalendar *calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent
-                                                  eventStore:[AppDelegate sharedInstance].eventManager.eventStore];
+                                                  eventStore:self.eventManager.eventStore];
     
     // Set the calendar title.
     calendar.title = @"SnowPush";
     
     // Find the proper source type value.
     
-    NSArray *AllCal=[[AppDelegate sharedInstance].eventManager getLocalEventCalendars];
+    NSArray *AllCal=[self.eventManager getLocalEventCalendars];
     
     
     for (int i=0; i<AllCal.count; i++) {
         EKCalendar *check=[AllCal objectAtIndex:i];
         if ([check.title isEqualToString:calendar.title]) {
             CalA=YES;
-             [AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier=check.calendarIdentifier;
+             self.eventManager.selectedCalendarIdentifier=check.calendarIdentifier;
             break;
         }
     }
@@ -1251,8 +1252,8 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         
     
     
-        for (int i=0; i<[AppDelegate sharedInstance].eventManager.eventStore.sources.count; i++) {
-            EKSource *source = (EKSource *)[[AppDelegate sharedInstance].eventManager.eventStore.sources objectAtIndex:i];
+        for (int i=0; i<self.eventManager.eventStore.sources.count; i++) {
+            EKSource *source = (EKSource *)[self.eventManager.eventStore.sources objectAtIndex:i];
             EKSourceType currentSourceType = source.sourceType;
         
             if (currentSourceType == EKSourceTypeLocal) {
@@ -1264,7 +1265,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
     // Save and commit the calendar.
         NSError *error;
-        [[AppDelegate sharedInstance].eventManager.eventStore saveCalendar:calendar commit:YES error:&error];
+        [self.eventManager.eventStore saveCalendar:calendar commit:YES error:&error];
     
     // If no error occurs then turn the editing mode off, store the new calendar identifier and reload the calendars.
         if (error == nil) {
@@ -1272,8 +1273,8 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
        // [self.tblCalendars setEditing:NO animated:YES];
         
         // Store the calendar identifier.
-            [[AppDelegate sharedInstance].eventManager saveCustomCalendarIdentifier:calendar.calendarIdentifier];
-            [AppDelegate sharedInstance].eventManager.selectedCalendarIdentifier=calendar.calendarIdentifier;
+            [self.eventManager saveCustomCalendarIdentifier:calendar.calendarIdentifier];
+            self.eventManager.selectedCalendarIdentifier=calendar.calendarIdentifier;
         // Reload all calendars.
        // [self loadEventCalendars];
         }
@@ -1288,10 +1289,10 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 }
 
 -(void)requestAccessToEvents{
-    [[AppDelegate sharedInstance].eventManager.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+    [self.eventManager.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
         if (error == nil) {
             // Store the returned granted value.
-            [AppDelegate sharedInstance].eventManager.eventsAccessGranted = granted;
+            self.eventManager.eventsAccessGranted = granted;
         }
         else{
             // In case of error, just log its description to the debugger.

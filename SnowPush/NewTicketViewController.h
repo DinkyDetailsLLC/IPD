@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "ImageEditor.h"
 #import <EventKit/EventKit.h>
+#import "EventManager.h"
 @interface NewTicketViewController : UIViewController<UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 
 {
     UIDatePicker *timePicker;
 }
-
+@property (nonatomic, strong) EventManager *eventManager;
 @property (weak, nonatomic) IBOutlet UITextField *DateTf;
 
 @property (weak, nonatomic) IBOutlet UITextField *CompNameTf;

@@ -1,9 +1,9 @@
 //
 //  EventManager.m
-//  EventKitDemo
+//  SnowPush
 //
-//  Created by Dannis on 11/7/14.
-//  Copyright (c) 2014 Dannis. All rights reserved.
+//  Created by Dannis on 10/15/14.
+//  Copyright (c) Dannis. All rights reserved.
 //
 
 #import "EventManager.h"
@@ -95,7 +95,7 @@
 
 
 -(void)saveCustomCalendarIdentifier:(NSString *)identifier{
-    [self.arrCustomCalendarIdentifiers addObject:identifier];
+    [self.arrCustomCalendarIdentifiers addObject:[identifier mutableCopy]];
     
     [[NSUserDefaults standardUserDefaults] setObject:self.arrCustomCalendarIdentifiers forKey:@"eventkit_cal_identifiers"];
 }

@@ -1,9 +1,9 @@
 //
 //  EventManager.h
-//  EventKitDemo..
+//  SnowPush
 //
-//  Created by Dannis on 11/7/14.
-//  Copyright (c) 2014 Dannis. All rights reserved.
+//  Created by Dannis on 10/15/14.
+//  Copyright (c) Dannis. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

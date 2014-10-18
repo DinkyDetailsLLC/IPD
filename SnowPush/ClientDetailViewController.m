@@ -22,7 +22,10 @@ UINavigationControllerDelegate
     NSMutableArray *NewNotifyArr;
     NSMutableArray *ImageCountArr;
     NSMutableDictionary *PlaceDic;
+     CLLocationCoordinate2D userCord;
+    NSString *DestAdd;
 }
+@property (strong, nonatomic) CLLocation *selectedLocation;
 @end
 
 @implementation ClientDetailViewController
@@ -96,6 +99,8 @@ UINavigationControllerDelegate
     
     
     AddressLab.text=[NSString stringWithFormat:@"%@ \n %@,%@ %@",SingleClientDetail.Address,SingleClientDetail.City,SingleClientDetail.State,SingleClientDetail.Zip];
+    
+    DestAdd=[NSString stringWithFormat:@"%@, %@, %@",SingleClientDetail.Address,SingleClientDetail.City,SingleClientDetail.State];
     
     PlaceDic=[[NSMutableDictionary alloc]init];
     [PlaceDic setValue:SingleClientDetail.Address forKey:@"Street"];
@@ -299,7 +304,7 @@ UINavigationControllerDelegate
          RemovalImageView.frame=CGRectMake(148, 339, 25, 25);
         }
     }
-    
+    [self updateMaps];
     // Do any additional setup after loading the view.
 }
 
@@ -359,9 +364,17 @@ UINavigationControllerDelegate
 
 - (IBAction)MapBtnClicked:(id)sender {
     
-    MapViewController *mapView=[self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
-    mapView.placeDictionary=[NSMutableDictionary dictionaryWithDictionary:PlaceDic];
-    [self.navigationController pushViewController:mapView animated:NO];
+  //  http://maps.apple.com/?daddr=San+Francisco,+CA&saddr=cupertino
+    
+    NSString *SourceAdd=[[[AppDelegate sharedInstance]UserCurrentAdd] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    DestAdd=[DestAdd stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSString *mapStr=[NSString stringWithFormat:@"http://maps.apple.com/?daddr=%@&saddr=%@",DestAdd,SourceAdd];
+    NSURL *mapURL=[NSURL URLWithString:mapStr];
+    [[UIApplication sharedApplication]openURL:mapURL];
+    
+//    MapViewController *mapView=[self.storyboard instantiateViewControllerWithIdentifier:@"MapViewController"];
+//    mapView.placeDictionary=[NSMutableDictionary dictionaryWithDictionary:PlaceDic];
+//    [self.navigationController pushViewController:mapView animated:NO];
 }
 
 - (IBAction)NotifyAddBtnClicked:(id)sender {
@@ -561,6 +574,87 @@ UINavigationControllerDelegate
 	}
     
 	[self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+#pragma mark - goto map
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    userCord=userLocation.location.coordinate;
+    //[MyMapVIew setCenterCoordinate:mapView.userLocation.location.coordinate animated:YES];
+}
+
+- (void)updateMaps {
+    //6
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder geocodeAddressDictionary:PlaceDic completionHandler:^(NSArray *placemarks, NSError *error) {
+        if([placemarks count]) {
+            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+            CLLocation *location = placemark.location;
+            CLLocationCoordinate2D coordinate = location.coordinate;
+            NSLog(@"%@",placemarks);
+//            for (id<MKAnnotation> annotation in self.MyMapVIew.annotations)
+//            {
+//                // NSLog(@" in for annotation ");
+//                if ([annotation isKindOfClass:[MapPoint class]])
+//                {
+//                    //   NSLog(@"in if annotation");
+//                    [self.MyMapVIew removeAnnotation:annotation];
+//                }
+//            }
+         //   MapPoint *placeObject = [[MapPoint alloc] initWithName:[NSString stringWithFormat:@"%@",[self.placeDictionary objectForKey:@"Street"]] address:nil coordinate:coordinate];
+          //  [self.MyMapVIew addAnnotation:placeObject];
+            
+//            MKPlacemark *destItem=[[MKPlacemark alloc]initWithPlacemark:placemark];
+//            
+//            MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+//            request.source = [MKMapItem mapItemForCurrentLocation];
+//            request.transportType = MKDirectionsTransportTypeAny;
+//            request.destination = [[MKMapItem alloc]initWithPlacemark:destItem];
+//            request.requestsAlternateRoutes = YES;
+//            
+//            
+//            MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
+//            // __block typeof(self) weakSelf = self;
+//            [directions calculateDirectionsWithCompletionHandler:
+//             ^(MKDirectionsResponse *response, NSError *error) {
+//                 
+//                 //stop loading animation here
+//                 
+//                 if (error) {
+//                     NSLog(@"Error is %@",error);
+//                 } else {
+//                     //do something about the response, like draw it on map
+//                     MKRoute *route = [response.routes firstObject];
+//                     //[self.MyMapVIew addOverlay:route.polyline level:MKOverlayLevelAboveRoads];
+//                 }
+//             }];
+//            
+//            
+//            //            MKMapPoint *PointArray=malloc(sizeof(CLLocationCoordinate2D)*2);
+//            //            PointArray[0]=MKMapPointForCoordinate(userCord);
+//            //            PointArray[1]=MKMapPointForCoordinate(coordinate);
+//            //
+//            //            routeLine=[MKPolyline polylineWithPoints:PointArray count:2];
+//            //
+//            //            free(PointArray);
+//            //            [MyMapVIew addOverlay:routeLine level:MKOverlayLevelAboveRoads];
+//            
+//            MKCoordinateRegion region;
+//            region.center.latitude=(userCord.latitude+coordinate.latitude)/2;
+//            region.center.longitude=(userCord.longitude+coordinate.longitude)/2;
+            //  region.span.latitudeDelta=userCord.latitude-coordinate.latitude;
+            
+            //  [self.MyMapVIew setRegion:region];
+            
+            
+            //  [self.MyMapVIew setCenterCoordinate:coordinate animated:YES];
+        } else {
+            NSLog(@"error");
+        }
+    }];
+    
 }
 
 

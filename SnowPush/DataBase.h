@@ -29,7 +29,7 @@
 -(BOOL)updateClientDetail:(ClientInfo*)client whereCompName:(NSString*)CompName;
 
 -(BOOL)deleteClientFromClientsList:(ClientInfo*)Client;
--(BOOL)IsclientAvailble:(NSString*)Client;
+-(BOOL)IsclientAvailble:(ClientInfo*)Client;
 
 #pragma mark - new ticket
 
@@ -51,7 +51,7 @@
 
 
 
--(BOOL)updateTicketDetail:(ClientInfo*)ticket whereCompName:(NSString*)CompName andPaid:(int)paid andStartTime:(NSString*)start andEndTime:(NSString*)end;
+-(BOOL)updateTicketDetail:(ClientInfo*)ticket;
 
 -(BOOL)IsTicketAvailable:(NSInteger)invoice;
 
