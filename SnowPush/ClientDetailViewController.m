@@ -131,8 +131,11 @@ UINavigationControllerDelegate
     paidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     NewTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     TicketsLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    ClientDetailImageView.image=[self loadImage:SingleClientDetail.Image];
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",SingleClientDetail.Image]];
+
+    ClientDetailImageView.image=[self loadImage:filePath];
     ClientDetailImageView.layer.borderColor=[UIColor whiteColor].CGColor;
     ClientDetailImageView.layer.borderWidth=4;
     ClientDetailImageView.layer.masksToBounds=YES;

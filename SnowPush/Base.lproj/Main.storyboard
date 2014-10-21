@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="CGh-2G-SIn">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
@@ -225,11 +226,13 @@
                         <outlet property="ReportImageView" destination="21X-8s-QNa" id="lUv-mw-beF"/>
                         <outlet property="ReportLab" destination="S6z-bP-1AD" id="Y8f-vF-odW"/>
                         <outlet property="ReportView" destination="10Z-jf-nTk" id="8p5-XD-enJ"/>
+                        <outlet property="ScrollsView" destination="UEf-7y-YCL" id="WGz-Iv-RfY"/>
                         <outlet property="TodaysDateLab" destination="88D-Hb-lkA" id="bJ8-OI-0Ar"/>
                         <outlet property="ViewAllTicketBtn" destination="xxc-0C-bM3" id="bLt-ry-TrT"/>
                         <outlet property="ViewOpenTicketBtn" destination="fKb-LY-ZcK" id="ex3-OX-boq"/>
                         <outlet property="ViewPaidTicketBtn" destination="PRH-mh-umK" id="Sab-pj-lu7"/>
                         <outlet property="WetherTableView" destination="Y3S-jf-4lw" id="pPL-tK-hlG"/>
+                        <outlet property="iCloudBtn" destination="J2j-I9-SaS" id="rQY-tj-rNU"/>
                         <outlet property="lineLab1" destination="aay-cN-dcJ" id="gfd-SI-Tpl"/>
                         <outlet property="lineLab2" destination="cdf-km-b56" id="kI5-Q6-YDj"/>
                         <outlet property="reportBtn" destination="7aQ-UK-W9R" id="oPS-MZ-8Fm"/>

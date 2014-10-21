@@ -2,8 +2,8 @@
 //  EventManager.m
 //  SnowPush
 //
-//  Created by Dannis on 10/15/14.
-//  Copyright (c) Dannis. All rights reserved.
+//  Created by Dannis on 10/17/14.
+//  Copyright (c) 2014 Dannis. All rights reserved.
 //
 
 #import "EventManager.h"
@@ -80,12 +80,14 @@
 #pragma mark - Private method implementation
 
 -(NSArray *)getLocalEventCalendars{
+    
+   // EKSource *defaultSource = [self.eventStore defaultCalendarForNewEvents].source;
     NSArray *allCalendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
     NSMutableArray *localCalendars = [[NSMutableArray alloc] init];
     
     for (int i=0; i<allCalendars.count; i++) {
         EKCalendar *currentCalendar = [allCalendars objectAtIndex:i];
-        if (currentCalendar.type == EKCalendarTypeLocal) {
+        if (currentCalendar.type == EKCalendarTypeCalDAV) {
             [localCalendars addObject:currentCalendar];
         }
     }
@@ -95,7 +97,7 @@
 
 
 -(void)saveCustomCalendarIdentifier:(NSString *)identifier{
-    [self.arrCustomCalendarIdentifiers addObject:[identifier mutableCopy]];
+    [[self.arrCustomCalendarIdentifiers mutableCopy] addObject:[identifier mutableCopy]];
     
     [[NSUserDefaults standardUserDefaults] setObject:self.arrCustomCalendarIdentifiers forKey:@"eventkit_cal_identifiers"];
 }

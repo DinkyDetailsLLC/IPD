@@ -10,4 +10,5 @@
 
 @interface MyDocument : UIDocument
  @property (strong) NSString *xmlContent;
+
 @end

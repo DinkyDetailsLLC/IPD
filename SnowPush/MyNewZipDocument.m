@@ -1,24 +1,23 @@
 //
-//  MyDocument.m
+//  MyNewZipDocument.m
 //  SnowPush
 //
-//  Created by Dannis on 10/11/14.
+//  Created by Dannis on 10/20/14.
 //  Copyright (c) 2014 Dannis. All rights reserved.
 //
 
-#import "MyDocument.h"
+//Minor issues with getting things to sync.. Found this Zip in/out for iCloud which seems to solve some of my issues. 
 
-@implementation MyDocument
-@synthesize xmlContent;
+#import "MyNewZipDocument.h"
+
+@implementation MyNewZipDocument
+@synthesize ZipDataContent;
 
 - (BOOL)loadFromContents:(id)contents ofType:(NSString *)typeName error:(NSError **)outError
 {
     // NSLog(@"* ---> typename: %@",typeName);
-    self.xmlContent = [[NSString alloc]
-                       initWithBytes:[contents bytes]
-                       length:[contents length]
-                       encoding:NSUTF8StringEncoding];
-   
+    self.ZipDataContent = [NSData dataWithBytes:[contents bytes] length:[contents length]];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"noteModified" object:self];
     return YES;
 }
@@ -28,7 +27,7 @@
 - (id)contentsForType:(NSString *)typeName error:(NSError **)outError
 {
     
-    return [NSData dataWithBytes:[self.xmlContent UTF8String] length:[self.xmlContent length]];
+    return [NSData dataWithData:self.ZipDataContent];
     
 }
 

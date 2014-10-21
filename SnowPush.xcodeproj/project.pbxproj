@@ -11,9 +11,16 @@
 		0E27386719EB8922005DF69A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E27386619EB8922005DF69A /* EventKit.framework */; };
 		0E27386B19EB92BE005DF69A /* EventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E27386A19EB92BE005DF69A /* EventManager.m */; };
 		0E66222F19EFC3CF00DE9912 /* NewSnowPush.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 0E66222E19EFC3CF00DE9912 /* NewSnowPush.sqlite */; };
+		0EA6A56D19F50533005661B5 /* MyNewZipDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA6A56C19F50533005661B5 /* MyNewZipDocument.m */; };
 		0EA7CCFB19D4433A00E57E67 /* DataBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFA19D4433A00E57E67 /* DataBase.m */; };
 		0EA7CCFE19D4458C00E57E67 /* ClientInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */; };
 		0EA7CD0019D446E100E57E67 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */; };
+		0EA970DE19F4CEBD00B49BE1 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EA970D419F4CEBD00B49BE1 /* ioapi.c */; };
+		0EA970DF19F4CEBD00B49BE1 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EA970D619F4CEBD00B49BE1 /* mztools.c */; };
+		0EA970E019F4CEBD00B49BE1 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EA970D819F4CEBD00B49BE1 /* unzip.c */; };
+		0EA970E119F4CEBD00B49BE1 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 0EA970DA19F4CEBD00B49BE1 /* zip.c */; };
+		0EA970E219F4CEBD00B49BE1 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0EA970DD19F4CEBD00B49BE1 /* ZipArchive.mm */; };
+		0EA970E419F4D06000B49BE1 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA970E319F4D06000B49BE1 /* libz.1.2.5.dylib */; };
 		0EA9B59F19EBFD3C0051AB02 /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA9B59E19EBFD3C0051AB02 /* MapPoint.m */; };
 		0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BACE19DAD282000FFE85 /* MessageUI.framework */; };
 		0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA9BAD019DAD2B2000FFE85 /* Social.framework */; };
@@ -124,11 +131,25 @@
 		0E553F9119F14C440098B6DB /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		0E553F9219F14C500098B6DB /* Icon-Small-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-40@2x.png"; sourceTree = "<group>"; };
 		0E66222E19EFC3CF00DE9912 /* NewSnowPush.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewSnowPush.sqlite; sourceTree = "<group>"; };
+		0EA6A56B19F50533005661B5 /* MyNewZipDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyNewZipDocument.h; sourceTree = "<group>"; };
+		0EA6A56C19F50533005661B5 /* MyNewZipDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyNewZipDocument.m; sourceTree = "<group>"; };
 		0EA7CCF919D4433A00E57E67 /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
 		0EA7CCFA19D4433A00E57E67 /* DataBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBase.m; sourceTree = "<group>"; };
 		0EA7CCFC19D4458C00E57E67 /* ClientInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientInfo.h; sourceTree = "<group>"; };
 		0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientInfo.m; sourceTree = "<group>"; };
 		0EA7CCFF19D446E100E57E67 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		0EA970D319F4CEBD00B49BE1 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		0EA970D419F4CEBD00B49BE1 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		0EA970D519F4CEBD00B49BE1 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		0EA970D619F4CEBD00B49BE1 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		0EA970D719F4CEBD00B49BE1 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		0EA970D819F4CEBD00B49BE1 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		0EA970D919F4CEBD00B49BE1 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		0EA970DA19F4CEBD00B49BE1 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		0EA970DB19F4CEBD00B49BE1 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		0EA970DC19F4CEBD00B49BE1 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		0EA970DD19F4CEBD00B49BE1 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
+		0EA970E319F4D06000B49BE1 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		0EA9B59D19EBFD3C0051AB02 /* MapPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapPoint.h; sourceTree = "<group>"; };
 		0EA9B59E19EBFD3C0051AB02 /* MapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapPoint.m; sourceTree = "<group>"; };
 		0EA9BACE19DAD282000FFE85 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -252,6 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA970E419F4D06000B49BE1 /* libz.1.2.5.dylib in Frameworks */,
 				0E27386719EB8922005DF69A /* EventKit.framework in Frameworks */,
 				0EA9BAD119DAD2B2000FFE85 /* Social.framework in Frameworks */,
 				0EA9BACF19DAD282000FFE85 /* MessageUI.framework in Frameworks */,
@@ -286,6 +308,15 @@
 			name = EventHelperClass;
 			sourceTree = "<group>";
 		};
+		0EA6A56A19F50508005661B5 /* myZipDocument */ = {
+			isa = PBXGroup;
+			children = (
+				0EA6A56B19F50533005661B5 /* MyNewZipDocument.h */,
+				0EA6A56C19F50533005661B5 /* MyNewZipDocument.m */,
+			);
+			name = myZipDocument;
+			sourceTree = "<group>";
+		};
 		0EA7CCF819D4432100E57E67 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
@@ -296,6 +327,32 @@
 				0EA7CCFD19D4458C00E57E67 /* ClientInfo.m */,
 			);
 			name = DataBase;
+			sourceTree = "<group>";
+		};
+		0EA970D119F4CEBC00B49BE1 /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				0EA970D219F4CEBD00B49BE1 /* minizip */,
+				0EA970DC19F4CEBD00B49BE1 /* ZipArchive.h */,
+				0EA970DD19F4CEBD00B49BE1 /* ZipArchive.mm */,
+			);
+			path = ZipArchive;
+			sourceTree = "<group>";
+		};
+		0EA970D219F4CEBD00B49BE1 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				0EA970D319F4CEBD00B49BE1 /* crypt.h */,
+				0EA970D419F4CEBD00B49BE1 /* ioapi.c */,
+				0EA970D519F4CEBD00B49BE1 /* ioapi.h */,
+				0EA970D619F4CEBD00B49BE1 /* mztools.c */,
+				0EA970D719F4CEBD00B49BE1 /* mztools.h */,
+				0EA970D819F4CEBD00B49BE1 /* unzip.c */,
+				0EA970D919F4CEBD00B49BE1 /* unzip.h */,
+				0EA970DA19F4CEBD00B49BE1 /* zip.c */,
+				0EA970DB19F4CEBD00B49BE1 /* zip.h */,
+			);
+			path = minizip;
 			sourceTree = "<group>";
 		};
 		0EAA5C0E19D17203002D3E75 /* progressView */ = {
@@ -373,6 +430,7 @@
 		0EABB55019CFFBA7001E8D1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EA970E319F4D06000B49BE1 /* libz.1.2.5.dylib */,
 				0E27386619EB8922005DF69A /* EventKit.framework */,
 				0EBC5BD919E7A88D00B9361F /* QuartzCore.framework */,
 				0EA9BAD019DAD2B2000FFE85 /* Social.framework */,
@@ -391,6 +449,8 @@
 		0EABB55719CFFBA7001E8D1E /* SnowPush */ = {
 			isa = PBXGroup;
 			children = (
+				0EA6A56A19F50508005661B5 /* myZipDocument */,
+				0EA970D119F4CEBC00B49BE1 /* ZipArchive */,
 				0E27386819EB928D005DF69A /* EventHelperClass */,
 				0EAC854D19E95D5A00C45272 /* SnowPush.entitlements */,
 				0EAC854419E93A4600C45272 /* MyDocument */,
@@ -760,6 +820,8 @@
 			files = (
 				0EABB5D419D0518D001E8D1E /* ClientDetailViewController.m in Sources */,
 				0EAC1E4919E50E9A00C4068D /* HFImageEditorFrameView.m in Sources */,
+				0EA970E019F4CEBD00B49BE1 /* unzip.c in Sources */,
+				0EA970E119F4CEBD00B49BE1 /* zip.c in Sources */,
 				0EAC1E5419E51F0C00C4068D /* ImageEditor.m in Sources */,
 				0EAADD1719D4191800A9673A /* OpenPaidTicketsViewController.m in Sources */,
 				0EAA5C3919D1A1D4002D3E75 /* NewTicketViewController.m in Sources */,
@@ -771,10 +833,13 @@
 				0EABB5C619D02C74001E8D1E /* CustomTableCell.m in Sources */,
 				0EABB56819CFFBA7001E8D1E /* ViewController.m in Sources */,
 				0EAC1E5719E51F0C00C4068D /* ImageEditorViewController.m in Sources */,
+				0EA6A56D19F50533005661B5 /* MyNewZipDocument.m in Sources */,
 				0EABB56219CFFBA7001E8D1E /* AppDelegate.m in Sources */,
 				0EAC854019E9396C00C45272 /* APAttribute.m in Sources */,
+				0EA970DE19F4CEBD00B49BE1 /* ioapi.c in Sources */,
 				0EABB55E19CFFBA7001E8D1E /* main.m in Sources */,
 				0EAC853E19E9396C00C45272 /* APDocument.m in Sources */,
+				0EA970DF19F4CEBD00B49BE1 /* mztools.c in Sources */,
 				0EABB5C219D02AD8001E8D1E /* ClientViewController.m in Sources */,
 				0EAC1E4A19E50E9A00C4068D /* HFImageEditorViewController.m in Sources */,
 				0E27386B19EB92BE005DF69A /* EventManager.m in Sources */,
@@ -782,6 +847,7 @@
 				0EA9B59F19EBFD3C0051AB02 /* MapPoint.m in Sources */,
 				0EAC854719E93A6900C45272 /* MyDocument.m in Sources */,
 				0EAA5C1119D17285002D3E75 /* MBProgressHUD.m in Sources */,
+				0EA970E219F4CEBD00B49BE1 /* ZipArchive.mm in Sources */,
 				0EAC1E4219E50D6000C4068D /* DemoImageEditor.m in Sources */,
 				0EAA5C3519D1A19C002D3E75 /* EditClientViewController.m in Sources */,
 			);
@@ -849,8 +915,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dan Annis (5DJZ2LMRVZ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dan Annis (5DJZ2LMRVZ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -868,7 +934,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "d4dd750d-48a1-40f7-b924-7d2b7d34cd58";
+				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -889,8 +955,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Dan Annis (5DJZ2LMRVZ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Dan Annis (5DJZ2LMRVZ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Swapnil Parkhya (L2F7W64AQ5)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -901,7 +967,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				PROVISIONING_PROFILE = "d4dd750d-48a1-40f7-b924-7d2b7d34cd58";
+				PROVISIONING_PROFILE = "5a4839e6-7545-4332-8947-d1b4f03c8634";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

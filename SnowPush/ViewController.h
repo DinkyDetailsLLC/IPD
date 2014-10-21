@@ -8,19 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
-
+#import "MyDocument.h"
+#import "ZipArchive.h"
+#import "MyNewZipDocument.h"
 @interface ViewController : UIViewController<NSURLConnectionDelegate,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
   MBProgressHUD *hud;
     
     UIScrollView *HourlyScrollView;
 }
+
+@property (strong)MyDocument* document;
+@property (strong)NSMetadataQuery *query;
 @property(nonatomic,strong)CLLocationManager *manager;
 
 @property (nonatomic,strong)NSString* Latitude;
 @property(nonatomic,strong)NSString* Longitude;
+@property (weak, nonatomic) IBOutlet UIButton *iCloudBtn;
 
 //@property (weak, nonatomic) IBOutlet UIScrollView *HourlyScrollView;
+@property (weak, nonatomic) IBOutlet UIView *ScrollsView;
 
 @property (weak, nonatomic) IBOutlet UILabel *ForeCastLab;
 

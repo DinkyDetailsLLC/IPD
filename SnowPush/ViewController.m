@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "TicketViewController.h"
 static sqlite3 *dbconn = nil;
+#define kFILENAME @"SnowPush.xml"
+#define KImagesFolderName @"SnowPushImages.zip"
 @interface ViewController ()
 {
     NSURLConnection *Connection;
@@ -21,6 +23,7 @@ static sqlite3 *dbconn = nil;
     NSMutableArray *HourlyOfToday;
     NSString *super0;
     int WTag;
+    int documentTag;
 }
 @end
 
@@ -31,6 +34,10 @@ static sqlite3 *dbconn = nil;
 @synthesize WetherTableView;
 @synthesize ReportLab,ViewAllTicketBtn,ViewOpenTicketBtn,ViewPaidTicketBtn;
 @synthesize ChangeZipBtn,ClientBtn,reportBtn,ReportImageView;
+@synthesize ScrollsView;
+@synthesize iCloudBtn;
+@synthesize document = _document;
+@synthesize query = _query;
 //@synthesize HourlyScrollView;
 @synthesize lineLab1,lineLab2;
 - (void)viewDidLoad
@@ -51,7 +58,7 @@ static sqlite3 *dbconn = nil;
 
     hud=[[MBProgressHUD alloc]init];
     [self.view addSubview:hud];
- 
+    documentTag=0;
    
     
     ReportView.hidden=YES;
@@ -72,7 +79,7 @@ static sqlite3 *dbconn = nil;
     ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
     ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
     if ([AppDelegate sharedInstance].DeviceHieght==480) {
-        
+         ScrollsView.frame=CGRectMake(11, 81, 298, 76);
         ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
         
         TodaysDateLab.frame=CGRectMake(164, 63, 144, 16);
@@ -80,6 +87,7 @@ static sqlite3 *dbconn = nil;
         WetherTableView.frame=CGRectMake(6, 154, 307, 146);
         
         ChangeZipBtn.frame=CGRectMake(239, 309, 78, 22);
+        iCloudBtn.frame=CGRectMake(6, 309, 100, 29);
         ClientBtn.frame=CGRectMake(85, 314, 150, 150);
         reportBtn.frame=CGRectMake(277, 442, 30, 30);
         
@@ -96,6 +104,25 @@ static sqlite3 *dbconn = nil;
     }
     
     WetherTableView.allowsSelection=NO;
+    
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSError *error;
+    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
+
+    NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+    if (ubiq) {
+        NSLog(@"iCloud access at %@", ubiq);
+        // TODO: Load document...
+        [self loadDocument];
+    } else {
+        NSLog(@"No iCloud access");
+    }
 	// Do any additional setup after loading the view, typically from a nib.
   //  [self CallWetherApi];
 }
@@ -103,7 +130,6 @@ static sqlite3 *dbconn = nil;
 -(void)viewWillAppear:(BOOL)animated
 {
     ReportView.hidden=YES;
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -674,6 +700,344 @@ static sqlite3 *dbconn = nil;
          
         }];
     
+    [self iCloudSyncing];
+    
+//    BOOL isDir=NO;
+//    
+//    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//    
+//    NSArray *subpaths;
+//    
+//    NSString *toCompress = @"MyImageFolder";
+//    NSString *pathToCompress = [documentsDirectory stringByAppendingPathComponent:toCompress];
+//    
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    if ([fileManager fileExistsAtPath:pathToCompress isDirectory:&isDir] && isDir){
+//        subpaths = [fileManager subpathsAtPath:pathToCompress];
+//    } else if ([fileManager fileExistsAtPath:pathToCompress]) {
+//        subpaths = [NSArray arrayWithObject:pathToCompress];
+//    }
+//    
+//    NSString *zipFilePath = [documentsDirectory stringByAppendingPathComponent:@"SnowPushImages.zip"];
+//    
+//    ZipArchive *za = [[ZipArchive alloc] init];
+//    [za CreateZipFile2:zipFilePath];
+//    if (isDir) {
+//        for(NSString *path in subpaths){
+//            NSString *fullPath = [pathToCompress stringByAppendingPathComponent:path];
+//            if([fileManager fileExistsAtPath:fullPath isDirectory:&isDir] && !isDir){
+//                [za addFileToZip:fullPath newname:path];
+//            }
+//        }
+//    } else {
+//        [za addFileToZip:pathToCompress newname:toCompress];
+//    }
+//    
+//    BOOL successCompressing = [za CloseZipFile2];
+    
+}
+
+#pragma mark - get back icloud data
+
+- (void)loadData:(NSMetadataQuery *)query {
+    
+    if ([query resultCount] >0) {
+        for (NSMetadataItem *item in [query results]) {
+                       
+            NSString *filename = [item valueForAttribute:NSMetadataItemDisplayNameKey];
+            NSNumber *filesize = [item valueForAttribute:NSMetadataItemFSSizeKey];
+            NSDate *updated = [item valueForAttribute:NSMetadataItemFSContentChangeDateKey];
+            
+            NSLog(@"%@ (%@ bytes, updated %@) ", filename, filesize, updated);
+            
+            NSURL *url = [item valueForAttribute:NSMetadataItemURLKey];
+            if([filename isEqualToString:@"SnowPush"]){
+
+            MyDocument *doc = [[MyDocument alloc] initWithFileURL:url];
+            self.document = doc;
+                            [self.document openWithCompletionHandler:^(BOOL success) {
+                    if (success) {
+                        NSLog(@"iCloud document opened");
+                        NSData *file = [NSData dataWithContentsOfURL:url];
+                        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:file];
+                        [parser setDelegate:self];
+                        [parser parse];
+                    } else {
+                        NSLog(@"failed opening document from iCloud");
+                    }
+                }];
+            }
+            if([filename isEqualToString:@"SnowPushImages"])
+            {
+                
+                 MyNewZipDocument *doc = [[MyNewZipDocument alloc] initWithFileURL:url];
+                [doc openWithCompletionHandler:^(BOOL success) {
+                    if (success) {
+                        NSLog(@"Pictures : Success to open from iCloud");
+                        NSData *file = [NSData dataWithContentsOfURL:url];
+                        
+                        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                        NSString *zipFolder = [documentsDirectory stringByAppendingPathComponent:@"Pics.zip"];
+                        [[NSFileManager defaultManager] createFileAtPath:zipFolder contents:file attributes:nil];
+                        //NSLog(@"zipFilePath : %@",zipFolder);
+                        
+                        NSString *outputFolder = [documentsDirectory stringByAppendingPathComponent:@"Pictures"];//iCloudPics
+                        ZipArchive* za = [[ZipArchive alloc] init];
+                        if( [za UnzipOpenFile: zipFolder] ) {
+                            if( [za UnzipFileTo:outputFolder overWrite:YES] != NO ) {
+                                NSLog(@"Pics : unzip successfully");
+                            }
+                            [za UnzipCloseFile];
+                        }
+                        
+                        NSError *err;
+                        NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:outputFolder error:&err];
+                        if (files == nil) {
+                            NSLog(@"EMPTY Folder: %@",outputFolder);
+                        }
+                        // Add all sbzs to a list
+                        for (NSString *file in files) {
+                            //if ([file.pathExtension compare:@".jpeg" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+                            NSLog(@" Pictures %@",file);
+                            
+                            NSString *oldPath=[outputFolder stringByAppendingPathComponent:file];
+                            
+                            NSString *newPath=[documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
+                            NSString* foofile = [newPath stringByAppendingPathComponent:file];
+                            BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:foofile];
+                            
+                            if (fileExists==NO) {
+                                NSError *err;
+                                [[NSFileManager defaultManager]moveItemAtPath:oldPath toPath:foofile error:&err];
+                                NSLog(@"err %@",err);
+                        
+                               
+                            }
+                            
+                            //                            NSFileManager *fm = [NSFileManager defaultManager];
+                            //                            NSDictionary *attributes = [fm fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@",documentsDirectory,file]                                                                 traverseLink:NO];
+                            //
+                            //                            NSNumber* fileSize = [attributes objectForKey:NSFileSize];
+                            //                            int e = [fileSize intValue]; //Size in bytes
+                            //                            NSLog(@"%@__%d",file,e);
+                        }
+                        
+                    }
+                    else 
+                    {
+                        NSLog(@"Pictures : failed to open from iCloud");
+                     //   [self hideProcessingView];
+                    }
+                }]; 
+            }
+        }
+        
+	}
+    else {
+        if (documentTag==0) {
+            
+      
+        NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+        NSURL *ubiquitousPackage = [[ubiq URLByAppendingPathComponent:@"Documents"] URLByAppendingPathComponent:kFILENAME];
+        
+        MyDocument *doc = [[MyDocument alloc] initWithFileURL:ubiquitousPackage];
+        self.document = doc;
+        
+        [doc saveToURL:[doc fileURL] forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
+            if (success) {
+                [doc openWithCompletionHandler:^(BOOL success) {
+                    
+                    NSLog(@"new document opened from iCloud");
+                    
+                }];
+            }
+        }];
+    }
+    }
+    documentTag++;
+    if (documentTag==1) {
+        [self loadDocument2];
+    }
+    
+}
+
+- (void)queryDidFinishGathering:(NSNotification *)notification {
+    
+    NSMetadataQuery *query = [notification object];
+    [query disableUpdates];
+    [query stopQuery];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NSMetadataQueryDidFinishGatheringNotification
+                                                  object:query];
+    
+    _query= nil;
+    
+	[self loadData:query];
+    
+}
+
+- (void)loadDocument {
+    
+    NSMetadataQuery *query = [[NSMetadataQuery alloc] init];
+    _query = query;
+    [query setSearchScopes:[NSArray arrayWithObject:NSMetadataQueryUbiquitousDocumentsScope]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat: @"%K == %@", NSMetadataItemFSNameKey, kFILENAME];
+    [query setPredicate:pred];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryDidFinishGathering:) name:NSMetadataQueryDidFinishGatheringNotification object:query];
+    
+    [query startQuery];
+    
+}
+
+- (void)loadDocument2 {
+    
+    NSMetadataQuery *query = [[NSMetadataQuery alloc] init];
+    _query = query;
+    [query setSearchScopes:[NSArray arrayWithObject:NSMetadataQueryUbiquitousDocumentsScope]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat: @"%K == %@", NSMetadataItemFSNameKey, KImagesFolderName];
+    [query setPredicate:pred];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryDidFinishGathering:) name:NSMetadataQueryDidFinishGatheringNotification object:query];
+    
+    [query startQuery];
+    
+}
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)nameSpaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+{
+    if ([elementName isEqual:@"ClientDetail"])
+    {/*tripCost
+      contactCost
+      seasonalCost
+      Salt
+      shovel
+      plow
+      removal*/
+        NSLog(@"Property attributes : %@|%@|%@|%@|%@|%@|%@|%@", [attributeDict objectForKey:@"Comp_Name"],[attributeDict objectForKey:@"Address"], [attributeDict objectForKey:@"city"], [attributeDict objectForKey:@"state"],[attributeDict objectForKey:@"zip"],[attributeDict objectForKey:@"PhoneNo"],[attributeDict objectForKey:@"email"],[attributeDict objectForKey:@"Image"]);
+        
+        ClientInfo *clientI=[[ClientInfo alloc]init];
+        clientI.Comp_name=[attributeDict objectForKey:@"Comp_Name"];
+        clientI.Address=[attributeDict objectForKey:@"Address"];
+        clientI.City=[attributeDict objectForKey:@"city"];
+        clientI.State=[attributeDict objectForKey:@"state"];
+        clientI.Zip=[attributeDict objectForKey:@"zip"];
+        clientI.phoneNo=[attributeDict objectForKey:@"PhoneNo"];
+        clientI.Email=[attributeDict objectForKey:@"email"];
+        clientI.Image=[attributeDict objectForKey:@"Image"];
+        clientI.TripCost=[attributeDict objectForKey:@"tripCost"]; 
+        clientI.ContractCost=[attributeDict objectForKey:@"contactCost"];
+        clientI.SeasonalCost=[attributeDict objectForKey:@"seasonalCost"];
+        clientI.salt=[[attributeDict objectForKey:@"Salt"]intValue];
+        clientI.shovel=[[attributeDict objectForKey:@"shovel"]intValue];
+        clientI.plow=[[attributeDict objectForKey:@"plow"]intValue];
+        clientI.removal=[[attributeDict objectForKey:@"removal"]intValue];
+        
+        BOOL cl=[[DataBase getSharedInstance]IsclientAvailble:clientI];
+        if (cl==NO) {
+            BOOL insert=[[DataBase getSharedInstance]SaveClientDetail:clientI];
+        }
+        
+        
+    }else if ([elementName isEqual:@"Ticket"]){
+        /*date,comp_name,start_time,finish_time,phone_num,email,image_before,image_after,snow_fall,hours,calculated,trip,contract,seasonal,send_invoice,paid_in_full*/
+        NSLog(@"Property attributes : %@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@|%@",[attributeDict objectForKey:@"invoice"], [attributeDict objectForKey:@"date"],[attributeDict objectForKey:@"comp_name"], [attributeDict objectForKey:@"start_time"], [attributeDict objectForKey:@"finish_time"],[attributeDict objectForKey:@"phone_num"],[attributeDict objectForKey:@"email"],[attributeDict objectForKey:@"image_before"],[attributeDict objectForKey:@"snow_fall"],[attributeDict objectForKey:@"image_after"],[attributeDict objectForKey:@"hours"],[attributeDict objectForKey:@"calculated"],[attributeDict objectForKey:@"trip"],[attributeDict objectForKey:@"contract"],[attributeDict objectForKey:@"seasonal"],[attributeDict objectForKey:@"send_invoice"],[attributeDict objectForKey:@"paid_in_full"]);
+        
+        ClientInfo *ticketI=[[ClientInfo alloc]init];
+        ticketI.invoice_no=[[attributeDict objectForKey:@"invoice"]integerValue];
+        ticketI.Comp_name=[attributeDict objectForKey:@"comp_name"];
+        ticketI.date=[attributeDict objectForKey:@"date"];
+        ticketI.startTime=[attributeDict objectForKey:@"start_time"];
+        ticketI.finishTime=[attributeDict objectForKey:@"finish_time"];
+        ticketI.phoneNo=[attributeDict objectForKey:@"phone_num"];
+        ticketI.Email=[attributeDict objectForKey:@"email"];
+        ticketI.snowFall=[attributeDict objectForKey:@"snow_fall"];
+        ticketI.hours=[[attributeDict objectForKey:@"hours"]intValue];
+        ticketI.calculated=[[attributeDict objectForKey:@"calculated"]intValue];
+        ticketI.sendInVoice=[[attributeDict objectForKey:@"send_invoice"]intValue];
+        ticketI.paidInFull=[[attributeDict objectForKey:@"paid_in_full"]intValue];
+        ticketI.trip=[[attributeDict objectForKey:@"trip"]intValue];
+        ticketI.contract=[[attributeDict objectForKey:@"contract"]intValue];
+        ticketI.seasonal=[[attributeDict objectForKey:@"contract"]intValue];
+        ticketI.imageBefore=[attributeDict objectForKey:@"image_before"];
+        ticketI.imageAfter=[attributeDict objectForKey:@"image_after"];
+        
+        BOOL tC=[[DataBase getSharedInstance]IsTicketAvailable:ticketI.invoice_no];
+        
+        if (tC==NO) {
+            BOOL saveT=[[DataBase getSharedInstance]SaveTicketWithInvoice:ticketI];
+        }
+        
+    }
+    
+    
+    
+    //like this way fetch all data and insert in db
+}
+
+-(BOOL)zipFolder:(NSString *)toCompress zipFilePath:(NSString *)zipFilePath
+{
+    BOOL isDir=NO;
+    
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *pathToCompress = [documentsDirectory stringByAppendingPathComponent:toCompress];
+    
+    NSArray *subpaths;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:pathToCompress isDirectory:&isDir] && isDir){
+        subpaths = [fileManager subpathsAtPath:pathToCompress];
+    } else if ([fileManager fileExistsAtPath:pathToCompress]) {
+        subpaths = [NSArray arrayWithObject:pathToCompress];
+    }
+    
+    zipFilePath = [documentsDirectory stringByAppendingPathComponent:zipFilePath];
+    //NSLog(@"%@",zipFilePath);
+    ZipArchive *za = [[ZipArchive alloc] init];
+    [za CreateZipFile2:zipFilePath];
+    if (isDir) {
+        for(NSString *path in subpaths){
+            NSString *fullPath = [pathToCompress stringByAppendingPathComponent:path];
+            if([fileManager fileExistsAtPath:fullPath isDirectory:&isDir] && !isDir){
+                [za addFileToZip:fullPath newname:path];
+            }
+        }
+    } else {
+        [za addFileToZip:pathToCompress newname:toCompress];
+    }
+    
+    BOOL successCompressing = [za CloseZipFile2];
+    if(successCompressing)
+        return YES;
+    else
+        return NO;
+}
+-(IBAction) iCloudSyncing
+{
+    //***** PARSE ZIP FILE : Pictures *****
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    if([self zipFolder:@"MyImageFolder" zipFilePath:@"SnowPushImages"])
+        NSLog(@"Picture Folder is zipped");
+    
+  NSURL*  ubiq = [[NSFileManager defaultManager]URLForUbiquityContainerIdentifier:nil];
+  NSURL*  ubiquitousPackage = [[ubiq URLByAppendingPathComponent:@"Documents"]  URLByAppendingPathComponent:@"SnowPushImages.zip"];
+    
+  MyNewZipDocument*  mydoc = [[MyNewZipDocument alloc] initWithFileURL:ubiquitousPackage];
+    NSString *zipFilePath = [documentsDirectory stringByAppendingPathComponent:@"SnowPushImages"];
+    NSURL *u = [[NSURL alloc] initFileURLWithPath:zipFilePath];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:u];
+    // NSLog(@"%@ %@",zipFilePath,data);
+    mydoc.zipDataContent = data;
+    
+    [mydoc saveToURL:[mydoc fileURL] forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success)
+     {
+         if (success)
+         {
+             NSLog(@"PictureZip: Synced with icloud");
+         }
+         else
+             NSLog(@"PictureZip: Syncing FAILED with icloud");
+         
+     }];
 }
 
 @end

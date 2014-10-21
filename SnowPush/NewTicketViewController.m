@@ -149,13 +149,20 @@ UINavigationControllerDelegate
        
         StartTime.text=[EditTicketInfo objectForKey:@"startTime"];
         SnowFallTf.text=[EditTicketInfo objectForKey:@"snowFall"];
-        ImageAfter.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageAfter"]];
-        if ([UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageAfter"]]==nil) {
+        
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *imagApath=[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageAfter"]]];
+        
+        ImageAfter.image=[UIImage imageWithContentsOfFile:imagApath];
+        if ([UIImage imageWithContentsOfFile:imagApath]==nil) {
             isImageAfterSelected=NO;
             ImageAfter.image=[UIImage imageNamed:@"transparentImage.png"];
             imageAfterLab.text=@"Image after";
         }
-        ImageBefore.image=[UIImage imageWithContentsOfFile:[EditTicketInfo objectForKey:@"imageBefore"]];
+        
+        NSString *imagBpath=[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageBefore"]]];
+        
+        ImageBefore.image=[UIImage imageWithContentsOfFile:imagBpath];
         
         if ([[EditTicketInfo objectForKey:@"paidInFull"] intValue]==1) {
             [paidInFullBtn setImage:[UIImage imageNamed:@"service_Checked.png"] forState:UIControlStateNormal];
@@ -395,7 +402,8 @@ UINavigationControllerDelegate
 //        }else{
             addNewTicket.Comp_name=CompNameTf.text;
        // }
-    
+        NSDateFormatter *tempFormatter = [[NSDateFormatter alloc]init];
+        [tempFormatter setDateFormat:@"MM.dd.yyyy HH:mm:ss"];
         addNewTicket.date=DateTf.text;
         addNewTicket.startTime=StartTime.text;
         addNewTicket.finishTime=FinshTimeTf.text;
@@ -438,20 +446,20 @@ UINavigationControllerDelegate
         if (EditTicketTag==1) {
             if (isImageBeforeChanged==YES) {
                 NSFileManager *fileManager = [NSFileManager defaultManager];
-                // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                 NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
                 
-                NSString *filePath =[EditTicketInfo objectForKey:@"imageBefore"];
+                NSString *filePath =[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageBefore"]]];
                 NSError *error;
                 BOOL success = [fileManager removeItemAtPath:filePath error:&error];
                 if (success) {
                     
                 }
-                NSString *imageB=CompNameTf.text;
+                NSString *imageB=[NSString stringWithFormat:@"%@%@",[tempFormatter stringFromDate:[NSDate date]],CompNameTf.text];
                 imageB=[[[[imageB stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-                NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.png"]; // or .jpg
+                NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.jpeg"]; // or .jpg
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString *savedImageBeforePath = [documentsDirectory stringByAppendingPathComponent:filenameBefore];
+                NSString *savedImageBeforePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filenameBefore]];
                 NSData *imageData = UIImageJPEGRepresentation(BeforeImg, 1.0);
                 [imageData writeToFile:savedImageBeforePath atomically:NO];
                 addNewTicket.imageBefore=savedImageBeforePath;
@@ -462,9 +470,12 @@ UINavigationControllerDelegate
                 [ImageArr addObject:BeforeDic];
                 
             }else{
+                NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                
+                NSString *filePath =[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageBefore"]]];
             addNewTicket.imageBefore=[EditTicketInfo objectForKey:@"imageBefore"];
                 NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
-                [AfterDic setObject:[EditTicketInfo objectForKey:@"imageBefore"] forKey:@"imagePath"];
+                [AfterDic setObject:filePath forKey:@"imagePath"];
                 [AfterDic setObject:@"Image After" forKey:@"imageName"];
                 
                 [ImageArr addObject:AfterDic];
@@ -473,24 +484,24 @@ UINavigationControllerDelegate
             
             if (isImageAfterChanged==YES) {
                 NSFileManager *fileManager = [NSFileManager defaultManager];
-                // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                 NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
                 
-                NSString *filePath =[EditTicketInfo objectForKey:@"imageAfter"];
+                NSString *filePath =[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageAfter"]]];
                 NSError *error;
                 BOOL success = [fileManager removeItemAtPath:filePath error:&error];
                 if (success) {
                     
                 }
                 
-                NSString *imageA=CompNameTf.text;
+                NSString *imageA=[NSString stringWithFormat:@"%@%@",[tempFormatter stringFromDate:[NSDate date]],CompNameTf.text];
                 imageA=[[[[imageA stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-                NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.png"]; // or .jpg
+                NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.jpeg"]; // or .jpg
                 NSArray *pathsA = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsDirectoryA = [pathsA objectAtIndex:0];
-                NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:filenameAfter];
+                NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filenameAfter]];
                 NSData *imageDataA = UIImageJPEGRepresentation(AfterImg, 1.0);
                 [imageDataA writeToFile:savedImageAfterPath atomically:NO];
-                addNewTicket.imageAfter=savedImageAfterPath;
+                addNewTicket.imageAfter=filenameAfter;
                 
                 NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
                 [AfterDic setObject:savedImageAfterPath forKey:@"imagePath"];
@@ -498,9 +509,12 @@ UINavigationControllerDelegate
                 
                 [ImageArr addObject:AfterDic];
             }else{
+                NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                
+                NSString *filePath =[documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",[EditTicketInfo objectForKey:@"imageAfter"]]];
              addNewTicket.imageAfter=[EditTicketInfo objectForKey:@"imageAfter"];
                 NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
-                [AfterDic setObject:[EditTicketInfo objectForKey:@"imageAfter"] forKey:@"imagePath"];
+                [AfterDic setObject:filePath forKey:@"imagePath"];
                 [AfterDic setObject:@"Image After" forKey:@"imageName"];
                 
                 [ImageArr addObject:AfterDic];
@@ -520,15 +534,15 @@ UINavigationControllerDelegate
         }else{
         
        
-        NSString *imageB=CompNameTf.text;
+        NSString *imageB=[NSString stringWithFormat:@"%@%@",[tempFormatter stringFromDate:[NSDate date]],CompNameTf.text];;
         imageB=[[[[imageB stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-        NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.png"]; // or .jpg
+        NSString *filenameBefore = [imageB stringByAppendingString:@"ImageBefore.jpeg"]; // or .jpg
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
-        NSString *savedImageBeforePath = [documentsDirectory stringByAppendingPathComponent:filenameBefore];
+        NSString *savedImageBeforePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filenameBefore]];
         NSData *imageData = UIImageJPEGRepresentation(BeforeImg, 1.0);
         [imageData writeToFile:savedImageBeforePath atomically:NO];
-        addNewTicket.imageBefore=savedImageBeforePath;
+        addNewTicket.imageBefore=filenameBefore;
         
         NSMutableDictionary *BeforeDic=[[NSMutableDictionary alloc]init];
         [BeforeDic setObject:savedImageBeforePath forKey:@"imagePath"];
@@ -536,15 +550,15 @@ UINavigationControllerDelegate
         [ImageArr addObject:BeforeDic];
        
             if (isImageAfterSelected==YES) {
-        NSString *imageA=CompNameTf.text;
+        NSString *imageA=[NSString stringWithFormat:@"%@%@",[tempFormatter stringFromDate:[NSDate date]],CompNameTf.text];
         imageA=[[[[imageA stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-        NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.png"]; // or .jpg
+        NSString *filenameAfter = [imageA stringByAppendingString:@"ImageAfter.jpeg"]; // or .jpg
         NSArray *pathsA = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectoryA = [pathsA objectAtIndex:0];
-        NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:filenameAfter];
+        NSString *savedImageAfterPath = [documentsDirectoryA stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filenameAfter]];
         NSData *imageDataA = UIImageJPEGRepresentation(AfterImg, 1.0);
         [imageDataA writeToFile:savedImageAfterPath atomically:NO];
-        addNewTicket.imageAfter=savedImageAfterPath;
+        addNewTicket.imageAfter=filenameAfter;
         
         NSMutableDictionary *AfterDic=[[NSMutableDictionary alloc]init];
         [AfterDic setObject:savedImageAfterPath forKey:@"imagePath"];
@@ -863,7 +877,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         UIImage *image = [UIImage imageWithContentsOfFile:[dic objectForKey:@"imagePath"] ];
         NSData*   imageData = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
                           
-    [picker addAttachmentData:imageData mimeType:@"image/png" fileName:[dic objectForKey:@"imageName"]];
+    [picker addAttachmentData:imageData mimeType:@"image/jpeg" fileName:[dic objectForKey:@"imageName"]];
     }
     
     NSString *paid;
@@ -1225,6 +1239,13 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
 -(void)createCalendar{
     // Hide the keyboard. To do so, it's necessary to access the textfield of the first cell.
   
+    EKSource *defaultSource = [self.eventManager.eventStore defaultCalendarForNewEvents].source;
+    
+    if (defaultSource.sourceType == EKSourceTypeCalDAV)
+        NSLog(@"iCloud Enable");
+    else
+        NSLog(@"iCloud Disable");
+    
     BOOL CalA=NO;
     
     // Create a new calendar.
@@ -1233,7 +1254,7 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     
     // Set the calendar title.
     calendar.title = @"SnowPush";
-    
+    calendar.source=defaultSource;
     // Find the proper source type value.
     
     NSArray *AllCal=[self.eventManager getLocalEventCalendars];
@@ -1249,19 +1270,17 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
     }
     
     if (CalA==NO) {
-        
     
-    
-        for (int i=0; i<self.eventManager.eventStore.sources.count; i++) {
-            EKSource *source = (EKSource *)[self.eventManager.eventStore.sources objectAtIndex:i];
-            EKSourceType currentSourceType = source.sourceType;
-        
-            if (currentSourceType == EKSourceTypeLocal) {
-                calendar.source = source;
-                break;
-            }
-        }
-    
+//        for (int i=0; i<self.eventManager.eventStore.sources.count; i++) {
+//            EKSource *source = (EKSource *)[self.eventManager.eventStore.sources objectAtIndex:i];
+//            EKSourceType currentSourceType = source.sourceType;
+//        
+//            if (currentSourceType == EKSourceTypeLocal) {
+//                calendar.source = source;
+//                break;
+//            }
+//        }
+        calendar.source=defaultSource;
     
     // Save and commit the calendar.
         NSError *error;
@@ -1300,5 +1319,6 @@ NewTicketScrollView.frame=CGRectMake(0, 51, 321, 517);
         }
     }];
 }
+
 
 @end

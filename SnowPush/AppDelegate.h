@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "MyDocument.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate,CLLocationManagerDelegate,NSURLConnectionDelegate>
 {
     NSURLConnection *Connection;
@@ -20,9 +20,7 @@
 
 
 
-@property (strong)MyDocument* document;
 
-@property (strong)NSMetadataQuery *query;
 
 @property int DeviceHieght;
 

@@ -63,9 +63,13 @@
         TripCost.text=ClientInformation.TripCost;
         ContaractCost.text=ClientInformation.ContractCost;
         SeasonalCost.text=ClientInformation.SeasonalCost;
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
         
-        ClientImageView.image=[self loadImage:ClientInformation.Image];
-        ClientImage=[self loadImage:ClientInformation.Image];
+        //  Append the filename and get the full image path
+        NSString *ImagePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",ClientInformation.Image]];
+        ClientImageView.image=[self loadImage:ImagePath];
+        ClientImage=[self loadImage:ImagePath];
         if (ClientImage==nil) {
             isimageSelected=YES;
             ClientImageView.image=[UIImage imageNamed:@"transparentImage.png"];
@@ -186,24 +190,25 @@
         
         if (isImageChanged==YES) {
             NSFileManager *fileManager = [NSFileManager defaultManager];
-            // NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+             NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             
-            NSString *filePath = ClientInformation.Image;
+            NSString *filePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",ClientInformation.Image]];
             NSError *error;
             BOOL success = [fileManager removeItemAtPath:filePath error:&error];
             if (success) {
                 
             }
             NSString *imagen=Clientdetail.Comp_name;
+            
             imagen=[[[[imagen stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
-            NSString *filename = [imagen stringByAppendingString:@".png"]; // or .jpg
+            NSString *filename = [imagen stringByAppendingString:@".jpeg"]; // or .jpg
             
             //  Get the path of the app documents directory
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = [paths objectAtIndex:0];
             
             //  Append the filename and get the full image path
-            NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
+            NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filename]];
             
             //  Now convert the image to PNG/JPEG and write it to the image path
             
@@ -217,7 +222,7 @@
             
             //  Here you save the savedImagePath to your DB
             
-            Clientdetail.Image=savedImagePath;
+            Clientdetail.Image=filename;
         }else{
             Clientdetail.Image=ClientInformation.Image;
         }
@@ -270,14 +275,15 @@
        
      imagen=[[[[imagen stringByReplacingOccurrencesOfString:@" " withString:@""]stringByReplacingOccurrencesOfString:@"." withString:@""]stringByReplacingOccurrencesOfString:@"@" withString:@""]stringByReplacingOccurrencesOfString:@"_" withString:@""];
         
-          NSString *filename = [imagen stringByAppendingString:@".png"]; // or .jpg
+          NSString *filename = [imagen stringByAppendingString:@".jpeg"]; // or .jpg
         
         //  Get the path of the app documents directory
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         
+            
         //  Append the filename and get the full image path
-        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:filename];
+        NSString *savedImagePath = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/MyImageFolder/%@",filename]];
         
         NSUserDefaults *defalt= [NSUserDefaults standardUserDefaults];
         [defalt setInteger:[image imageOrientation] forKey:@"kImageOrientaion"];
@@ -290,7 +296,7 @@
         
         //  Here you save the savedImagePath to your DB
         
-       Clientdetail.Image=savedImagePath;
+       Clientdetail.Image=filename;
          }
         
         BOOL checkC=[[DataBase getSharedInstance]IsclientAvailble:Clientdetail];
@@ -693,8 +699,8 @@
         //        {
         
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        picker.editing=YES;
-        picker.allowsEditing=YES;
+//        picker.editing=YES;
+//        picker.allowsEditing=YES;
 
         //   }
         
