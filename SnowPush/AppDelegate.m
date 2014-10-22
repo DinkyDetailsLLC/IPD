@@ -41,7 +41,7 @@
 //    
 //    [self loadData:metadataQuery];
     
-   
+    tutsShown=[[NSUserDefaults standardUserDefaults]boolForKey:@"tutsShown"];
     
        return YES;
 }

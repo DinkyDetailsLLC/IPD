@@ -11,6 +11,10 @@
 static sqlite3 *dbconn = nil;
 #define kFILENAME @"SnowPush.xml"
 #define KImagesFolderName @"SnowPushImages.zip"
+
+// Bolean whether tutorial shown on first launch or not
+bool tutsShown;
+
 @interface ViewController ()
 {
     NSURLConnection *Connection;
@@ -24,6 +28,7 @@ static sqlite3 *dbconn = nil;
     NSString *super0;
     int WTag;
     int documentTag;
+    int tutsImageCount;
 }
 @end
 
@@ -40,6 +45,9 @@ static sqlite3 *dbconn = nil;
 @synthesize query = _query;
 //@synthesize HourlyScrollView;
 @synthesize lineLab1,lineLab2;
+@synthesize tutsImageView;
+@synthesize btnChangeTutImage;
+
 - (void)viewDidLoad
 {
     // my api === 131d40d9ea437c31
@@ -50,82 +58,265 @@ static sqlite3 *dbconn = nil;
     //http://api.wunderground.com/api/a988d453ebe759ad/hourly7day/conditions/q/-33.957550,151.230850.json
     
        
-  //  NSData *weatherData = [NSData dataWithContentsOfURL:url];    45103
-    WTag=0;
-    [super viewDidLoad];
-    
-   super0 = @"\u2070";
-
-    hud=[[MBProgressHUD alloc]init];
-    [self.view addSubview:hud];
-    documentTag=0;
-   
-    
-    ReportView.hidden=YES;
-    self.manager=[[CLLocationManager alloc]init];
-    self.manager.delegate=self;
-    self.manager.distanceFilter=kCLDistanceFilterNone;
-    self.manager.desiredAccuracy=kCLLocationAccuracyBest;
-    [self.manager startUpdatingLocation];
-    
-    NSDateFormatter *formater=[[NSDateFormatter alloc]init];
-    [formater setDateFormat:@"MM/dd/yyyy"];
-    
-    TodaysDateLab.text=[NSString stringWithFormat:@"Today's Date - %@",[formater stringFromDate:[NSDate date]]];
-    TodaysDateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
-    ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
-    ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
-    ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
-    ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
-    ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
-    if ([AppDelegate sharedInstance].DeviceHieght==480) {
-         ScrollsView.frame=CGRectMake(11, 81, 298, 76);
-        ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
-        
-        TodaysDateLab.frame=CGRectMake(164, 63, 144, 16);
-        
-        WetherTableView.frame=CGRectMake(6, 154, 307, 146);
-        
-        ChangeZipBtn.frame=CGRectMake(239, 309, 78, 22);
-        iCloudBtn.frame=CGRectMake(6, 309, 100, 29);
-        ClientBtn.frame=CGRectMake(85, 314, 150, 150);
-        reportBtn.frame=CGRectMake(277, 442, 30, 30);
-        
-        ReportView.frame=CGRectMake(0, 265, 320, 273);
-        ViewAllTicketBtn.frame=CGRectMake(10, 50, 300, 45);
-        ViewOpenTicketBtn.frame=CGRectMake(10, 103, 300, 45);
-        ViewPaidTicketBtn.frame=CGRectMake(10, 156, 300, 45);
-        ReportLab.frame=CGRectMake(120, 7, 81, 23);
-        ReportImageView.frame=CGRectMake(0, 0, 320, 267);
-        
-        lineLab1.frame=CGRectMake(6, 78, 307, 1);
-        lineLab2.frame=CGRectMake(6, 152, 307, 1);
-    
-    }
-    
-    WetherTableView.allowsSelection=NO;
+//  NSData *weatherData = [NSData dataWithContentsOfURL:url];    45103
     
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSError *error;
-    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
-        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
-
-    NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
-    if (ubiq) {
-        NSLog(@"iCloud access at %@", ubiq);
-        // TODO: Load document...
-        [self loadDocument];
+// Tutorial image implemeted here
+    tutImages = @[@"tut_1.jpg",@"tut_2.jpg",@"tut_3.jpg",];
+    tutsImageCount=0;
+    if (!tutsShown) {
+        [self setTutImage];
+        tutsImageView.hidden=NO;
+        btnChangeTutImage.hidden=NO;
     } else {
-        NSLog(@"No iCloud access");
+        tutsImageView.hidden=YES;
+        btnChangeTutImage.hidden=YES;
+        
+        WTag=0;
+        [super viewDidLoad];
+        
+        super0 = @"\u2070";
+        
+        hud=[[MBProgressHUD alloc]init];
+        [self.view addSubview:hud];
+        documentTag=0;
+        
+        
+        ReportView.hidden=YES;
+        self.manager=[[CLLocationManager alloc]init];
+        self.manager.delegate=self;
+        self.manager.distanceFilter=kCLDistanceFilterNone;
+        self.manager.desiredAccuracy=kCLLocationAccuracyBest;
+        [self.manager startUpdatingLocation];
+        
+        NSDateFormatter *formater=[[NSDateFormatter alloc]init];
+        [formater setDateFormat:@"MM/dd/yyyy"];
+        
+        TodaysDateLab.text=[NSString stringWithFormat:@"Today's Date - %@",[formater stringFromDate:[NSDate date]]];
+        TodaysDateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
+        ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
+        if ([AppDelegate sharedInstance].DeviceHieght==480) {
+            ScrollsView.frame=CGRectMake(11, 81, 298, 76);
+            ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
+            
+            TodaysDateLab.frame=CGRectMake(164, 63, 144, 16);
+            
+            WetherTableView.frame=CGRectMake(6, 154, 307, 146);
+            
+            ChangeZipBtn.frame=CGRectMake(239, 309, 78, 22);
+            iCloudBtn.frame=CGRectMake(6, 309, 100, 29);
+            ClientBtn.frame=CGRectMake(85, 314, 150, 150);
+            reportBtn.frame=CGRectMake(277, 442, 30, 30);
+            
+            ReportView.frame=CGRectMake(0, 265, 320, 273);
+            ViewAllTicketBtn.frame=CGRectMake(10, 50, 300, 45);
+            ViewOpenTicketBtn.frame=CGRectMake(10, 103, 300, 45);
+            ViewPaidTicketBtn.frame=CGRectMake(10, 156, 300, 45);
+            ReportLab.frame=CGRectMake(120, 7, 81, 23);
+            ReportImageView.frame=CGRectMake(0, 0, 320, 267);
+            
+            lineLab1.frame=CGRectMake(6, 78, 307, 1);
+            lineLab2.frame=CGRectMake(6, 152, 307, 1);
+            
+        }
+        
+        WetherTableView.allowsSelection=NO;
+        
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSError *error;
+        NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+            [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
+        
+        NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+        if (ubiq) {
+            NSLog(@"iCloud access at %@", ubiq);
+            // TODO: Load document...
+            [self loadDocument];
+        } else {
+            NSLog(@"No iCloud access");
+        }
     }
+// Tutorial images ends
+    
+    
+//    WTag=0;
+//    [super viewDidLoad];
+//    
+//   super0 = @"\u2070";
+//
+//    hud=[[MBProgressHUD alloc]init];
+//    [self.view addSubview:hud];
+//    documentTag=0;
+//   
+//    
+//    ReportView.hidden=YES;
+//    self.manager=[[CLLocationManager alloc]init];
+//    self.manager.delegate=self;
+//    self.manager.distanceFilter=kCLDistanceFilterNone;
+//    self.manager.desiredAccuracy=kCLLocationAccuracyBest;
+//    [self.manager startUpdatingLocation];
+//    
+//    NSDateFormatter *formater=[[NSDateFormatter alloc]init];
+//    [formater setDateFormat:@"MM/dd/yyyy"];
+//    
+//    TodaysDateLab.text=[NSString stringWithFormat:@"Today's Date - %@",[formater stringFromDate:[NSDate date]]];
+//    TodaysDateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
+//    ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+//    ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+//    ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+//    ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+//    ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
+//    if ([AppDelegate sharedInstance].DeviceHieght==480) {
+//         ScrollsView.frame=CGRectMake(11, 81, 298, 76);
+//        ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
+//        
+//        TodaysDateLab.frame=CGRectMake(164, 63, 144, 16);
+//        
+//        WetherTableView.frame=CGRectMake(6, 154, 307, 146);
+//        
+//        ChangeZipBtn.frame=CGRectMake(239, 309, 78, 22);
+//        iCloudBtn.frame=CGRectMake(6, 309, 100, 29);
+//        ClientBtn.frame=CGRectMake(85, 314, 150, 150);
+//        reportBtn.frame=CGRectMake(277, 442, 30, 30);
+//        
+//        ReportView.frame=CGRectMake(0, 265, 320, 273);
+//        ViewAllTicketBtn.frame=CGRectMake(10, 50, 300, 45);
+//        ViewOpenTicketBtn.frame=CGRectMake(10, 103, 300, 45);
+//        ViewPaidTicketBtn.frame=CGRectMake(10, 156, 300, 45);
+//        ReportLab.frame=CGRectMake(120, 7, 81, 23);
+//        ReportImageView.frame=CGRectMake(0, 0, 320, 267);
+//        
+//        lineLab1.frame=CGRectMake(6, 78, 307, 1);
+//        lineLab2.frame=CGRectMake(6, 152, 307, 1);
+//    
+//    }
+//    
+//    WetherTableView.allowsSelection=NO;
+//    
+//    
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *documentsDirectory = [paths objectAtIndex:0];
+//    
+//    NSError *error;
+//    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
+//    
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+//        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
+//
+//    NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+//    if (ubiq) {
+//        NSLog(@"iCloud access at %@", ubiq);
+//        // TODO: Load document...
+//        [self loadDocument];
+//    } else {
+//        NSLog(@"No iCloud access");
+//    }
 	// Do any additional setup after loading the view, typically from a nib.
   //  [self CallWetherApi];
 }
+
+
+-(IBAction)tutImageChange:(id)sender{
+    tutsImageCount++;
+    
+    if (tutsImageCount>2) {
+        tutsImageView.hidden =YES;
+        btnChangeTutImage.hidden=YES;
+        tutsShown=YES;
+        [[NSUserDefaults standardUserDefaults]setBool:tutsShown forKey:@"tutsShown"];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        
+        
+        WTag=0;
+        [super viewDidLoad];
+        
+        super0 = @"\u2070";
+        
+        hud=[[MBProgressHUD alloc]init];
+        [self.view addSubview:hud];
+        documentTag=0;
+        
+        
+        ReportView.hidden=YES;
+        self.manager=[[CLLocationManager alloc]init];
+        self.manager.delegate=self;
+        self.manager.distanceFilter=kCLDistanceFilterNone;
+        self.manager.desiredAccuracy=kCLLocationAccuracyBest;
+        [self.manager startUpdatingLocation];
+        
+        NSDateFormatter *formater=[[NSDateFormatter alloc]init];
+        [formater setDateFormat:@"MM/dd/yyyy"];
+        
+        TodaysDateLab.text=[NSString stringWithFormat:@"Today's Date - %@",[formater stringFromDate:[NSDate date]]];
+        TodaysDateLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:12];
+        ReportLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewAllTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewOpenTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ViewPaidTicketBtn.titleLabel.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:22];
+        ForeCastLab.font=[UIFont fontWithName:@"MYRIADPRO-COND" size:17];
+        if ([AppDelegate sharedInstance].DeviceHieght==480) {
+            ScrollsView.frame=CGRectMake(11, 81, 298, 76);
+            ForeCastLab.frame=CGRectMake(6, 58, 75, 21);
+            
+            TodaysDateLab.frame=CGRectMake(164, 63, 144, 16);
+            
+            WetherTableView.frame=CGRectMake(6, 154, 307, 146);
+            
+            ChangeZipBtn.frame=CGRectMake(239, 309, 78, 22);
+            iCloudBtn.frame=CGRectMake(6, 309, 100, 29);
+            ClientBtn.frame=CGRectMake(85, 314, 150, 150);
+            reportBtn.frame=CGRectMake(277, 442, 30, 30);
+            
+            ReportView.frame=CGRectMake(0, 265, 320, 273);
+            ViewAllTicketBtn.frame=CGRectMake(10, 50, 300, 45);
+            ViewOpenTicketBtn.frame=CGRectMake(10, 103, 300, 45);
+            ViewPaidTicketBtn.frame=CGRectMake(10, 156, 300, 45);
+            ReportLab.frame=CGRectMake(120, 7, 81, 23);
+            ReportImageView.frame=CGRectMake(0, 0, 320, 267);
+            
+            lineLab1.frame=CGRectMake(6, 78, 307, 1);
+            lineLab2.frame=CGRectMake(6, 152, 307, 1);
+            
+        }
+        
+        WetherTableView.allowsSelection=NO;
+        
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSError *error;
+        NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:@"/MyImageFolder"];
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
+            [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
+        
+        NSURL *ubiq = [[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil];
+        if (ubiq) {
+            NSLog(@"iCloud access at %@", ubiq);
+            // TODO: Load document...
+            [self loadDocument];
+        } else {
+            NSLog(@"No iCloud access");
+        }
+        
+    } else [self setTutImage];
+}
+
+-(void)setTutImage{
+    [tutsImageView setImage:[UIImage imageNamed:[tutImages objectAtIndex:tutsImageCount]]];
+}
+
+
 
 -(void)viewWillAppear:(BOOL)animated
 {

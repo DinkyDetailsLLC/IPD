@@ -107,6 +107,9 @@
 		0EB8CF6219D5648100200433 /* MYRIADPRO-COND.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6019D5648100200433 /* MYRIADPRO-COND.OTF */; };
 		0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */; };
 		0EB8CF6B19D5923E00200433 /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EB8CF6A19D5923E00200433 /* line.png */; };
+		2DED65FB19F7E75C00B6CF06 /* tut_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DED65F819F7E75C00B6CF06 /* tut_1.jpg */; };
+		2DED65FC19F7E75C00B6CF06 /* tut_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DED65F919F7E75C00B6CF06 /* tut_2.jpg */; };
+		2DED65FD19F7E75C00B6CF06 /* tut_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2DED65FA19F7E75C00B6CF06 /* tut_3.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +269,9 @@
 		0EB8CF6819D58E7F00200433 /* QuickNotifyBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QuickNotifyBg.png; sourceTree = "<group>"; };
 		0EB8CF6A19D5923E00200433 /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
 		0EBC5BD919E7A88D00B9361F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2DED65F819F7E75C00B6CF06 /* tut_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tut_1.jpg; path = ../tut_1.jpg; sourceTree = "<group>"; };
+		2DED65F919F7E75C00B6CF06 /* tut_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tut_2.jpg; path = ../tut_2.jpg; sourceTree = "<group>"; };
+		2DED65FA19F7E75C00B6CF06 /* tut_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = tut_3.jpg; path = ../tut_3.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,6 +518,9 @@
 		0EABB58619D00AD5001E8D1E /* images */ = {
 			isa = PBXGroup;
 			children = (
+				2DED65F819F7E75C00B6CF06 /* tut_1.jpg */,
+				2DED65F919F7E75C00B6CF06 /* tut_2.jpg */,
+				2DED65FA19F7E75C00B6CF06 /* tut_3.jpg */,
 				0EAC854A19E94E6C00C45272 /* icloudBackup.png */,
 				0E263DA119D9908700C7A99A /* service_Checked.png */,
 				0EB8CF6A19D5923E00200433 /* line.png */,
@@ -770,12 +779,14 @@
 				0EABB5B819D00AEC001E8D1E /* OpenSt.png in Resources */,
 				0EABB5A519D00AEC001E8D1E /* images_16.png in Resources */,
 				0EAC1E5519E51F0C00C4068D /* ImageEditor.xib in Resources */,
+				2DED65FD19F7E75C00B6CF06 /* tut_3.jpg in Resources */,
 				0EAA5C3119D19DCC002D3E75 /* transparentImage.png in Resources */,
 				0EABB5AC19D00AEC001E8D1E /* image4.png in Resources */,
 				0E263DA219D9908700C7A99A /* service_Checked.png in Resources */,
 				0EABB5A719D00AEC001E8D1E /* grrenBut.png in Resources */,
 				0EAA5C2219D1969C002D3E75 /* add_title.png in Resources */,
 				0EABB5A819D00AEC001E8D1E /* cellAcc.png in Resources */,
+				2DED65FC19F7E75C00B6CF06 /* tut_2.jpg in Resources */,
 				0EABB5A419D00AEC001E8D1E /* edit.png in Resources */,
 				0EABB5B619D00AEC001E8D1E /* PopUpGreen.png in Resources */,
 				0EABB5BE19D02884001E8D1E /* ChangeZip.png in Resources */,
@@ -796,6 +807,7 @@
 				0EABB5B019D00AEC001E8D1E /* clients.png in Resources */,
 				0EABB5D019D042F8001E8D1E /* circleGreen.png in Resources */,
 				0EAA5C2319D1969C002D3E75 /* email.png in Resources */,
+				2DED65FB19F7E75C00B6CF06 /* tut_1.jpg in Resources */,
 				0EABB5A619D00AEC001E8D1E /* map.png in Resources */,
 				0EABB5AF19D00AEC001E8D1E /* report.png in Resources */,
 				0EB8CF6919D58E7F00200433 /* QuickNotifyBg.png in Resources */,

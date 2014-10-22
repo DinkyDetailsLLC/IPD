@@ -11,11 +11,15 @@
 #import "MyDocument.h"
 #import "ZipArchive.h"
 #import "MyNewZipDocument.h"
+
+extern bool tutsShown;
+
 @interface ViewController : UIViewController<NSURLConnectionDelegate,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
   MBProgressHUD *hud;
     
     UIScrollView *HourlyScrollView;
+    NSArray * tutImages;
 }
 
 @property (strong)MyDocument* document;
@@ -54,6 +58,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *lineLab1;
 
 @property (weak, nonatomic) IBOutlet UILabel *lineLab2;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnChangeTutImage;
+
+@property (weak, nonatomic) IBOutlet UIImageView *tutsImageView;
+
+-(IBAction)tutImageChange:(id)sender;
 
 -(IBAction)ClientBtnClicked:(id)sender;
 
